@@ -13,7 +13,22 @@ type t2 = Ast.AstTds.programme
 (* Vérifie la bonne utilisation des identifiants et tranforme l'expression
 en une expression de type AstTds.expression *)
 (* Erreur si mauvaise utilisation des identifiants *)
-let analyse_tds_expression tds e = (AstTds.Booleen true) (* failwith "todo"*)
+let rec analyse_tds_expression tds e = match e with
+  (*| AstSyntax.AppelFonction(n, l) -> AppelFonction (Tds.info_ast * expression list) *)
+  | AstSyntax.Ident(n) -> 
+    begin
+    match chercherGlobalement tds n with
+      | None -> raise (Exceptions.IdentifiantNonDeclare n)
+      | Some info -> AstTds.Ident(info)
+    end
+  | AstSyntax.Booleen(b) -> AstTds.Booleen(b)
+  | AstSyntax.Entier(ent) -> AstTds.Entier(ent)
+  | AstSyntax.Unaire(op, e1) -> let exp = analyse_tds_expression tds e1 in AstTds.Unaire(op, exp)
+  | AstSyntax.Binaire(op, e1, e2) -> 
+    let exp1 = analyse_tds_expression tds e1 in 
+    let exp2 = analyse_tds_expression tds e2 in AstTds.Binaire(op, exp1, exp2)
+  | _  -> failwith "Non inclus"
+
 
 
 (* analyse_tds_instruction : tds -> info_ast option -> AstSyntax.instruction -> AstTds.instruction *)
