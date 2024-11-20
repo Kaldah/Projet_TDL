@@ -14,14 +14,25 @@ type t2 = Ast.AstTds.programme
 en une expression de type AstTds.expression *)
 (* Erreur si mauvaise utilisation des identifiants *)
 let rec analyse_tds_expression tds e = match e with
-  (*| AstSyntax.AppelFonction(n, l) -> AppelFonction (Tds.info_ast * expression list) *)
+  | AstSyntax.AppelFonction(n, l) -> 
+    begin
+      match chercherGlobalement tds n with
+        | None -> 
+          (* L'identifiant n'est pas trouvé dans la tds globale,
+          il n'a donc pas été déclaré dans le programme *)
+          raise (Exceptions.IdentifiantNonDeclare n)      
+          (* L'identifiant existe donc on récupère et renvoie la référence sur l'info associée *)
+        | Some info ->
+          let dts_l = List.map (analyse_tds_expression tds) l in
+          AstTds.AppelFonction(info, dts_l)
+      end
   | AstSyntax.Ident(n) -> 
     begin
     match chercherGlobalement tds n with
       | None -> 
         (* L'identifiant n'est pas trouvé dans la tds globale,
         il n'a donc pas été déclaré dans le programme *)
-        raise (Exceptions.IdentifiantNonDeclare n)      
+        raise (Exceptions.MauvaiseUtilisationIdentifiant n)      
         (* L'identifiant existe donc on récupère et renvoie la référence sur l'info associée *)
       | Some info -> AstTds.Ident(info)
     end
@@ -31,9 +42,6 @@ let rec analyse_tds_expression tds e = match e with
   | AstSyntax.Binaire(op, e1, e2) -> 
     let exp1 = analyse_tds_expression tds e1 in 
     let exp2 = analyse_tds_expression tds e2 in AstTds.Binaire(op, exp1, exp2)
-  | _  -> failwith "Non inclus"
-
-
 
 (* analyse_tds_instruction : tds -> info_ast option -> AstSyntax.instruction -> AstTds.instruction *)
 (* Paramètre tds : la table des symboles courante *)
@@ -242,7 +250,6 @@ let bloc = aux_analyser_bloc tds_param li in
     | Some _ -> 
       (* La fonction a déjà été déclarée *)
       raise (Exceptions.DoubleDeclaration n)
-
 
 
 (* analyser : AstSyntax.programme -> AstTds.programme *)
