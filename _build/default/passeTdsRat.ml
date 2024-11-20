@@ -18,7 +18,11 @@ let rec analyse_tds_expression tds e = match e with
   | AstSyntax.Ident(n) -> 
     begin
     match chercherGlobalement tds n with
-      | None -> raise (Exceptions.IdentifiantNonDeclare n)
+      | None -> 
+        (* L'identifiant n'est pas trouvé dans la tds globale,
+        il n'a donc pas été déclaré dans le programme *)
+        raise (Exceptions.IdentifiantNonDeclare n)      
+        (* L'identifiant existe donc on récupère et renvoie la référence sur l'info associée *)
       | Some info -> AstTds.Ident(info)
     end
   | AstSyntax.Booleen(b) -> AstTds.Booleen(b)
@@ -159,11 +163,87 @@ and analyse_tds_bloc tds oia li =
 (* analyse_tds_fonction : tds -> AstSyntax.fonction -> AstTds.fonction *)
 (* Paramètre tds : la table des symboles courante *)
 (* Paramètre : la fonction à analyser *)
-(* Vérifie la bonne utilisation des identifiants et tranforme la fonction
+(* Vérifie la bonne utilisation des identifiants et transforme la fonction
 en une fonction de type AstTds.fonction *)
 (* Erreur si mauvaise utilisation des identifiants *)
 let analyse_tds_fonction maintds (AstSyntax.Fonction(t,n,lp,li))  =
-  failwith "TO DO"
+  match chercherGlobalement maintds n with
+    | None -> (* La fonction n'a pas encore été déclarée *)
+  (* On récupère les infos *)
+  (* Récupère les types dans lp *)
+  let tlp = List.map fst lp in
+  let info_fun = InfoFun(n, t, tlp) in
+
+  (* On récupère la liste (type * Tds.info_ast) des paramètres *)
+  (* On crée une TDS fille de mainTDS pour contenir les paramètres de la fonction *)
+  let tds_param = creerTDSFille maintds in 
+
+  let aux_infos_param (t, p) = 
+    (* créer une référence pour le paramètre dans la table *)
+    let info = InfoVar(p, t, 0, "") in
+    let ref_param = info_to_info_ast info in
+    begin
+    (* On ajoute la référence dans la TDS fille *)
+    ajouter tds_param p ref_param;
+    (* On renvoie le couple du type et la référence associée pour les récupérer *)
+    (t, ref_param);
+    end
+  in
+  (* On utilise la fonction aux_infos_param pour initialiser la TDS fille *)
+  (* et on construit la liste des paramètres avec leur type et la référence de leurs infos dans la TDS fille *)
+  let infos_param = List.map aux_infos_param lp in
+  
+  let rec aux_analyser_bloc tds bloc =
+  (* On construit le bloc *)
+  (* On crée une TDS fille à la TDS fille de la fonction (tds_param) *)
+  let tds_bloc = creerTDSFille tds in
+
+  let aux_Instruction_Syntaxe_to_TDS i = match i with
+  | AstSyntax.Declaration (t, n, e) -> 
+    let info = InfoVar(n, t, 0, "") in
+    let i_tds = info_to_info_ast info in
+      begin
+      ajouter tds_bloc n i_tds;
+      (* On renvoie l'instruction en AstTds pour la récupérer *)
+      AstTds.Declaration(t, i_tds, analyse_tds_expression tds_bloc e);
+      end
+  | AstSyntax.Affectation (n, e) -> 
+    let info = InfoVar(n, t, 0, "") in
+    let i_tds = info_to_info_ast info in
+      begin
+      ajouter tds_bloc n i_tds;
+      (* On renvoie l'instruction en AstTds pour la récupérer *)
+      AstTds.Affectation(i_tds, analyse_tds_expression tds_bloc e);
+      end
+  | AstSyntax.Constante (n, ent) -> 
+    let info = InfoConst(n, ent) in
+    let i_tds = info_to_info_ast info in
+      begin
+      ajouter tds_bloc n i_tds;
+      (* On renvoie l'instruction Empty car le noeud a disparu *)
+      AstTds.Empty;
+      end
+  | AstSyntax.Affichage (e) -> AstTds.Affichage(analyse_tds_expression tds_bloc e)
+  | AstSyntax.Conditionnelle (e, bloc1, bloc2) -> AstTds.Conditionnelle(analyse_tds_expression tds_bloc e, aux_analyser_bloc tds_bloc  bloc1, aux_analyser_bloc tds_bloc bloc2)
+  | AstSyntax.TantQue (e, bloc1) -> AstTds.TantQue(analyse_tds_expression tds_bloc e, aux_analyser_bloc tds_bloc bloc1)
+  | AstSyntax.Retour (e) ->
+    let info = InfoVar(n, t, 0, "") in
+    let i_tds = info_to_info_ast info in
+    begin
+    ajouter tds_bloc n i_tds;
+    AstTds.Retour(analyse_tds_expression tds_bloc e, i_tds);
+    end
+  in
+  let tds_bloc = List.map aux_Instruction_Syntaxe_to_TDS bloc in
+  tds_bloc
+in 
+let bloc = aux_analyser_bloc tds_param li in
+    AstTds.Fonction (t, (info_to_info_ast info_fun), infos_param, bloc) 
+    | Some _ -> 
+      (* La fonction a déjà été déclarée *)
+      raise (Exceptions.DoubleDeclaration n)
+
+
 
 (* analyser : AstSyntax.programme -> AstTds.programme *)
 (* Paramètre : le programme à analyser *)
