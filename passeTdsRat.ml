@@ -32,7 +32,7 @@ let rec analyse_tds_expression tds e = match e with
       | None -> 
         (* L'identifiant n'est pas trouvé dans la tds globale,
         il n'a donc pas été déclaré dans le programme *)
-        raise (Exceptions.MauvaiseUtilisationIdentifiant n)      
+        raise (Exceptions.IdentifiantNonDeclare n)      
         (* L'identifiant existe donc on récupère et renvoie la référence sur l'info associée *)
       | Some info -> AstTds.Ident(info)
     end
