@@ -16,15 +16,24 @@ en une expression de type AstTds.expression *)
 let rec analyse_tds_expression tds e = match e with
   | AstSyntax.AppelFonction(n, l) -> 
     begin
+      print_string "Testtest";
+      print_int (List.length l);
       match chercherGlobalement tds n with
         | None -> 
           (* L'identifiant n'est pas trouvé dans la tds globale,
           il n'a donc pas été déclaré dans le programme *)
-          raise (Exceptions.DoubleDeclaration n)      
+          raise (Exceptions.IdentifiantNonDeclare n)      
           (* L'identifiant existe donc on récupère et renvoie la référence sur l'info associée *)
-        | Some info ->
-          let dts_l = List.map (analyse_tds_expression tds) l in
-          AstTds.AppelFonction(info, dts_l)
+        | Some info_tds -> 
+          begin
+          match (info_ast_to_info info_tds) with
+          | InfoFun(_, _, types_param) -> 
+            if (List.length types_param = List.length l) then
+            let dts_l = List.map (analyse_tds_expression tds) l in
+            AstTds.AppelFonction(info_tds, dts_l)
+            else raise (MauvaiseUtilisationIdentifiant n)
+          | _ -> raise (MauvaiseUtilisationIdentifiant n)
+          end
       end
   | AstSyntax.Ident(n) -> 
     begin
@@ -176,7 +185,11 @@ en une fonction de type AstTds.fonction *)
 (* Erreur si mauvaise utilisation des identifiants *)
 let analyse_tds_fonction maintds (AstSyntax.Fonction(t,n,lp,li))  =
   match chercherGlobalement maintds n with
-    | None -> (* La fonction n'a pas encore été déclarée *)
+  | Some _ -> 
+    (* La fonction a déjà été déclarée *)
+    raise (Exceptions.DoubleDeclaration n)
+
+  | None -> (* La fonction n'a pas encore été déclarée *)
   (* On récupère les infos *)
   (* Récupère les types dans lp *)
   let tlp = List.map fst lp in
@@ -201,11 +214,10 @@ let analyse_tds_fonction maintds (AstSyntax.Fonction(t,n,lp,li))  =
   (* et on construit la liste des paramètres avec leur type et la référence de leurs infos dans la TDS fille *)
   let infos_param = List.map aux_infos_param lp in
 
-let bloc = analyse_tds_bloc tds_param (Some info_fun) li in
-    AstTds.Fonction (t, info_fun, infos_param, bloc) 
-    | Some _ -> 
-      (* La fonction a déjà été déclarée *)
-      raise (Exceptions.DoubleDeclaration n)
+  let bloc = analyse_tds_bloc tds_param (Some info_fun) li in
+  ajouter maintds n info_fun;
+  AstTds.Fonction (t, info_fun, infos_param, bloc)
+
 
 
 (* analyser : AstSyntax.programme -> AstTds.programme *)
