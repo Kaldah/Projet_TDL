@@ -7,17 +7,41 @@ open Ast
 type t1 = Ast.AstSyntax.programme
 type t2 = Ast.AstTds.programme
 
+
+let rec afficher_expression_ast e = 
+  begin
+  match e with
+    | AstSyntax.AppelFonction (nomf, params) -> 
+      print_string (nomf^" : \n");
+      (List.iter afficher_expression_ast params);
+      print_string ("fin appel fonction : "^nomf);
+      | AstSyntax.Entier (ent) -> print_int ent
+      | AstSyntax.Ident (nom) -> print_string nom
+      | AstSyntax.Booleen (b) -> if b then print_string "True" else print_string "False"
+      | AstSyntax.Unaire (op, e) ->
+      begin
+      if (op = Numerateur) then 
+      print_string "Numerateur :" 
+      else 
+      print_string "Denominateur : "
+      end;
+      afficher_expression_ast e;
+      | Binaire(_, e1, e2) -> print_string "Binaire : ";
+      afficher_expression_ast e1; 
+      afficher_expression_ast e2;
+    end;
+    print_newline ();;
+
 (* analyse_tds_expression : tds -> AstSyntax.expression -> AstTds.expression *)
 (* Paramètre tds : la table des symboles courante *)
 (* Paramètre e : l'expression à analyser *)
 (* Vérifie la bonne utilisation des identifiants et tranforme l'expression
 en une expression de type AstTds.expression *)
 (* Erreur si mauvaise utilisation des identifiants *)
-let rec analyse_tds_expression tds e = match e with
+let rec analyse_tds_expression tds e = 
+match e with
   | AstSyntax.AppelFonction(n, l) -> 
     begin
-      print_string "Testtest";
-      print_int (List.length l);
       match chercherGlobalement tds n with
         | None -> 
           (* L'identifiant n'est pas trouvé dans la tds globale,
@@ -27,7 +51,8 @@ let rec analyse_tds_expression tds e = match e with
         | Some info_tds -> 
           begin
           match (info_ast_to_info info_tds) with
-          | InfoFun(_, _, types_param) -> 
+          | InfoFun(_, _, types_param) ->
+            
             if (List.length types_param = List.length l) then
             let dts_l = List.map (analyse_tds_expression tds) l in
             AstTds.AppelFonction(info_tds, dts_l)
@@ -43,7 +68,9 @@ let rec analyse_tds_expression tds e = match e with
         il n'a donc pas été déclaré dans le programme *)
         raise (Exceptions.IdentifiantNonDeclare n)      
         (* L'identifiant existe donc on récupère et renvoie la référence sur l'info associée *)
-      | Some info -> AstTds.Ident(info)
+      | Some info -> match (info_ast_to_info info) with
+      | InfoFun(n,_,_) -> raise (MauvaiseUtilisationIdentifiant n)
+      | _ -> AstTds.Ident(info)
     end
   | AstSyntax.Booleen(b) -> AstTds.Booleen(b)
   | AstSyntax.Entier(ent) -> AstTds.Entier(ent)
@@ -205,7 +232,10 @@ let analyse_tds_fonction maintds (AstSyntax.Fonction(t,n,lp,li))  =
     let ref_param = info_to_info_ast info in
     begin
     (* On ajoute la référence dans la TDS fille *)
-    ajouter tds_param p ref_param;
+    let test_info_p = chercherLocalement tds_param p in
+    match test_info_p with
+    | Some _ -> raise (DoubleDeclaration p)
+    | _ -> ajouter tds_param p ref_param;
     (* On renvoie le couple du type et la référence associée pour les récupérer *)
     (t, ref_param);
     end
