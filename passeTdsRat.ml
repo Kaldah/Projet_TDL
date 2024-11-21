@@ -221,7 +221,7 @@ let analyse_tds_fonction maintds (AstSyntax.Fonction(t,n,lp,li))  =
   (* Récupère les types dans lp *)
   let tlp = List.map fst lp in
   let info_fun = info_to_info_ast (InfoFun(n, t, tlp)) in
-
+  ajouter maintds n info_fun;
   (* On récupère la liste (type * Tds.info_ast) des paramètres *)
   (* On crée une TDS fille de mainTDS pour contenir les paramètres de la fonction *)
   let tds_param = creerTDSFille maintds in 
@@ -245,7 +245,6 @@ let analyse_tds_fonction maintds (AstSyntax.Fonction(t,n,lp,li))  =
   let infos_param = List.map aux_infos_param lp in
 
   let bloc = analyse_tds_bloc tds_param (Some info_fun) li in
-  ajouter maintds n info_fun;
   AstTds.Fonction (t, info_fun, infos_param, bloc)
 
 
