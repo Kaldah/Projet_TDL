@@ -8,29 +8,9 @@ type t1 = Ast.AstSyntax.programme
 type t2 = Ast.AstTds.programme
 
 
-let rec afficher_expression_ast e = 
-  begin
-  match e with
-    | AstSyntax.AppelFonction (nomf, params) -> 
-      print_string (nomf^" : \n");
-      (List.iter afficher_expression_ast params);
-      print_string ("fin appel fonction : "^nomf);
-      | AstSyntax.Entier (ent) -> print_int ent
-      | AstSyntax.Ident (nom) -> print_string nom
-      | AstSyntax.Booleen (b) -> if b then print_string "True" else print_string "False"
-      | AstSyntax.Unaire (op, e) ->
-      begin
-      if (op = Numerateur) then 
-      print_string "Numerateur :" 
-      else 
-      print_string "Denominateur : "
-      end;
-      afficher_expression_ast e;
-      | Binaire(_, e1, e2) -> print_string "Binaire : ";
-      afficher_expression_ast e1; 
-      afficher_expression_ast e2;
-    end;
-    print_newline ();;
+let afficher_expression_ast e = 
+  print_string (PrinterAst.PrinterAstSyntax.string_of_expression e);
+  print_newline ();;
 
 (* analyse_tds_expression : tds -> AstSyntax.expression -> AstTds.expression *)
 (* Paramètre tds : la table des symboles courante *)
@@ -38,8 +18,8 @@ let rec afficher_expression_ast e =
 (* Vérifie la bonne utilisation des identifiants et tranforme l'expression
 en une expression de type AstTds.expression *)
 (* Erreur si mauvaise utilisation des identifiants *)
-let rec analyse_tds_expression tds e = 
-match e with
+let rec analyse_tds_expression tds e =
+  match e with
   | AstSyntax.AppelFonction(n, l) -> 
     begin
       match chercherGlobalement tds n with

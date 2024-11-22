@@ -4,5 +4,6 @@ rat__Lexer
 rat__Parser
 rat__Passe
 rat__PasseTdsRat
+rat__PrinterAst
 rat__Tds
 rat__Type
