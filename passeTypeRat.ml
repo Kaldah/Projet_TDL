@@ -19,17 +19,17 @@ let rec analyse_type_expression e = match e with
 | AstTds.Ident info ->
   begin
   match (info_ast_to_info info) with
-    | InfoVar(n, tid, _, _) ->
-        (AstType.Ident(info_to_info_ast (InfoVar(n, tid, 0, ""))), tid)
-    | _ -> failwith "Erreur interne"
+    | InfoVar(n, tid, _, _) -> (AstType.Ident(info_to_info_ast (InfoVar(n, tid, 0, ""))), tid)
+    | InfoConst (_, _) -> (AstType.Ident(info), Int)
+    | _ -> failwith "Erreur interne Ident"
   end
 
 | AstTds.Unaire (op, e1) -> let (ne, te) = analyse_type_expression e1 in
 if (est_compatible te Rat) then
 begin
   match op with
-  | Numerateur -> (AstType.Unaire(AstType.Numerateur, ne), Rat)
-  | Denominateur -> (AstType.Unaire(AstType.Denominateur, ne), Rat)
+  | Numerateur -> (AstType.Unaire(AstType.Numerateur, ne), Int)
+  | Denominateur -> (AstType.Unaire(AstType.Denominateur, ne), Int)
 end
 else
   raise (Exceptions.TypeInattendu(te, Rat))
@@ -40,15 +40,12 @@ begin
   | Fraction -> if ((est_compatible te1 Int) && (est_compatible te2 Int)) then 
     (AstType.Binaire(AstType.Fraction, ne1, ne2), Rat)
   else
-    begin
-    print_string "Erreur Fraction \n";
     raise (Exceptions.TypeBinaireInattendu (op, te1, te2))
-    end
   | Plus -> (
       match (te1, te2) with
       | Int, Int -> (AstType.Binaire(AstType.PlusInt, ne1, ne2), Int)
       | Rat, Rat -> (AstType.Binaire(AstType.PlusRat, ne1, ne2), Rat)
-      | _ -> print_string "Erreur PLus \n"; raise (Exceptions.TypeBinaireInattendu (op, te1, te2))
+      | _ -> raise (Exceptions.TypeBinaireInattendu (op, te1, te2))
     )
   | Mult -> (
       match (te1, te2) with
