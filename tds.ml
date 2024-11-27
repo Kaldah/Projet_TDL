@@ -8,7 +8,7 @@ type info =
   | InfoFun of string * typ * typ list
 
 (* Données stockées dans la tds  et dans les AST : pointeur sur une information *)
-type info_ast = info ref  
+type info_ast = info ref
 
 (* Table des symboles hiérarchique *)
 (* Les tables locales sont codées à l'aide d'une hashtable *)

@@ -47,12 +47,14 @@ module CompilateurRat = Compilateur (PasseTdsNop) (PasseTypeNop) (PassePlacement
 *)
 
 (* + passe de résolution des identifiants *)
+(*
 module CompilateurRat = Compilateur (PasseTdsRat) (PasseTypeNop) (PassePlacementNop) (PasseCodeNop) 
+*)
 
 (* + passe de typage *)
-(*
+
 module CompilateurRat = Compilateur (PasseTdsRat) (PasseTypeRat) (PassePlacementNop) (PasseCodeNop)
-*)
+
 
 (* + passe de placement mémoire *)
 (*
