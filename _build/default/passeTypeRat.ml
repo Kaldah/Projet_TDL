@@ -15,7 +15,18 @@ type t2 = Ast.AstType.programme
 en une expression de type AstType.expression *)
 (* Erreur si mauvaise utilisation des types *)
 let rec analyse_type_expression e = match e with
-| AstTds.AppelFonction(info, le) -> (AstType.Booleen(true) , Bool)
+| AstTds.AppelFonction(info, le) -> (match info_ast_to_info info with
+  | InfoFun(_, tr, ltp) -> 
+    let lnet = List.map analyse_type_expression le in
+    let lne = List.map fst lnet in
+    let lte = List.map snd lnet in
+    if (est_compatible_list lte ltp) then
+      (AstType.AppelFonction(info, lne), tr)
+    else
+      raise (Exceptions.TypesParametresInattendus(lte, ltp))
+  | _ -> failwith "Erreur interne AppelFonction"
+)
+
 | AstTds.Ident info ->
   begin
   match (info_ast_to_info info) with
@@ -129,10 +140,13 @@ let rec analyse_type_instruction i =
 
   | AstTds.Retour (e, ia) ->
     let (ne, te) = analyse_type_expression e in
-          if (est_compatible te Bool) then
-            AstType.Retour(ne, ia)
-          else
-            raise (Exceptions.TypeInattendu (te, Bool))
+    (match info_ast_to_info ia with
+    | InfoFun(_,tr , _) -> if (est_compatible te tr) then 
+      AstType.Retour(ne, ia)
+    else
+      raise (Exceptions.TypeInattendu(te, tr))
+    | _ -> failwith "Erreur interne Retour"
+    )
 
   | AstTds.Empty -> AstType.Empty
 (* analyse_type_bloc : AstTds.instruction List -> AstType.instruction List *)
@@ -162,7 +176,7 @@ let analyse_type_fonction (AstTds.Fonction(_,info,lp,li))  =
 en un programme de type AstType.programme *)
 (* Erreur si mauvaise utilisation des types *)
 let analyser (AstTds.Programme (fonctions, prog)) =
-  let nfs = List.map analyse_type_fonction fonctions in
+  let nfs = analyse_type_fonctions fonctions in
   let np = analyse_type_bloc prog in
   AstType.Programme (nfs,np)
 

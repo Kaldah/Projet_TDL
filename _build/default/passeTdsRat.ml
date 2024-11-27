@@ -31,12 +31,9 @@ let rec analyse_tds_expression tds e =
         | Some info_tds -> 
           begin
           match (info_ast_to_info info_tds) with
-          | InfoFun(_, _, types_param) ->
-            
-            if (List.length types_param = List.length l) then
+          | InfoFun(_, _, _) ->
             let dts_l = List.map (analyse_tds_expression tds) l in
             AstTds.AppelFonction(info_tds, dts_l)
-            else raise (MauvaiseUtilisationIdentifiant n)
           | _ -> raise (MauvaiseUtilisationIdentifiant n)
           end
       end
