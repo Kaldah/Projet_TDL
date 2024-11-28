@@ -14,4 +14,431 @@
 #  ; build_dir = In_build_dir "default"
 #  ; instrument_with = []
 #  }
-$ C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -config > C:\Users\coren\AppData\Local\Temp\dune_82099b_output
+$ C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -config > C:\Users\coren\AppData\Local\Temp\dune_3a69a9_output
+$ (cd _build/default && .ppx/423b3c0918a91461d11b9cd1259aca91/ppx.exe --cookie "inline_tests=\"enabled\"" --cookie "library-name=\"rat\"" -o PasseCodeRatToTam.pp.ml --impl PasseCodeRatToTam.ml -corrected-suffix .ppx-corrected -diff-cmd - -dump-ast)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamldep.opt.exe -modules -impl PasseCodeRatToTam.pp.ml) > _build/default/.rat.objs/rat__PasseCodeRatToTam.impl.d
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -bin-annot-occurrences -I .rat.objs/byte -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -no-alias-deps -opaque -open Rat -o .rat.objs/byte/rat__PasseCodeRatToTam.cmo -c -impl PasseCodeRatToTam.pp.ml)
+> File "PasseCodeRatToTam.ml", line 31, characters 10-34:
+> 31 |   let rec analyse_code_instruction i =
+>                ^^^^^^^^^^^^^^^^^^^^^^^^
+> Warning 39 [unused-rec-flag]: unused rec flag.
+>
+> File "PasseCodeRatToTam.ml", line 20, characters 4-5:
+> 20 |   | _ -> 
+>          ^
+> Warning 11 [redundant-case]: this match case is unused.
+>
+> File "PasseCodeRatToTam.ml", line 12, characters 8-31:
+> 12 | let rec analyse_code_expression e =
+>              ^^^^^^^^^^^^^^^^^^^^^^^
+> Warning 39 [unused-rec-flag]: unused rec flag.
+>
+> File "PasseCodeRatToTam.ml", line 4, characters 0-8:
+> 4 | open Tds
+>     ^^^^^^^^
+> Warning 33 [unused-open]: unused open Rat.Tds.
+>
+> File "PasseCodeRatToTam.ml", line 7, characters 0-9:
+> 7 | open Type
+>     ^^^^^^^^^
+> Warning 33 [unused-open]: unused open Rat.Type.
+>
+> File "PasseCodeRatToTam.ml", line 14, characters 27-31:
+> 14 |   | AstType.AppelFonction (info, le ) -> ""
+>                                 ^^^^
+> Warning 27 [unused-var-strict]: unused variable info.
+>
+> File "PasseCodeRatToTam.ml", line 14, characters 33-35:
+> 14 |   | AstType.AppelFonction (info, le ) -> ""
+>                                       ^^
+> Warning 27 [unused-var-strict]: unused variable le.
+>
+> File "PasseCodeRatToTam.ml", line 15, characters 18-22:
+> 15 |   | AstType.Ident info -> ""
+>                        ^^^^
+> Warning 27 [unused-var-strict]: unused variable info.
+>
+> File "PasseCodeRatToTam.ml", line 16, characters 20-21:
+> 16 |   | AstType.Booleen b -> ""
+>                          ^
+> Warning 27 [unused-var-strict]: unused variable b.
+>
+> File "PasseCodeRatToTam.ml", line 17, characters 19-20:
+> 17 |   | AstType.Entier i -> ""
+>                         ^
+> Warning 27 [unused-var-strict]: unused variable i.
+>
+> File "PasseCodeRatToTam.ml", line 18, characters 20-22:
+> 18 |   | AstType.Unaire (op, e1) -> ""
+>                          ^^
+> Warning 27 [unused-var-strict]: unused variable op.
+>
+> File "PasseCodeRatToTam.ml", line 18, characters 24-26:
+> 18 |   | AstType.Unaire (op, e1) -> ""
+>                              ^^
+> Warning 27 [unused-var-strict]: unused variable e1.
+>
+> File "PasseCodeRatToTam.ml", line 19, characters 21-22:
+> 19 |   | AstType.Binaire (b, e1, e2) -> ""
+>                           ^
+> Warning 27 [unused-var-strict]: unused variable b.
+>
+> File "PasseCodeRatToTam.ml", line 19, characters 24-26:
+> 19 |   | AstType.Binaire (b, e1, e2) -> ""
+>                              ^^
+> Warning 27 [unused-var-strict]: unused variable e1.
+>
+> File "PasseCodeRatToTam.ml", line 19, characters 28-30:
+> 19 |   | AstType.Binaire (b, e1, e2) -> ""
+>                                  ^^
+> Warning 27 [unused-var-strict]: unused variable e2.
+>
+> File "PasseCodeRatToTam.ml", line 31, characters 10-34:
+> 31 |   let rec analyse_code_instruction i =
+>                ^^^^^^^^^^^^^^^^^^^^^^^^
+> Warning 26 [unused-var]: unused variable analyse_code_instruction.
+>
+> File "PasseCodeRatToTam.ml", line 42, characters 8-25:
+> 42 |     and analyse_code_bloc (li , taille ) = "" in "" ;;
+>              ^^^^^^^^^^^^^^^^^
+> Warning 26 [unused-var]: unused variable analyse_code_bloc.
+>
+> File "PasseCodeRatToTam.ml", line 33, characters 33-37:
+> 33 |     | AstPlacement.Declaration ( info , e) -> ""
+>                                       ^^^^
+> Warning 27 [unused-var-strict]: unused variable info.
+>
+> File "PasseCodeRatToTam.ml", line 33, characters 40-41:
+> 33 |     | AstPlacement.Declaration ( info , e) -> ""
+>                                              ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 34, characters 33-37:
+> 34 |     | AstPlacement.Affectation ( info , e) -> ""
+>                                       ^^^^
+> Warning 27 [unused-var-strict]: unused variable info.
+>
+> File "PasseCodeRatToTam.ml", line 34, characters 40-41:
+> 34 |     | AstPlacement.Affectation ( info , e) -> ""
+>                                              ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 35, characters 32-33:
+> 35 |     | AstPlacement.AffichageInt e -> ""
+>                                      ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 36, characters 32-33:
+> 36 |     | AstPlacement.AffichageRat e -> ""
+>                                      ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 37, characters 33-34:
+> 37 |     | AstPlacement.AffichageBool e -> ""
+>                                       ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 38, characters 35-36:
+> 38 |     | AstPlacement.Conditionnelle (c, t , e) -> ""
+>                                         ^
+> Warning 27 [unused-var-strict]: unused variable c.
+>
+> File "PasseCodeRatToTam.ml", line 38, characters 38-39:
+> 38 |     | AstPlacement.Conditionnelle (c, t , e) -> ""
+>                                            ^
+> Warning 27 [unused-var-strict]: unused variable t.
+>
+> File "PasseCodeRatToTam.ml", line 38, characters 42-43:
+> 38 |     | AstPlacement.Conditionnelle (c, t , e) -> ""
+>                                                ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 39, characters 28-29:
+> 39 |     | AstPlacement.TantQue (c, b) -> ""
+>                                  ^
+> Warning 27 [unused-var-strict]: unused variable c.
+>
+> File "PasseCodeRatToTam.ml", line 39, characters 31-32:
+> 39 |     | AstPlacement.TantQue (c, b) -> ""
+>                                     ^
+> Warning 27 [unused-var-strict]: unused variable b.
+>
+> File "PasseCodeRatToTam.ml", line 40, characters 27-28:
+> 40 |     | AstPlacement.Retour (e, tailleRet , tailleParam) -> ""
+>                                 ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 40, characters 30-39:
+> 40 |     | AstPlacement.Retour (e, tailleRet , tailleParam) -> ""
+>                                    ^^^^^^^^^
+> Warning 27 [unused-var-strict]: unused variable tailleRet.
+>
+> File "PasseCodeRatToTam.ml", line 40, characters 42-53:
+> 40 |     | AstPlacement.Retour (e, tailleRet , tailleParam) -> ""
+>                                                ^^^^^^^^^^^
+> Warning 27 [unused-var-strict]: unused variable tailleParam.
+>
+> File "PasseCodeRatToTam.ml", line 42, characters 27-29:
+> 42 |     and analyse_code_bloc (li , taille ) = "" in "" ;;
+>                                 ^^
+> Warning 27 [unused-var-strict]: unused variable li.
+>
+> File "PasseCodeRatToTam.ml", line 42, characters 32-38:
+> 42 |     and analyse_code_bloc (li , taille ) = "" in "" ;;
+>                                      ^^^^^^
+> Warning 27 [unused-var-strict]: unused variable taille.
+>
+> File "PasseCodeRatToTam.ml", line 44, characters 50-54:
+> 44 | let analyse_code_fonction (AstPlacement.Fonction (info ,_ , ( li , _ ))) = ""
+>                                                        ^^^^
+> Warning 27 [unused-var-strict]: unused variable info.
+>
+> File "PasseCodeRatToTam.ml", line 44, characters 62-64:
+> 44 | let analyse_code_fonction (AstPlacement.Fonction (info ,_ , ( li , _ ))) = ""
+>                                                                    ^^
+> Warning 27 [unused-var-strict]: unused variable li.
+>
+> File "PasseCodeRatToTam.ml", line 46, characters 38-47:
+> 46 | let analyser (AstPlacement.Programme (fonctions, prog)) = ""
+>                                            ^^^^^^^^^
+> Warning 27 [unused-var-strict]: unused variable fonctions.
+>
+> File "PasseCodeRatToTam.ml", line 46, characters 49-53:
+> 46 | let analyser (AstPlacement.Programme (fonctions, prog)) = ""
+>                                                       ^^^^
+> Warning 27 [unused-var-strict]: unused variable prog.
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -bin-annot-occurrences -I .rat.objs/byte -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -no-alias-deps -opaque -open Rat -o .rat.objs/byte/rat__Compilateur.cmo -c -impl compilateur.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o rat.cma .rat.objs/byte/rat.cmo .rat.objs/byte/rat__Type.cmo .rat.objs/byte/rat__Tds.cmo .rat.objs/byte/rat__Tam.cmo .rat.objs/byte/rat__Ast.cmo .rat.objs/byte/rat__PrinterAst.cmo .rat.objs/byte/rat__Exceptions.cmo .rat.objs/byte/rat__PasseTypeRat.cmo .rat.objs/byte/rat__PasseTdsRat.cmo .rat.objs/byte/rat__PassePlacementRat.cmo .rat.objs/byte/rat__PasseCodeRatToTam.cmo .rat.objs/byte/rat__Passe.cmo .rat.objs/byte/rat__Parser.cmo .rat.objs/byte/rat__Lexer.cmo .rat.objs/byte/rat__Compilateur.cmo .rat.objs/byte/rat__Code.cmo)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -I .rat.objs/byte -I .rat.objs/native -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -intf-suffix .ml -no-alias-deps -opaque -open Rat -o .rat.objs/native/rat__PasseCodeRatToTam.cmx -c -impl PasseCodeRatToTam.pp.ml)
+> File "PasseCodeRatToTam.ml", line 31, characters 10-34:
+> 31 |   let rec analyse_code_instruction i =
+>                ^^^^^^^^^^^^^^^^^^^^^^^^
+> Warning 39 [unused-rec-flag]: unused rec flag.
+>
+> File "PasseCodeRatToTam.ml", line 20, characters 4-5:
+> 20 |   | _ -> 
+>          ^
+> Warning 11 [redundant-case]: this match case is unused.
+>
+> File "PasseCodeRatToTam.ml", line 12, characters 8-31:
+> 12 | let rec analyse_code_expression e =
+>              ^^^^^^^^^^^^^^^^^^^^^^^
+> Warning 39 [unused-rec-flag]: unused rec flag.
+>
+> File "PasseCodeRatToTam.ml", line 4, characters 0-8:
+> 4 | open Tds
+>     ^^^^^^^^
+> Warning 33 [unused-open]: unused open Rat.Tds.
+>
+> File "PasseCodeRatToTam.ml", line 7, characters 0-9:
+> 7 | open Type
+>     ^^^^^^^^^
+> Warning 33 [unused-open]: unused open Rat.Type.
+>
+> File "PasseCodeRatToTam.ml", line 14, characters 27-31:
+> 14 |   | AstType.AppelFonction (info, le ) -> ""
+>                                 ^^^^
+> Warning 27 [unused-var-strict]: unused variable info.
+>
+> File "PasseCodeRatToTam.ml", line 14, characters 33-35:
+> 14 |   | AstType.AppelFonction (info, le ) -> ""
+>                                       ^^
+> Warning 27 [unused-var-strict]: unused variable le.
+>
+> File "PasseCodeRatToTam.ml", line 15, characters 18-22:
+> 15 |   | AstType.Ident info -> ""
+>                        ^^^^
+> Warning 27 [unused-var-strict]: unused variable info.
+>
+> File "PasseCodeRatToTam.ml", line 16, characters 20-21:
+> 16 |   | AstType.Booleen b -> ""
+>                          ^
+> Warning 27 [unused-var-strict]: unused variable b.
+>
+> File "PasseCodeRatToTam.ml", line 17, characters 19-20:
+> 17 |   | AstType.Entier i -> ""
+>                         ^
+> Warning 27 [unused-var-strict]: unused variable i.
+>
+> File "PasseCodeRatToTam.ml", line 18, characters 20-22:
+> 18 |   | AstType.Unaire (op, e1) -> ""
+>                          ^^
+> Warning 27 [unused-var-strict]: unused variable op.
+>
+> File "PasseCodeRatToTam.ml", line 18, characters 24-26:
+> 18 |   | AstType.Unaire (op, e1) -> ""
+>                              ^^
+> Warning 27 [unused-var-strict]: unused variable e1.
+>
+> File "PasseCodeRatToTam.ml", line 19, characters 21-22:
+> 19 |   | AstType.Binaire (b, e1, e2) -> ""
+>                           ^
+> Warning 27 [unused-var-strict]: unused variable b.
+>
+> File "PasseCodeRatToTam.ml", line 19, characters 24-26:
+> 19 |   | AstType.Binaire (b, e1, e2) -> ""
+>                              ^^
+> Warning 27 [unused-var-strict]: unused variable e1.
+>
+> File "PasseCodeRatToTam.ml", line 19, characters 28-30:
+> 19 |   | AstType.Binaire (b, e1, e2) -> ""
+>                                  ^^
+> Warning 27 [unused-var-strict]: unused variable e2.
+>
+> File "PasseCodeRatToTam.ml", line 31, characters 10-34:
+> 31 |   let rec analyse_code_instruction i =
+>                ^^^^^^^^^^^^^^^^^^^^^^^^
+> Warning 26 [unused-var]: unused variable analyse_code_instruction.
+>
+> File "PasseCodeRatToTam.ml", line 42, characters 8-25:
+> 42 |     and analyse_code_bloc (li , taille ) = "" in "" ;;
+>              ^^^^^^^^^^^^^^^^^
+> Warning 26 [unused-var]: unused variable analyse_code_bloc.
+>
+> File "PasseCodeRatToTam.ml", line 33, characters 33-37:
+> 33 |     | AstPlacement.Declaration ( info , e) -> ""
+>                                       ^^^^
+> Warning 27 [unused-var-strict]: unused variable info.
+>
+> File "PasseCodeRatToTam.ml", line 33, characters 40-41:
+> 33 |     | AstPlacement.Declaration ( info , e) -> ""
+>                                              ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 34, characters 33-37:
+> 34 |     | AstPlacement.Affectation ( info , e) -> ""
+>                                       ^^^^
+> Warning 27 [unused-var-strict]: unused variable info.
+>
+> File "PasseCodeRatToTam.ml", line 34, characters 40-41:
+> 34 |     | AstPlacement.Affectation ( info , e) -> ""
+>                                              ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 35, characters 32-33:
+> 35 |     | AstPlacement.AffichageInt e -> ""
+>                                      ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 36, characters 32-33:
+> 36 |     | AstPlacement.AffichageRat e -> ""
+>                                      ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 37, characters 33-34:
+> 37 |     | AstPlacement.AffichageBool e -> ""
+>                                       ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 38, characters 35-36:
+> 38 |     | AstPlacement.Conditionnelle (c, t , e) -> ""
+>                                         ^
+> Warning 27 [unused-var-strict]: unused variable c.
+>
+> File "PasseCodeRatToTam.ml", line 38, characters 38-39:
+> 38 |     | AstPlacement.Conditionnelle (c, t , e) -> ""
+>                                            ^
+> Warning 27 [unused-var-strict]: unused variable t.
+>
+> File "PasseCodeRatToTam.ml", line 38, characters 42-43:
+> 38 |     | AstPlacement.Conditionnelle (c, t , e) -> ""
+>                                                ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 39, characters 28-29:
+> 39 |     | AstPlacement.TantQue (c, b) -> ""
+>                                  ^
+> Warning 27 [unused-var-strict]: unused variable c.
+>
+> File "PasseCodeRatToTam.ml", line 39, characters 31-32:
+> 39 |     | AstPlacement.TantQue (c, b) -> ""
+>                                     ^
+> Warning 27 [unused-var-strict]: unused variable b.
+>
+> File "PasseCodeRatToTam.ml", line 40, characters 27-28:
+> 40 |     | AstPlacement.Retour (e, tailleRet , tailleParam) -> ""
+>                                 ^
+> Warning 27 [unused-var-strict]: unused variable e.
+>
+> File "PasseCodeRatToTam.ml", line 40, characters 30-39:
+> 40 |     | AstPlacement.Retour (e, tailleRet , tailleParam) -> ""
+>                                    ^^^^^^^^^
+> Warning 27 [unused-var-strict]: unused variable tailleRet.
+>
+> File "PasseCodeRatToTam.ml", line 40, characters 42-53:
+> 40 |     | AstPlacement.Retour (e, tailleRet , tailleParam) -> ""
+>                                                ^^^^^^^^^^^
+> Warning 27 [unused-var-strict]: unused variable tailleParam.
+>
+> File "PasseCodeRatToTam.ml", line 42, characters 27-29:
+> 42 |     and analyse_code_bloc (li , taille ) = "" in "" ;;
+>                                 ^^
+> Warning 27 [unused-var-strict]: unused variable li.
+>
+> File "PasseCodeRatToTam.ml", line 42, characters 32-38:
+> 42 |     and analyse_code_bloc (li , taille ) = "" in "" ;;
+>                                      ^^^^^^
+> Warning 27 [unused-var-strict]: unused variable taille.
+>
+> File "PasseCodeRatToTam.ml", line 44, characters 50-54:
+> 44 | let analyse_code_fonction (AstPlacement.Fonction (info ,_ , ( li , _ ))) = ""
+>                                                        ^^^^
+> Warning 27 [unused-var-strict]: unused variable info.
+>
+> File "PasseCodeRatToTam.ml", line 44, characters 62-64:
+> 44 | let analyse_code_fonction (AstPlacement.Fonction (info ,_ , ( li , _ ))) = ""
+>                                                                    ^^
+> Warning 27 [unused-var-strict]: unused variable li.
+>
+> File "PasseCodeRatToTam.ml", line 46, characters 38-47:
+> 46 | let analyser (AstPlacement.Programme (fonctions, prog)) = ""
+>                                            ^^^^^^^^^
+> Warning 27 [unused-var-strict]: unused variable fonctions.
+>
+> File "PasseCodeRatToTam.ml", line 46, characters 49-53:
+> 46 | let analyser (AstPlacement.Programme (fonctions, prog)) = ""
+>                                                       ^^^^
+> Warning 27 [unused-var-strict]: unused variable prog.
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -bin-annot-occurrences -I tests/placement/avec_fonction/.avec_fonction_placement.objs/byte -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -no-alias-deps -opaque -open Avec_fonction_placement -o tests/placement/avec_fonction/.avec_fonction_placement.objs/byte/avec_fonction_placement__Test.cmo -c -impl tests/placement/avec_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -bin-annot-occurrences -I tests/gestion_id/avec_fonction/.avec_fonction_id.objs/byte -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -no-alias-deps -opaque -open Avec_fonction_id -o tests/gestion_id/avec_fonction/.avec_fonction_id.objs/byte/avec_fonction_id__Test.cmo -c -impl tests/gestion_id/avec_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -bin-annot-occurrences -I tests/gestion_id/sans_fonction/.sans_fonction_id.objs/byte -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -no-alias-deps -opaque -open Sans_fonction_id -o tests/gestion_id/sans_fonction/.sans_fonction_id.objs/byte/sans_fonction_id__Test.cmo -c -impl tests/gestion_id/sans_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -bin-annot-occurrences -I tests/type/avec_fonction/.avec_fonction_type.objs/byte -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -no-alias-deps -opaque -open Avec_fonction_type -o tests/type/avec_fonction/.avec_fonction_type.objs/byte/avec_fonction_type__Test.cmo -c -impl tests/type/avec_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -bin-annot-occurrences -I tests/tam/avec_fonction/.avec_fonction_tam.objs/byte -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -no-alias-deps -opaque -open Avec_fonction_tam -o tests/tam/avec_fonction/.avec_fonction_tam.objs/byte/avec_fonction_tam__Test.cmo -c -impl tests/tam/avec_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/placement/avec_fonction/avec_fonction_placement.cma tests/placement/avec_fonction/.avec_fonction_placement.objs/byte/avec_fonction_placement.cmo tests/placement/avec_fonction/.avec_fonction_placement.objs/byte/avec_fonction_placement__Test.cmo)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -bin-annot-occurrences -I tests/placement/sans_fonction/.sans_fonction_placement.objs/byte -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -no-alias-deps -opaque -open Sans_fonction_placement -o tests/placement/sans_fonction/.sans_fonction_placement.objs/byte/sans_fonction_placement__Test.cmo -c -impl tests/placement/sans_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/gestion_id/avec_fonction/avec_fonction_id.cma tests/gestion_id/avec_fonction/.avec_fonction_id.objs/byte/avec_fonction_id.cmo tests/gestion_id/avec_fonction/.avec_fonction_id.objs/byte/avec_fonction_id__Test.cmo)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -bin-annot-occurrences -I tests/type/sans_fonction/.sans_fonction_type.objs/byte -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -no-alias-deps -opaque -open Sans_fonction_type -o tests/type/sans_fonction/.sans_fonction_type.objs/byte/sans_fonction_type__Test.cmo -c -impl tests/type/sans_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/gestion_id/sans_fonction/sans_fonction_id.cma tests/gestion_id/sans_fonction/.sans_fonction_id.objs/byte/sans_fonction_id.cmo tests/gestion_id/sans_fonction/.sans_fonction_id.objs/byte/sans_fonction_id__Test.cmo)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -bin-annot-occurrences -I tests/tam/sans_fonction/.sans_fonction_tam.objs/byte -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -no-alias-deps -opaque -open Sans_fonction_tam -o tests/tam/sans_fonction/.sans_fonction_tam.objs/byte/sans_fonction_tam__Test.cmo -c -impl tests/tam/sans_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -I .rat.objs/byte -I .rat.objs/native -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -intf-suffix .ml -no-alias-deps -opaque -open Rat -o .rat.objs/native/rat__Compilateur.cmx -c -impl compilateur.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/type/avec_fonction/avec_fonction_type.cma tests/type/avec_fonction/.avec_fonction_type.objs/byte/avec_fonction_type.cmo tests/type/avec_fonction/.avec_fonction_type.objs/byte/avec_fonction_type__Test.cmo)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/tam/avec_fonction/avec_fonction_tam.cma tests/tam/avec_fonction/.avec_fonction_tam.objs/byte/avec_fonction_tam.cmo tests/tam/avec_fonction/.avec_fonction_tam.objs/byte/avec_fonction_tam__Test.cmo)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/placement/sans_fonction/sans_fonction_placement.cma tests/placement/sans_fonction/.sans_fonction_placement.objs/byte/sans_fonction_placement.cmo tests/placement/sans_fonction/.sans_fonction_placement.objs/byte/sans_fonction_placement__Test.cmo)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/type/sans_fonction/sans_fonction_type.cma tests/type/sans_fonction/.sans_fonction_type.objs/byte/sans_fonction_type.cmo tests/type/sans_fonction/.sans_fonction_type.objs/byte/sans_fonction_type__Test.cmo)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlc.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/tam/sans_fonction/sans_fonction_tam.cma tests/tam/sans_fonction/.sans_fonction_tam.objs/byte/sans_fonction_tam.cmo tests/tam/sans_fonction/.sans_fonction_tam.objs/byte/sans_fonction_tam__Test.cmo)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -I tests/placement/avec_fonction/.avec_fonction_placement.objs/byte -I tests/placement/avec_fonction/.avec_fonction_placement.objs/native -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -I .rat.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Avec_fonction_placement -o tests/placement/avec_fonction/.avec_fonction_placement.objs/native/avec_fonction_placement__Test.cmx -c -impl tests/placement/avec_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -I tests/gestion_id/avec_fonction/.avec_fonction_id.objs/byte -I tests/gestion_id/avec_fonction/.avec_fonction_id.objs/native -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -I .rat.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Avec_fonction_id -o tests/gestion_id/avec_fonction/.avec_fonction_id.objs/native/avec_fonction_id__Test.cmx -c -impl tests/gestion_id/avec_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -I tests/gestion_id/sans_fonction/.sans_fonction_id.objs/byte -I tests/gestion_id/sans_fonction/.sans_fonction_id.objs/native -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -I .rat.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Sans_fonction_id -o tests/gestion_id/sans_fonction/.sans_fonction_id.objs/native/sans_fonction_id__Test.cmx -c -impl tests/gestion_id/sans_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -I tests/tam/avec_fonction/.avec_fonction_tam.objs/byte -I tests/tam/avec_fonction/.avec_fonction_tam.objs/native -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -I .rat.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Avec_fonction_tam -o tests/tam/avec_fonction/.avec_fonction_tam.objs/native/avec_fonction_tam__Test.cmx -c -impl tests/tam/avec_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -I tests/type/avec_fonction/.avec_fonction_type.objs/byte -I tests/type/avec_fonction/.avec_fonction_type.objs/native -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -I .rat.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Avec_fonction_type -o tests/type/avec_fonction/.avec_fonction_type.objs/native/avec_fonction_type__Test.cmx -c -impl tests/type/avec_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o rat.cmxa .rat.objs/native/rat.cmx .rat.objs/native/rat__Type.cmx .rat.objs/native/rat__Tds.cmx .rat.objs/native/rat__Tam.cmx .rat.objs/native/rat__Ast.cmx .rat.objs/native/rat__PrinterAst.cmx .rat.objs/native/rat__Exceptions.cmx .rat.objs/native/rat__PasseTypeRat.cmx .rat.objs/native/rat__PasseTdsRat.cmx .rat.objs/native/rat__PassePlacementRat.cmx .rat.objs/native/rat__PasseCodeRatToTam.cmx .rat.objs/native/rat__Passe.cmx .rat.objs/native/rat__Parser.cmx .rat.objs/native/rat__Lexer.cmx .rat.objs/native/rat__Compilateur.cmx .rat.objs/native/rat__Code.cmx)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -I tests/placement/sans_fonction/.sans_fonction_placement.objs/byte -I tests/placement/sans_fonction/.sans_fonction_placement.objs/native -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -I .rat.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Sans_fonction_placement -o tests/placement/sans_fonction/.sans_fonction_placement.objs/native/sans_fonction_placement__Test.cmx -c -impl tests/placement/sans_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/placement/avec_fonction/avec_fonction_placement.cmxa tests/placement/avec_fonction/.avec_fonction_placement.objs/native/avec_fonction_placement.cmx tests/placement/avec_fonction/.avec_fonction_placement.objs/native/avec_fonction_placement__Test.cmx)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/gestion_id/avec_fonction/avec_fonction_id.cmxa tests/gestion_id/avec_fonction/.avec_fonction_id.objs/native/avec_fonction_id.cmx tests/gestion_id/avec_fonction/.avec_fonction_id.objs/native/avec_fonction_id__Test.cmx)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -I tests/tam/sans_fonction/.sans_fonction_tam.objs/byte -I tests/tam/sans_fonction/.sans_fonction_tam.objs/native -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -I .rat.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Sans_fonction_tam -o tests/tam/sans_fonction/.sans_fonction_tam.objs/native/sans_fonction_tam__Test.cmx -c -impl tests/tam/sans_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -I tests/type/sans_fonction/.sans_fonction_type.objs/byte -I tests/type/sans_fonction/.sans_fonction_type.objs/native -I C:/Users/coren/AppData/Local/opam/default/lib/ocaml\unix -I C:\Users\coren\AppData\Local\opam\default\lib\base -I C:\Users\coren\AppData\Local\opam\default\lib\base\base_internalhash_types -I C:\Users\coren\AppData\Local\opam\default\lib\base\shadow_stdlib -I C:\Users\coren\AppData\Local\opam\default\lib\jane-street-headers -I C:\Users\coren\AppData\Local\opam\default\lib\ocaml_intrinsics_kernel -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_compare\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_enumerate\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\config_types -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\make_corrected_file -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_expect\runtime -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_hash\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_here\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\config -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_inline_test\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppx_sexp_conv\runtime-lib -I C:\Users\coren\AppData\Local\opam\default\lib\ppxlib\print_diff -I C:\Users\coren\AppData\Local\opam\default\lib\sexplib0 -I C:\Users\coren\AppData\Local\opam\default\lib\stdio -I C:\Users\coren\AppData\Local\opam\default\lib\time_now -I .rat.objs/byte -I .rat.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Sans_fonction_type -o tests/type/sans_fonction/.sans_fonction_type.objs/native/sans_fonction_type__Test.cmx -c -impl tests/type/sans_fonction/test.pp.ml)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/gestion_id/sans_fonction/sans_fonction_id.cmxa tests/gestion_id/sans_fonction/.sans_fonction_id.objs/native/sans_fonction_id.cmx tests/gestion_id/sans_fonction/.sans_fonction_id.objs/native/sans_fonction_id__Test.cmx)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/tam/avec_fonction/avec_fonction_tam.cmxa tests/tam/avec_fonction/.avec_fonction_tam.objs/native/avec_fonction_tam.cmx tests/tam/avec_fonction/.avec_fonction_tam.objs/native/avec_fonction_tam__Test.cmx)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/type/avec_fonction/avec_fonction_type.cmxa tests/type/avec_fonction/.avec_fonction_type.objs/native/avec_fonction_type.cmx tests/type/avec_fonction/.avec_fonction_type.objs/native/avec_fonction_type__Test.cmx)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/placement/sans_fonction/sans_fonction_placement.cmxa tests/placement/sans_fonction/.sans_fonction_placement.objs/native/sans_fonction_placement.cmx tests/placement/sans_fonction/.sans_fonction_placement.objs/native/sans_fonction_placement__Test.cmx)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/type/sans_fonction/sans_fonction_type.cmxa tests/type/sans_fonction/.sans_fonction_type.objs/native/sans_fonction_type.cmx tests/type/sans_fonction/.sans_fonction_type.objs/native/sans_fonction_type__Test.cmx)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tests/tam/sans_fonction/sans_fonction_tam.cmxa tests/tam/sans_fonction/.sans_fonction_tam.objs/native/sans_fonction_tam.cmx tests/tam/sans_fonction/.sans_fonction_tam.objs/native/sans_fonction_tam__Test.cmx)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -shared -linkall -I tests/tam/avec_fonction -o tests/tam/avec_fonction/avec_fonction_tam.cmxs tests/tam/avec_fonction/avec_fonction_tam.cmxa)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -shared -linkall -I tests/gestion_id/avec_fonction -o tests/gestion_id/avec_fonction/avec_fonction_id.cmxs tests/gestion_id/avec_fonction/avec_fonction_id.cmxa)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -shared -linkall -I tests/gestion_id/sans_fonction -o tests/gestion_id/sans_fonction/sans_fonction_id.cmxs tests/gestion_id/sans_fonction/sans_fonction_id.cmxa)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -shared -linkall -I tests/placement/avec_fonction -o tests/placement/avec_fonction/avec_fonction_placement.cmxs tests/placement/avec_fonction/avec_fonction_placement.cmxa)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -shared -linkall -I tests/type/avec_fonction -o tests/type/avec_fonction/avec_fonction_type.cmxs tests/type/avec_fonction/avec_fonction_type.cmxa)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -shared -linkall -I tests/placement/sans_fonction -o tests/placement/sans_fonction/sans_fonction_placement.cmxs tests/placement/sans_fonction/sans_fonction_placement.cmxa)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -shared -linkall -I . -o rat.cmxs rat.cmxa)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -shared -linkall -I tests/tam/sans_fonction -o tests/tam/sans_fonction/sans_fonction_tam.cmxs tests/tam/sans_fonction/sans_fonction_tam.cmxa)
+$ (cd _build/default && C:\Users\coren\AppData\Local\opam\default\bin\ocamlopt.opt.exe -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -shared -linkall -I tests/type/sans_fonction -o tests/type/sans_fonction/sans_fonction_type.cmxs tests/type/sans_fonction/sans_fonction_type.cmxa)

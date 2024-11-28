@@ -39,7 +39,7 @@ let rec analyse_code_expression e =
     | AstPlacement.TantQue (c, b) -> ""
     | AstPlacement.Retour (e, tailleRet , tailleParam) -> ""
     | AstPlacement.Empty -> ""
-    and analyse_code_bloc (li , taille ) = ""
+    and analyse_code_bloc (li , taille ) = "" in "" ;;
 
 let analyse_code_fonction (AstPlacement.Fonction (info ,_ , ( li , _ ))) = ""
 
