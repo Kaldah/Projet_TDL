@@ -1,0 +1,4 @@
+(executable
+ (public_name Projet_TDL)
+ (name main)
+ (libraries Projet_TDL))

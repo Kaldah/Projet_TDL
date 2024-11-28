@@ -3,6 +3,7 @@ rat__Exceptions
 rat__Lexer
 rat__Parser
 rat__Passe
+rat__PasseCodeRatToTam
 rat__PassePlacementRat
 rat__PasseTdsRat
 rat__PasseTypeRat

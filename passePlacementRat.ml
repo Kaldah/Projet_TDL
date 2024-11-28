@@ -8,7 +8,6 @@ open Type
 type t1 = Ast.AstType.programme
 type t2 = Ast.AstPlacement.programme
 
-
 let rec analyse_placement_instruction i depl reg =
 match i with 
   | AstType.Declaration (info, e) -> 
@@ -35,7 +34,7 @@ match i with
     match (info_ast_to_info ia) with
     | InfoVar(n, t, _, _) -> 
       let nInfo = InfoVar(n, t, depl, reg) in
-      (AstPlacement.Affectation (info_to_info_ast nInfo, e), getTaille t)
+      (AstPlacement.Affectation (info_to_info_ast nInfo, e), 0)
     | _ -> failwith "Erreur interne"
     )
   | AstType.AffichageInt e -> (AstPlacement.AffichageInt e, 0)
@@ -58,10 +57,7 @@ let rec aux compteur lst = match lst with
 
 let analyse_placement_fonction (AstType.Fonction(info,lp, li )) = 
   match (info_ast_to_info info) with
-  | InfoFun(_, t, ltp) -> let taille = getTaille Rat + getTaille t in
-  (* De la place est déjà prise dans le registre pour le type de retour ou taille vaut juste 3
-  à comprendre, peut être réserver pour Rat, la fonction et le type de retour *)
-
+  | InfoFun(_, _, _) -> 
   (* Traiter lp la liste des infos des paramèters *)
   let rec aux_params compteur lst = 
     (
@@ -69,15 +65,18 @@ let analyse_placement_fonction (AstType.Fonction(info,lp, li )) =
     | [] -> [] 
     | h::q ->
       begin
-        match (info_ast_to_info info) with
-        | InfoVar(n, t, _, _) -> let nInfo = info_to_info_ast (InfoVar(n, t, compteur, "LB")) in
-          nInfo::(aux_params (-(getTaille t) + compteur) q)
-        | _ -> failwith "Erreur interne paramètres fonction" 
+        match (info_ast_to_info h) with
+        | InfoVar(n, t, _, _) -> let ncompteur = (compteur - (getTaille t)) in
+        let nInfo = info_to_info_ast (InfoVar(n, t, ncompteur, "LB")) in
+          nInfo::(aux_params ncompteur q)
+        | _ -> failwith ("Erreur interne paramètres fonction")
+              
       end
     )
     in
-    (*let nlp = aux_params (-1) lp in *)
-    AstPlacement.Fonction(info, lp, (analyse_placement_bloc li taille "LB"))
+    let nlp = aux_params 0 (List.rev lp) in
+    (* Lors de la création du registre, on décale de 3 places pour le registre *)
+    AstPlacement.Fonction(info, nlp, (analyse_placement_bloc li 3 "LB"))
   | _-> failwith "Erreur interne Placement Fonction"
 
 let analyser (AstType.Programme (fonctions, prog)) = 

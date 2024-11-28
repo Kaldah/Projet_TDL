@@ -1,7 +1,6 @@
 (* Module de la passe de gestion des types *)
 (* doit être conforme à l'interface Passe *)
 open Tds
-open Exceptions
 open Ast
 open Type
 
