@@ -58,8 +58,26 @@ let rec aux compteur lst = match lst with
 
 let analyse_placement_fonction (AstType.Fonction(info,lp, li )) = 
   match (info_ast_to_info info) with
-  | InfoFun(_, t, ltp) -> (* let taille = (getTaille t) + List.fold_left (fun acc x -> acc + getTaille x) 0 ltp in *)
-    AstPlacement.Fonction(info, lp, (analyse_placement_bloc li 0 "LB"))
+  | InfoFun(_, t, ltp) -> let taille = getTaille Rat + getTaille t in
+  (* De la place est déjà prise dans le registre pour le type de retour ou taille vaut juste 3
+  à comprendre, peut être réserver pour Rat, la fonction et le type de retour *)
+
+  (* Traiter lp la liste des infos des paramèters *)
+  let rec aux_params compteur lst = 
+    (
+    match lst with 
+    | [] -> [] 
+    | h::q ->
+      begin
+        match (info_ast_to_info info) with
+        | InfoVar(n, t, _, _) -> let nInfo = info_to_info_ast (InfoVar(n, t, compteur, "LB")) in
+          nInfo::(aux_params (-(getTaille t) + compteur) q)
+        | _ -> failwith "Erreur interne paramètres fonction" 
+      end
+    )
+    in
+    (*let nlp = aux_params (-1) lp in *)
+    AstPlacement.Fonction(info, lp, (analyse_placement_bloc li taille "LB"))
   | _-> failwith "Erreur interne Placement Fonction"
 
 let analyser (AstType.Programme (fonctions, prog)) = 
