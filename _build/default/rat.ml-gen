@@ -21,6 +21,9 @@ module Parser = Rat__Parser
 (** @canonical Rat.Passe *)
 module Passe = Rat__Passe
 
+(** @canonical Rat.PassePlacementRat *)
+module PassePlacementRat = Rat__PassePlacementRat
+
 (** @canonical Rat.PasseTdsRat *)
 module PasseTdsRat = Rat__PasseTdsRat
 

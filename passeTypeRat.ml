@@ -133,12 +133,12 @@ let rec analyse_type_instruction i =
     | _ -> failwith "Erreur interne"
     )
       
-  | AstTds.Conditionnelle (e, t, c) ->
-    let (ne, te) = analyse_type_expression e in
+  | AstTds.Conditionnelle (c, t, e) ->
+    let (nc, te) = analyse_type_expression c in
       if (est_compatible te Bool) then
         let nbt = analyse_type_bloc t in
-        let nbc = analyse_type_bloc c in
-        AstType.Conditionnelle(ne, nbc, nbt)
+        let nbe = analyse_type_bloc e in
+        AstType.Conditionnelle(nc, nbt, nbe)
       else
         raise (Exceptions.TypeInattendu (te, Bool))
 
