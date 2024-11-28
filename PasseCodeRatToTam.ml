@@ -17,6 +17,7 @@ let rec analyse_code_expression e =
   | AstType.Entier i -> ""
   | AstType.Unaire (op, e1) -> ""
   | AstType.Binaire (b, e1, e2) -> ""
+  | _ -> 
   
   (*
   | AstPlacement.AppelFonction (info, le ) -> ""
