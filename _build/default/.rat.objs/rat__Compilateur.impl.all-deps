@@ -1,4 +1,5 @@
 rat__Ast
+rat__Code
 rat__Exceptions
 rat__Lexer
 rat__Parser
@@ -8,5 +9,6 @@ rat__PassePlacementRat
 rat__PasseTdsRat
 rat__PasseTypeRat
 rat__PrinterAst
+rat__Tam
 rat__Tds
 rat__Type

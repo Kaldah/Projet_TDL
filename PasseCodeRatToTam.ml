@@ -4,7 +4,7 @@
 open Tam
 open Tds
 open Ast
-
+open Code
 open Type
 
 type t1 = Ast.AstPlacement.programme
@@ -12,14 +12,19 @@ type t2 = string
 
 let rec analyse_code_expression e =
   match e with
-  | AstType.AppelFonction (info, le ) -> ""
-  | AstType.Ident info -> ""
-  | AstType.Booleen b -> 
-    (
-    match b with
-    | true -> loadl_int 1
-    | false -> loadl_int 0
-    )
+  | AstType.AppelFonction (info, le ) -> 
+    (* On charge toutes les expressions de le *)
+    let liste_code = List.map analyse_code_expression le in
+    let code_exp = List.fold_left ( ^ ) "" liste_code in 
+    let nom, _, _ = triplet_info_fun info in
+    code_exp ^ (call "SB" nom)
+
+  | AstType.Ident info -> "" (* load (taille type) @var (voir dans info) *)
+  | AstType.Booleen b ->
+    if b then 
+      loadl_int 1
+    else 
+      loadl_int 0
   | AstType.Entier i -> loadl_int i
   | AstType.Unaire (op, e) -> let code_e = analyse_code_expression e in
     (
@@ -33,39 +38,44 @@ let rec analyse_code_expression e =
     let code = code_e1 ^ code_e2 in
   (
     match op with
-      | Fraction ->""
-      | PlusInt -> ""
-      | PlusRat -> ""
-      | MultInt -> ""
-      | MultRat -> ""
-      | EquBool -> ""
-      | EquInt -> ""
-      | Inf -> code ^ (subr "sub")
-
+      | Fraction -> code ^ ""
+      | PlusInt -> code ^ subr "IAdd"
+      | PlusRat -> code ^ call "SB" "RAdd"
+      | MultInt -> code ^ subr "IMul"
+      | MultRat -> code ^ subr "RMul"
+      | EquBool -> code ^ subr "BAnd"
+      | EquInt -> code ^ subr "IEq"
+      | Inf -> code ^ (subr "ILss")
   ) 
-  | _ -> 
-  
-  (*
-  | AstPlacement.AppelFonction (info, le ) -> ""
-  | AstPlacement.Ident info -> ""
-  | AstPlacement.Booleen b -> ""
-  | AstPlacement.Entier i -> ""
-  | AstPlacement.Unaire (op, e1) -> ""
-  | AstPlacement.Binaire (b, e1, e2) -> ""
-  *)
 
   let rec analyse_code_instruction i =
     match i with
-    | AstPlacement.Declaration ( info , e) -> ""
-    | AstPlacement.Affectation ( info , e) -> ""
-    | AstPlacement.AffichageInt e -> ""
+    | AstPlacement.Declaration ( info , e) -> 
+    (* PUSH (taille du type) *)
+    analyse_code_expression e ^ (store 0 0 "@var")
+    | AstPlacement.Affectation ( info , e) -> analyse_code_expression e ^ (store 0 0 "@var")
+    | AstPlacement.AffichageInt e -> analyse_code_expression e ^ (subr "IOut")
     | AstPlacement.AffichageRat e -> ""
     | AstPlacement.AffichageBool e -> ""
-    | AstPlacement.Conditionnelle (c, t , e) -> ""
-    | AstPlacement.TantQue (c, b) -> ""
-    | AstPlacement.Retour (e, tailleRet , tailleParam) -> ""
+
+    | AstPlacement.Conditionnelle (c, t , e) -> 
+      let etiquetteE = getEtiquette () in 
+      let etiquetteFin = getEtiquette () in
+      let code_e = analyse_code_expression c in
+      let code_bloc_t = analyse_code_bloc t in
+      let code_bloc_e = analyse_code_bloc e in
+      code_e ^ (jumpif (0) etiquetteE) ^ code_bloc_t ^ (jump etiquetteFin) ^ etiquetteE ^ code_bloc_e ^ etiquetteFin
+
+    | AstPlacement.TantQue (c, b) -> 
+      let etiquetteTantQue = getEtiquette () in 
+      let etiquetteFin = getEtiquette () in
+      let code_condition = analyse_code_expression c in
+      let code_bloc = analyse_code_bloc b in
+      etiquetteTantQue ^ code_condition ^ (jumpif (0) etiquetteFin) ^ code_bloc ^ (jump etiquetteTantQue) ^ etiquetteFin
+    
+    | AstPlacement.Retour (e, tailleRet , tailleParam) -> (analyse_code_expression e) ^ (return tailleRet tailleParam)
     | AstPlacement.Empty -> ""
-    and analyse_code_bloc (li , taille ) = "" in "" ;;
+    and analyse_code_bloc (li , taille ) = "";;
 
 let analyse_code_fonction (AstPlacement.Fonction (info ,_ , ( li , _ ))) = ""
 

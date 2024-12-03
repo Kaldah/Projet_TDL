@@ -61,3 +61,8 @@ val modifier_type_fonction : typ -> typ list -> info_ast -> unit
 
 (* Modifie l'emplacement (dépl, registre) si c'est une InfoVar, ne fait rien sinon *)
 val modifier_adresse_variable : int -> string -> info_ast -> unit
+
+(* Ajout de fonctions supplémentaires *)
+
+(* Récupère  directement le triplet d'information d'un InfoFun *)
+val triplet_info_fun : info_ast -> string * typ * typ list

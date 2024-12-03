@@ -346,4 +346,9 @@ let%test _ =
   | InfoVar ("x", Rat, 10 , "LB") -> true
   | _ -> false
     
+(* Ajout de fonctions supplémentaires *)
    
+(* Récupère  directement le triplet d'information d'un InfoFun *)
+let triplet_info_fun i = match (info_ast_to_info i) with
+  | InfoFun(nom, t, lt) -> (nom, t, lt)
+  | _ -> failwith "Mauvaise utilisation de la fonction"
