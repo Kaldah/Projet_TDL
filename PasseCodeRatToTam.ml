@@ -101,5 +101,5 @@ let analyser (AstPlacement.Programme (fonctions, prog)) =
   let code_fonctions = concat_code (List.map analyse_code_fonction fonctions) in 
   let code_prog = "main\n" ^ (analyse_code_bloc prog) ^ halt in
   let code_complet = (getEntete ()) ^ code_fonctions ^ code_prog in
-  print_string ("\n \n CODE \n" ^ code_complet ^ "\n  CODE \n \n");
+  (*print_string ("\n \n CODE \n" ^ code_complet ^ "\n  CODE \n \n");*)
   code_complet
