@@ -10,16 +10,26 @@ open Type
 type t1 = Ast.AstPlacement.programme
 type t2 = string
 
+let concat_code liste_codes = List.fold_left ( ^ ) "" liste_codes;;
+
+
 let rec analyse_code_expression e =
   match e with
   | AstType.AppelFonction (info, le ) -> 
     (* On charge toutes les expressions de le *)
-    let liste_code = List.map analyse_code_expression le in
-    let code_exp = List.fold_left ( ^ ) "" liste_code in 
+    let liste_codes = List.map analyse_code_expression le in
+    let code_exp = concat_code liste_codes in 
     let nom, _, _ = triplet_info_fun info in
     code_exp ^ (call "SB" nom)
+    | AstType.Ident info -> 
+    (
+    match (info_ast_to_info info) with
+      | InfoVar(_, t, d, reg) -> 
+        let taille_type = (getTaille t) in load taille_type d reg
+      | InfoConst(_, cst) -> loadl_int cst
+      | _ -> failwith "Erreur interne Ident"
+    )
 
-  | AstType.Ident info -> "" (* load (taille type) @var (voir dans info) *)
   | AstType.Booleen b ->
     if b then 
       loadl_int 1
@@ -50,13 +60,17 @@ let rec analyse_code_expression e =
 
   let rec analyse_code_instruction i =
     match i with
-    | AstPlacement.Declaration ( info , e) -> 
-    (* PUSH (taille du type) *)
-    analyse_code_expression e ^ (store 0 0 "@var")
-    | AstPlacement.Affectation ( info , e) -> analyse_code_expression e ^ (store 0 0 "@var")
+    | AstPlacement.Declaration ( info , e) -> let (_, t, d, reg) = quadruplet_info_var info in
+    let taille_type_e = (getTaille t) in 
+    (push taille_type_e) ^ (analyse_code_expression e) ^ (store taille_type_e d reg)
+
+    | AstPlacement.Affectation ( info , e) ->  let (_, t, d, reg) = quadruplet_info_var info in
+    let taille_type_e = (getTaille t) in 
+    analyse_code_expression e ^ (store taille_type_e d reg)
+
     | AstPlacement.AffichageInt e -> analyse_code_expression e ^ (subr "IOut")
-    | AstPlacement.AffichageRat e -> ""
-    | AstPlacement.AffichageBool e -> ""
+    | AstPlacement.AffichageRat e -> analyse_code_expression e ^ (subr "ROut")
+    | AstPlacement.AffichageBool e -> analyse_code_expression e ^ (subr "BOut")
 
     | AstPlacement.Conditionnelle (c, t , e) -> 
       let etiquetteE = getEtiquette () in 
@@ -75,8 +89,16 @@ let rec analyse_code_expression e =
     
     | AstPlacement.Retour (e, tailleRet , tailleParam) -> (analyse_code_expression e) ^ (return tailleRet tailleParam)
     | AstPlacement.Empty -> ""
-    and analyse_code_bloc (li , taille ) = "";;
+    and analyse_code_bloc (li , taille ) = let liste_codes = List.map analyse_code_instruction li in
+    (concat_code liste_codes) ^ (pop 0 taille)
 
-let analyse_code_fonction (AstPlacement.Fonction (info ,_ , ( li , _ ))) = ""
+(*let analyse_code_fonction (AstPlacement.Fonction (info ,_ , ( li , _ ))) = *)
+  let analyse_code_fonction (AstPlacement.Fonction (info ,_ , bloc)) = 
 
-let analyser (AstPlacement.Programme (fonctions, prog)) = ""
+  let nom, _, _ = triplet_info_fun info in
+  (label nom) ^ analyse_code_bloc bloc ^ halt
+
+let analyser (AstPlacement.Programme (fonctions, prog)) = 
+  let code_fonctions = concat_code (List.map analyse_code_fonction fonctions) in 
+  let code_prog = "main\n" ^ (analyse_code_bloc prog) ^ halt in
+  getEntete () ^ code_fonctions ^ code_prog

@@ -66,3 +66,6 @@ val modifier_adresse_variable : int -> string -> info_ast -> unit
 
 (* Récupère  directement le triplet d'information d'un InfoFun *)
 val triplet_info_fun : info_ast -> string * typ * typ list
+
+(* Récupère  directement le quadruplet d'information d'un InfoFun *)
+val quadruplet_info_var : info_ast -> string * typ * int * string

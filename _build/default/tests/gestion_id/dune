@@ -1,6 +1,0 @@
-(library
- (name gestion_id)
- (libraries rat)
- (inline_tests)
- (preprocess
-  (pps ppx_inline_test ppx_expect)))

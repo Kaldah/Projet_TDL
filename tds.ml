@@ -351,4 +351,9 @@ let%test _ =
 (* Récupère  directement le triplet d'information d'un InfoFun *)
 let triplet_info_fun i = match (info_ast_to_info i) with
   | InfoFun(nom, t, lt) -> (nom, t, lt)
-  | _ -> failwith "Mauvaise utilisation de la fonction"
+  | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos fun"
+
+(* Récupère  directement le quadruplet d'information d'un InfoFun *)
+let quadruplet_info_var i = match (info_ast_to_info i) with
+  | InfoVar(nom, t, d, reg) -> (nom, t, d, reg)
+  | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos var"

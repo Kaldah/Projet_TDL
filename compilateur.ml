@@ -66,7 +66,6 @@ module CompilateurRat = Compilateur (PasseTdsRat) (PasseTypeRat) (PassePlacement
 module CompilateurRat = Compilateur (PasseTdsRat) (PasseTypeRat) (PassePlacementRat) (PasseCodeRatToTam)
 
 
-
 open Lexing
 
 
