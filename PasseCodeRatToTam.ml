@@ -39,8 +39,8 @@ let rec analyse_code_expression e =
   | AstType.Unaire (op, e) -> let code_e = analyse_code_expression e in
     (
       match op with
-        | Numerateur -> code_e ^ (pop (0) 1)
-        | Denominateur -> code_e ^ (pop (1) 1)
+        | Numerateur -> print_string (code_e ^ (pop 0 1)); code_e ^ (pop 0 1)
+        | Denominateur -> print_string (code_e ^ (pop 0 1)); code_e ^ (pop 1 1)
     ) 
   | AstType.Binaire (op, e1, e2) -> 
     let code_e1 = analyse_code_expression e1 in
@@ -48,7 +48,7 @@ let rec analyse_code_expression e =
     let code = code_e1 ^ code_e2 in
   (
     match op with
-      | Fraction -> code ^ ""
+      | Fraction -> code
       | PlusInt -> code ^ subr "IAdd"
       | PlusRat -> code ^ (call "ST" "RAdd")
       | MultInt -> code ^ subr "IMul"
@@ -101,5 +101,7 @@ let analyser (AstPlacement.Programme (fonctions, prog)) =
   let code_fonctions = concat_code (List.map analyse_code_fonction fonctions) in 
   let code_prog = "main\n" ^ (analyse_code_bloc prog) ^ halt in
   let code_complet = (getEntete ()) ^ code_fonctions ^ code_prog in
-  (*print_string ("\n \n CODE \n" ^ code_complet ^ "\n  CODE \n \n");*)
+  (*
+  print_string ("\n \n CODE \n" ^ code_complet ^ "\n  CODE \n \n");
+  *)
   code_complet
