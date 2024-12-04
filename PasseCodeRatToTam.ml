@@ -69,7 +69,7 @@ let rec analyse_code_expression e =
     analyse_code_expression e ^ (store taille_type_e d reg)
 
     | AstPlacement.AffichageInt e -> analyse_code_expression e ^ (subr "IOut")
-    | AstPlacement.AffichageRat e -> analyse_code_expression e ^ (subr "ROut")
+    | AstPlacement.AffichageRat e -> analyse_code_expression e ^ (call "ST" "ROut")
     | AstPlacement.AffichageBool e -> analyse_code_expression e ^ (subr "BOut")
 
     | AstPlacement.Conditionnelle (c, t , e) -> 
@@ -78,21 +78,20 @@ let rec analyse_code_expression e =
       let code_e = analyse_code_expression c in
       let code_bloc_t = analyse_code_bloc t in
       let code_bloc_e = analyse_code_bloc e in
-      code_e ^ (jumpif (0) etiquetteE) ^ code_bloc_t ^ (jump etiquetteFin) ^ etiquetteE ^ code_bloc_e ^ etiquetteFin
+      code_e ^ (jumpif 0 etiquetteE) ^ code_bloc_t ^ (jump etiquetteFin) ^ (label etiquetteE) ^ code_bloc_e ^ (label etiquetteFin)
 
     | AstPlacement.TantQue (c, b) -> 
       let etiquetteTantQue = getEtiquette () in 
       let etiquetteFin = getEtiquette () in
       let code_condition = analyse_code_expression c in
       let code_bloc = analyse_code_bloc b in
-      etiquetteTantQue ^ code_condition ^ (jumpif (0) etiquetteFin) ^ code_bloc ^ (jump etiquetteTantQue) ^ etiquetteFin
+      (label etiquetteTantQue) ^ code_condition ^ (jumpif 0 etiquetteFin) ^ code_bloc ^ (jump etiquetteTantQue) ^ (label etiquetteFin)
     
     | AstPlacement.Retour (e, tailleRet , tailleParam) -> (analyse_code_expression e) ^ (return tailleRet tailleParam)
     | AstPlacement.Empty -> ""
     and analyse_code_bloc (li , taille ) = let liste_codes = List.map analyse_code_instruction li in
     (concat_code liste_codes) ^ (pop 0 taille)
 
-(*let analyse_code_fonction (AstPlacement.Fonction (info ,_ , ( li , _ ))) = *)
   let analyse_code_fonction (AstPlacement.Fonction (info ,_ , bloc)) = 
 
   let nom, _, _ = triplet_info_fun info in
@@ -101,4 +100,6 @@ let rec analyse_code_expression e =
 let analyser (AstPlacement.Programme (fonctions, prog)) = 
   let code_fonctions = concat_code (List.map analyse_code_fonction fonctions) in 
   let code_prog = "main\n" ^ (analyse_code_bloc prog) ^ halt in
-  getEntete () ^ code_fonctions ^ code_prog
+  let code_complet = (getEntete ()) ^ code_fonctions ^ code_prog in
+  print_string ("\n \n CODE \n" ^ code_complet ^ "\n  CODE \n \n");
+  code_complet
