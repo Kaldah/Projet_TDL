@@ -39,8 +39,8 @@ let rec analyse_code_expression e =
   | AstType.Unaire (op, e) -> let code_e = analyse_code_expression e in
     (
       match op with
-        | Numerateur -> print_string (code_e ^ (pop 0 1)); code_e ^ (pop 0 1)
-        | Denominateur -> print_string (code_e ^ (pop 0 1)); code_e ^ (pop 1 1)
+        | Numerateur -> code_e ^ (pop 0 1)
+        | Denominateur -> code_e ^ (pop 1 1)
     ) 
   | AstType.Binaire (op, e1, e2) -> 
     let code_e1 = analyse_code_expression e1 in

@@ -30,14 +30,9 @@ match i with
       (AstPlacement.Retour (e, tailleRetour, tailleParams), tailleRetour + tailleParams)
     | _ -> failwith "Erreur interne"
     )
-  | AstType.Affectation (ia,e) -> 
-    (
-    match (info_ast_to_info ia) with
-    | InfoVar(n, t, _, _) -> 
-      let nInfo = InfoVar(n, t, depl, reg) in
-      (AstPlacement.Affectation (info_to_info_ast nInfo, e), 0)
-    | _ -> failwith "Erreur interne"
-    )
+  | AstType.Affectation (ia,e) ->
+      (AstPlacement.Affectation (ia, e), 0)
+
   | AstType.AffichageInt e -> (AstPlacement.AffichageInt e, 0)
   | AstType.AffichageRat e -> (AstPlacement.AffichageRat e, 0)
   | AstType.AffichageBool e -> (AstPlacement.AffichageBool e, 0)

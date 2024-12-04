@@ -33,9 +33,9 @@ let rec analyse_type_expression e = match e with
 | AstTds.Ident info ->
   (
   match (info_ast_to_info info) with
-    | InfoVar(n, tid, _, _) -> (AstType.Ident(info_to_info_ast (InfoVar(n, tid, 0, ""))), tid)
+    | InfoVar(_, tid, _, _) -> (AstType.Ident(info), tid)
     | InfoConst (_, _) -> (AstType.Ident(info), Int)
-    | _ -> failwith "Erreur interne Ident"
+    | _ -> failwith "Erreur interne Ident Type"
   )
 
 | AstTds.Unaire (op, e1) -> let (ne, te) = analyse_type_expression e1 in
@@ -99,13 +99,7 @@ let rec analyse_type_instruction i =
     (* On vérifie si les types sont compatibles *)
       let (ne, te) = analyse_type_expression e in 
         if (est_compatible t te) then
-        (
-          match (info_ast_to_info info) with 
-          | InfoVar(n, _, _, _) -> 
-            (* On ajoute le type à l'info *)
-            AstType.Declaration(info_to_info_ast(InfoVar(n, te, 0, "")), ne)
-          | _ -> failwith "Erreur interne"
-        )
+            AstType.Declaration(info, ne)
         else
           raise (Exceptions.TypeInattendu(te, t))
         
