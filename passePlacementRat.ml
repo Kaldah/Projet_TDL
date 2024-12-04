@@ -13,9 +13,10 @@ match i with
   | AstType.Declaration (info, e) -> 
     (
     match (info_ast_to_info info) with
-    | InfoVar(n, t, _, _) ->
-      let nInfo = InfoVar(n, t, depl, reg) in
-      (AstPlacement.Declaration(info_to_info_ast nInfo, e), getTaille t)
+    | InfoVar(_, t, _, _) ->
+      (* On met à jour les infos de la variable *)
+      modifier_adresse_variable depl reg info;
+      (AstPlacement.Declaration(info, e), getTaille t)
     | _ -> failwith "Erreur interne"
   )
   | AstType.Conditionnelle (c, t, e) -> (AstPlacement.Conditionnelle(c, analyse_placement_bloc t depl reg, analyse_placement_bloc e depl reg), 0)
@@ -62,21 +63,20 @@ let analyse_placement_fonction (AstType.Fonction(info,lp, li )) =
   let rec aux_params compteur lst = 
     (
     match lst with 
-    | [] -> [] 
+    | [] -> () 
     | h::q ->
       begin
         match (info_ast_to_info h) with
-        | InfoVar(n, t, _, _) -> let ncompteur = (compteur - (getTaille t)) in
-        let nInfo = info_to_info_ast (InfoVar(n, t, ncompteur, "LB")) in
-          nInfo::(aux_params ncompteur q)
+        | InfoVar(_, t, _, _) -> let ncompteur = (compteur - (getTaille t)) in
+        modifier_adresse_variable ncompteur "LB" h;
+        aux_params ncompteur q;
         | _ -> failwith ("Erreur interne paramètres fonction")
-              
       end
     )
     in
-    let nlp = aux_params 0 (List.rev lp) in
+    aux_params 0 (List.rev lp);
     (* Lors de la création du registre, on décale de 3 places pour le registre *)
-    AstPlacement.Fonction(info, nlp, (analyse_placement_bloc li 3 "LB"))
+    AstPlacement.Fonction(info, lp, (analyse_placement_bloc li 3 "LB"))
   | _-> failwith "Erreur interne Placement Fonction"
 
 let analyser (AstType.Programme (fonctions, prog)) = 

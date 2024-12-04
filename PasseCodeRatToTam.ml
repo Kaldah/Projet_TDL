@@ -21,14 +21,14 @@ let rec analyse_code_expression e =
     let code_exp = concat_code liste_codes in 
     let nom, _, _ = triplet_info_fun info in
     code_exp ^ (call "SB" nom)
-    | AstType.Ident info -> 
-    (
-    match (info_ast_to_info info) with
-      | InfoVar(_, t, d, reg) -> 
-        let taille_type = (getTaille t) in load taille_type d reg
-      | InfoConst(_, cst) -> loadl_int cst
-      | _ -> failwith "Erreur interne Ident"
-    )
+  | AstType.Ident info -> 
+  (
+  match (info_ast_to_info info) with
+    | InfoVar(_, t, d, reg) -> 
+      let taille_type = (getTaille t) in load taille_type d reg
+    | InfoConst(_, cst) -> loadl_int cst
+    | _ -> failwith "Erreur interne Ident"
+  )
 
   | AstType.Booleen b ->
     if b then 
@@ -49,12 +49,11 @@ let rec analyse_code_expression e =
   (
     match op with
       | Fraction -> code
-      | PlusInt -> code ^ subr "IAdd"
+      | PlusInt -> code ^ (subr "IAdd")
       | PlusRat -> code ^ (call "ST" "RAdd")
-      | MultInt -> code ^ subr "IMul"
+      | MultInt -> code ^ (subr "IMul")
       | MultRat -> code ^ (call "ST" "RMul")
-      | EquBool -> code ^ subr "BAnd"
-      | EquInt -> code ^ subr "IEq"
+      | EquBool | EquInt -> code ^ (subr "IEq")
       | Inf -> code ^ (subr "ILss")
   ) 
 
