@@ -50,9 +50,9 @@ let rec analyse_code_expression e =
     match op with
       | Fraction -> code ^ ""
       | PlusInt -> code ^ subr "IAdd"
-      | PlusRat -> code ^ call "SB" "RAdd"
+      | PlusRat -> code ^ (call "ST" "RAdd")
       | MultInt -> code ^ subr "IMul"
-      | MultRat -> code ^ subr "RMul"
+      | MultRat -> code ^ (call "ST" "RMul")
       | EquBool -> code ^ subr "BAnd"
       | EquInt -> code ^ subr "IEq"
       | Inf -> code ^ (subr "ILss")
