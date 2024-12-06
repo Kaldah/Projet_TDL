@@ -1,0 +1,5 @@
+test{
+    const a=2;
+    int* px= (new int);
+    px=&a;
+}

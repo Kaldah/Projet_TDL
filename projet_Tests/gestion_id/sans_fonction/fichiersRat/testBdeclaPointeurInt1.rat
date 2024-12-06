@@ -1,0 +1,6 @@
+test{
+    int x=2;
+    int* px= &x;
+    int* pz= (new int);
+    int* py= null;
+}

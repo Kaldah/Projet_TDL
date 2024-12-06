@@ -1,0 +1,4 @@
+test{
+    int* px= (new int);
+    int px= 2;
+}

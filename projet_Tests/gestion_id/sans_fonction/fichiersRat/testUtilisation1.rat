@@ -1,0 +1,6 @@
+test{
+    int* px= (new rat);
+    int x=2;
+    px=&x;
+    int* pz=&x;
+}

@@ -1,0 +1,18 @@
+int add (int* a, int* b){
+    int* x= (new int);
+    return ((*a)+(*b));
+}
+
+int add1 (int* a, int* b){
+    int* x= (new int);
+    return ((*a)+(*b));
+}
+
+test{
+    int x=3;
+    if (x=3){
+        int* x= (new int);
+    }else{
+        rat* x= (new rat);
+    }
+}

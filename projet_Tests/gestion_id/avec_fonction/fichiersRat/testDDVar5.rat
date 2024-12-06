@@ -1,0 +1,18 @@
+int* add (int* a){
+    
+    return a;
+}
+
+rat* add1 (rat* a){
+    return a;
+}
+
+test{
+    int x=3;
+    if (x=3){
+        int* x= (new int);
+        int* x= (new int);
+    }else{
+        rat* x= (new rat);
+    }
+}

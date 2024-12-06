@@ -40,6 +40,9 @@ let%test_unit "testUtilisation1" =
 let%test_unit "testUtilisation2" = 
   let _ = compiler (pathFichiersRat^"testUtilisation2.rat") in ()
 
+let%test_unit "testSDeclarationPointeur1" = 
+  let _ = compiler (pathFichiersRat^"testSDeclarationPointeur1.rat") in ()
+
 let%test_unit "testUtilisation3" = 
   try 
     let _ = compiler (pathFichiersRat^"testUtilisation3.rat")

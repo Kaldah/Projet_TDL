@@ -1,0 +1,8 @@
+int add (int* a, int* b, int* a){
+    int* px= (new int);
+    return ((*a)+(*b));
+}
+
+test{
+    int x=3;
+}

@@ -1,0 +1,9 @@
+test{
+    int i=0;
+    int* px= (new int);
+    px=&i;
+    while((*px)<5){
+        i=i+1;
+        (*px)=(*px)+1;
+    }
+}

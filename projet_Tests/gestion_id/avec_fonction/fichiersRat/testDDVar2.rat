@@ -1,0 +1,22 @@
+int add (int* a, int*b){
+    if ((*a)=2){
+        bool x=true;
+        rat* px= (new rat);
+        int* py= (new int);
+    }else{
+        bool x=true;
+        rat* px= (new rat);
+        int* py= (new int);
+    }
+    return ((*a)+(*b));
+}
+
+test{
+    int x=0;
+    while (x<3){
+        int* px= (new int);
+        px=&x;
+        (*px)=(*px)+1;
+        x= (*px);
+    }
+}

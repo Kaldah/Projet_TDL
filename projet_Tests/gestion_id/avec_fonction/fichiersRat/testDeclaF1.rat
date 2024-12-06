@@ -1,0 +1,8 @@
+rat* add (int* a){
+    rat* r= (new int);
+    return r;
+}
+
+test{
+    int x=3;
+}

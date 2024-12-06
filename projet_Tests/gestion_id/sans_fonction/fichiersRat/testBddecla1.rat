@@ -1,0 +1,9 @@
+test{
+    rat* px= (new rat);
+    int x=0;
+    if(x=0){
+        rat* px= (new rat);
+    }else{
+        px=&x;
+    }
+}

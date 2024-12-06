@@ -1,0 +1,8 @@
+int add (int* a, int*b){
+    rat* a= (new int);
+    return ((*a)+(*b));
+}
+
+test{
+    int x=3;
+}

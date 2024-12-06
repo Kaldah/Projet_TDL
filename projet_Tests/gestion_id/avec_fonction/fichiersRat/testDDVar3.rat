@@ -1,0 +1,16 @@
+int* add (int* a){
+    int x=0;
+    while (x>3){
+        int* px=&x;
+        int* px=&x;
+    }
+    return a;
+}
+
+rat* add1 (rat* a){
+    return a;
+}
+
+test{
+    int x=3;
+}

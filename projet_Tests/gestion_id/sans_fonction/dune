@@ -1,5 +1,5 @@
 (library
- (name id_projet)
+ (name sans_fonction_id_projet)
  (libraries rat)
  (inline_tests)
  (preprocess
