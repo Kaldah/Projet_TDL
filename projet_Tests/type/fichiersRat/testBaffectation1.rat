@@ -1,0 +1,5 @@
+test{
+    int* px= (new int);
+    *px= 9;
+    *px= *px+1;
+}

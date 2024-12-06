@@ -1,0 +1,12 @@
+ca plante
+bool* egalite(int a, int b){
+    bool r= (a=b);
+    return (&r);
+}
+
+test{
+    bool e;
+    bool* r= (new bool);
+    bool**re=&r;
+    re=egalite(3,4);
+}

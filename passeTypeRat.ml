@@ -200,5 +200,3 @@ let analyser (AstTds.Programme (fonctions, prog)) =
   let nfs = analyse_type_fonctions fonctions in
   let np = analyse_type_bloc prog in
   AstType.Programme (nfs,np)
-
-

@@ -57,6 +57,7 @@ let%test_unit "testDDVar2" =
   let _ = compiler (pathFichiersRat^"testDDVar2.rat") in ()
 
 (*a confirmer et a verifier*)
+(* a reutiliser dans la passe de typage car ca plante au typage mais pas ici*)
 let%test_unit "testDeclaF1" = 
   let _ = compiler (pathFichiersRat^"testDeclaF1.rat") in ()
 
