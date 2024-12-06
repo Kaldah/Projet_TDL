@@ -33,7 +33,7 @@ let rec analyse_code_expression e =
   | AstType.Booleen b ->
     if b then 
       loadl_int 1
-    else 
+    else
       loadl_int 0
   | AstType.Entier i -> loadl_int i
   | AstType.Unaire (op, e) -> let code_e = analyse_code_expression e in
