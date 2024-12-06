@@ -7,6 +7,7 @@ sig
    type instruction
    type fonction
    type programme
+   type affectable
 end
 
 
@@ -22,12 +23,16 @@ type unaire = Numerateur | Denominateur
 (* Opérateurs binaires de Rat *)
 type binaire = Fraction | Plus | Mult | Equ | Inf
 
+type affectable = 
+  (* Accès à un identifiant représenté par son nom *)
+ | Ident of string
+  (* Déréférencement d'un identifiant *)
+ | Deref of affectable
+
 (* Expressions de Rat *)
 type expression =
   (* Appel de fonction représenté par le nom de la fonction et la liste des paramètres réels *)
   | AppelFonction of string * expression list
-  (* Accès à un identifiant représenté par son nom *)
-  | Ident of string
   (* Booléen *)
   | Booleen of bool
   (* Entier *)
@@ -36,6 +41,14 @@ type expression =
   | Unaire of unaire * expression
   (* Opération binaire représentée par l'opérateur, l'opérande gauche et l'opérande droite *)
   | Binaire of binaire * expression * expression
+  (* Affectable - Pointeur et Ident *)
+  | Affectable of affectable
+  (* Nouveau pointeur vers une variable de type typ *)
+  | New of typ
+  (* Adresse mémoire *)
+  | Adresse of string
+  (* Type Null *)
+  | Null
 
 (* Instructions de Rat *)
 type bloc = instruction list

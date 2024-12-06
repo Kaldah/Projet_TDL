@@ -18,6 +18,11 @@ val string_of_instruction : A.instruction -> string
 (* transforme une fonction en chaîne de caractère *)
 val string_of_fonction : A.fonction -> string
 
+(* string_of_affectable :  affectable -> string *)
+(* transforme un affectable en chaîne de caractère *)
+val string_of_affectable : A.affectable ->  string
+
+
 (* string_of_ast :  ast -> string *)
 (* transforme un ast en chaîne de caractère *)
 val string_of_programme : A.programme -> string
@@ -50,11 +55,20 @@ struct
     | Equ -> "= "
     | Inf -> "< "
 
+
+let rec string_of_affectable a = 
+  match a with
+    | Ident n -> ""
+    | Deref a -> ""
+
   (* Conversion des expressions *)
   let rec string_of_expression e =
     match e with
     | AppelFonction (n,le) -> "call "^n^"("^((List.fold_right (fun i tq -> (string_of_expression i)^tq) le ""))^") "
-    | Ident n -> n^" "
+    | Affectable a -> string_of_affectable a
+    | New t -> "New " ^ string_of_type t
+    | Null -> "Null"
+    | Adresse s -> "Adresse " ^ s
     | Booleen b -> if b then "true " else "false "
     | Entier i -> (string_of_int i)^" "
     | Unaire (op,e1) -> (string_of_unaire op) ^ (string_of_expression e1)^" "
@@ -82,6 +96,7 @@ struct
   (* Conversion des fonctions *)
   let string_of_fonction (Fonction(t,n,lp,li)) = (string_of_type t)^" "^n^" ("^((List.fold_right (fun (t,n) tq -> (string_of_type t)^" "^n^" "^tq) lp ""))^") = \n"^
                                         ((List.fold_right (fun i tq -> (string_of_instruction i)^tq) li ""))^"\n"
+
 
   (* Conversion d'un programme Rat *)
   let string_of_programme (Programme (fonctions, instruction)) =
