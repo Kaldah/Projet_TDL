@@ -9,7 +9,7 @@ type t1 = Ast.AstType.programme
 type t2 = Ast.AstPlacement.programme
 
 let rec analyse_placement_instruction i depl reg =
-match i with 
+match i with
   | AstType.Declaration (info, e) -> 
     (
     match (info_ast_to_info info) with
@@ -45,7 +45,6 @@ let rec aux compteur lst = match lst with
       | [] -> []
     in
     let nliTaille = aux depl li in
-    (* let nliTaille = List.map (fun x -> analyse_placement_instruction x depl reg) li in *)
     let nli = List.map fst nliTaille in
     let listeTaille  = List.map snd nliTaille in
     let taille = List.fold_left (fun acc n -> acc + n) 0 listeTaille in

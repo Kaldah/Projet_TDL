@@ -13,80 +13,89 @@ type t2 = Ast.AstType.programme
 en une expression de type AstType.expression *)
 (* Erreur si mauvaise utilisation des types *)
 let rec analyse_type_expression e = match e with
-| AstTds.AppelFonction(info, le) -> (
-  match info_ast_to_info info with
-  | InfoFun(_, tr, ltp) -> 
-    (* On analyse et récupère les expression et les types *)
-    let lnet = List.map analyse_type_expression le in
+  | AstTds.AppelFonction(info, le) -> (
+    match info_ast_to_info info with
+    | InfoFun(_, tr, ltp) -> 
+      (* On analyse et récupère les expression et les types *)
+      let lnet = List.map analyse_type_expression le in
 
-    (* On les récupère séparément *)
-    let lne = List.map fst lnet in
-    let lte = List.map snd lnet in
-    (* Comparaison des types *)
-    if (est_compatible_list lte ltp) then
-      (AstType.AppelFonction(info, lne), tr)
-    else
-      raise (Exceptions.TypesParametresInattendus(lte, ltp))
-  | _ -> failwith "Erreur interne AppelFonction"
-)
+      (* On les récupère séparément *)
+      let lne = List.map fst lnet in
+      let lte = List.map snd lnet in
 
-| AstTds.Ident info ->
-  (
-  match (info_ast_to_info info) with
-    | InfoVar(_, tid, _, _) -> (AstType.Ident(info), tid)
-    | InfoConst (_, _) -> (AstType.Ident(info), Int)
-    | _ -> failwith "Erreur interne Ident Type"
-  )
-
-| AstTds.Unaire (op, e1) -> let (ne, te) = analyse_type_expression e1 in
-  if (est_compatible te Rat) then
-  (
-    match op with
-    | Numerateur -> (AstType.Unaire(AstType.Numerateur, ne), Int)
-    | Denominateur -> (AstType.Unaire(AstType.Denominateur, ne), Int)
-  )
-  else
-    raise (Exceptions.TypeInattendu(te, Rat))
-| AstTds.Binaire(op, e1, e2) -> 
-  (* On analyse les deux expressions *)
-  let (ne1, te1) = analyse_type_expression e1 in
-  let (ne2, te2) = analyse_type_expression e2 in
-
-  (* On règle la surcharge et on vérifie les types *)
-  begin
-    match op with
-    | Fraction ->
-      if ((est_compatible te1 Int) && (est_compatible te2 Int)) then 
-      (AstType.Binaire(AstType.Fraction, ne1, ne2), Rat)
+      (* Comparaison des types *)
+      if (est_compatible_list lte ltp) then
+        (AstType.AppelFonction(info, lne), tr)
       else
-        raise (Exceptions.TypeBinaireInattendu (op, te1, te2))
-    | Plus -> (
-        match (te1, te2) with
-        | Int, Int -> (AstType.Binaire(AstType.PlusInt, ne1, ne2), Int)
-        | Rat, Rat -> (AstType.Binaire(AstType.PlusRat, ne1, ne2), Rat)
-        | _ -> raise (Exceptions.TypeBinaireInattendu (op, te1, te2))
-      )
-    | Mult -> (
-        match (te1, te2) with
-        | Int, Int -> (AstType.Binaire(AstType.MultInt, ne1, ne2), Int)
-        | Rat, Rat -> (AstType.Binaire(AstType.MultRat, ne1, ne2), Rat)
-        | _ -> raise (Exceptions.TypeBinaireInattendu (op, te1, te2))
-      )
-    | Equ -> (
-        match (te1, te2) with
-        | Int, Int -> (AstType.Binaire(AstType.EquInt, ne1, ne2), Bool)
-        | Bool, Bool -> (AstType.Binaire(AstType.EquBool, ne1, ne2), Bool)
-        | _ -> raise (Exceptions.TypeBinaireInattendu (op, te1, te2))
-      )
-    | Inf -> (
-        match (te1, te2) with
-        | Int, Int -> (AstType.Binaire(AstType.Inf, ne1, ne2), Bool)
-        | _ -> raise (Exceptions.TypeBinaireInattendu (op, te1, te2))
-      )
-  end
+        raise (Exceptions.TypesParametresInattendus(lte, ltp))
+    | _ -> failwith "Erreur interne AppelFonction"
+  )
 
-| AstTds.Booleen (b) -> (AstType.Booleen b, Bool)
-| AstTds.Entier i -> (AstType.Entier i, Int)
+  | AstTds.Ident info ->
+    (
+    match (info_ast_to_info info) with
+      | InfoVar(_, tid, _, _) -> (AstType.Ident(info), tid)
+      | InfoConst (_, _) -> (AstType.Ident(info), Int)
+      | _ -> failwith "Erreur interne Ident Type"
+    )
+
+  | AstTds.Unaire (op, e1) -> let (ne, te) = analyse_type_expression e1 in
+    if (est_compatible te Rat) then
+    (
+      match op with
+      | Numerateur -> (AstType.Unaire(AstType.Numerateur, ne), Int)
+      | Denominateur -> (AstType.Unaire(AstType.Denominateur, ne), Int)
+    )
+    else
+      raise (Exceptions.TypeInattendu(te, Rat))
+  | AstTds.Binaire(op, e1, e2) ->
+    
+    (* On analyse les deux expressions *)
+    let (ne1, te1) = analyse_type_expression e1 in
+    let (ne2, te2) = analyse_type_expression e2 in
+
+    (* On règle la surcharge et on vérifie les types *)
+    begin
+      match op with
+      | Fraction ->
+        (* On vérifie que l'opération a lieu entre des types compatibles avec des Int pour faire une Fraction *)
+        if ((est_compatible te1 Int) && (est_compatible te2 Int)) then 
+          (AstType.Binaire(AstType.Fraction, ne1, ne2), Rat)
+        else
+          raise (Exceptions.TypeBinaireInattendu (op, te1, te2))
+
+      | Plus -> (
+          match (te1, te2) with
+          | Int, Int -> (AstType.Binaire(AstType.PlusInt, ne1, ne2), Int)
+          | Rat, Rat -> (AstType.Binaire(AstType.PlusRat, ne1, ne2), Rat)
+          | _ -> raise (Exceptions.TypeBinaireInattendu (op, te1, te2))
+        )
+
+      | Mult -> (
+          match (te1, te2) with
+          | Int, Int -> (AstType.Binaire(AstType.MultInt, ne1, ne2), Int)
+          | Rat, Rat -> (AstType.Binaire(AstType.MultRat, ne1, ne2), Rat)
+          | _ -> raise (Exceptions.TypeBinaireInattendu (op, te1, te2))
+        )
+
+      | Equ -> (
+          match (te1, te2) with
+          | Int, Int -> (AstType.Binaire(AstType.EquInt, ne1, ne2), Bool)
+          | Bool, Bool -> (AstType.Binaire(AstType.EquBool, ne1, ne2), Bool)
+          | _ -> raise (Exceptions.TypeBinaireInattendu (op, te1, te2))
+        )
+
+      | Inf -> (
+          match (te1, te2) with
+          | Int, Int -> (AstType.Binaire(AstType.Inf, ne1, ne2), Bool)
+          | _ -> raise (Exceptions.TypeBinaireInattendu (op, te1, te2))
+        )
+    end
+
+  | AstTds.Booleen (b) -> (AstType.Booleen b, Bool)
+
+  | AstTds.Entier i -> (AstType.Entier i, Int)
+;;
 
 (* analyse_type_instruction : AstTds.instruction -> AstType.instruction *)
 (* Paramètre i : l'instruction à analyser *)
@@ -120,10 +129,10 @@ let rec analyse_type_instruction i =
     let (ne, te) = analyse_type_expression e in
     (
     match te with
-    | Int -> AstType.AffichageInt ne
-    | Bool -> AstType.AffichageBool ne
-    | Rat -> AstType.AffichageRat ne
-    | _ -> failwith "Erreur interne"
+      | Int -> AstType.AffichageInt ne
+      | Bool -> AstType.AffichageBool ne
+      | Rat -> AstType.AffichageRat ne
+      | _ -> failwith "Erreur interne"
     )
       
   | AstTds.Conditionnelle (c, t, e) ->
@@ -165,6 +174,7 @@ let rec analyse_type_instruction i =
 and analyse_type_bloc li = 
   List.map analyse_type_instruction li
 
+
 (* analyse_type_fonction : AstTds.fonction -> AstType.fonction *)
 (* Paramètre : la fonction à analyser *)
 (* Vérifie la bonne utilisation des types et tranforme la fonction
@@ -179,6 +189,8 @@ let analyse_type_fonction (AstTds.Fonction(_,info,lp,li))  =
 
   let analyse_type_fonctions lf =
     List.map analyse_type_fonction lf
+
+
 (* analyser : AstTds.programme -> AstType.programme *)
 (* Paramètre : le programme à analyser *)
 (* Vérifie la bonne utilisation des types et tranforme le programme
@@ -188,5 +200,3 @@ let analyser (AstTds.Programme (fonctions, prog)) =
   let nfs = analyse_type_fonctions fonctions in
   let np = analyse_type_bloc prog in
   AstType.Programme (nfs,np)
-
-
