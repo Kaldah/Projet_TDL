@@ -1,0 +1,5 @@
+ca plante
+test{
+    rat* px= (new rat);
+    int** py= &px;
+}

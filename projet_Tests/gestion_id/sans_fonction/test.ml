@@ -86,14 +86,10 @@ try
 with
 | IdentifiantNonDeclare("z") -> ()
 
-(*a confirmer et a revoir*)
+(*reutilisation pour test passe de typage car ca plante*)
 
-let%test_unit "testMaffectationRat3"= 
-try 
-  let _ = compiler (pathFichiersRat^"testMaffectationRat3.rat") 
-  in raise ErreurNonDetectee
-with
-| MauvaiseUtilisationIdentifiant("px") -> ()
+let%test_unit "testMaffectationRat3"=  
+  let _ = compiler (pathFichiersRat^"testMaffectationRat3.rat") in ()
 
 let%test_unit "testMaffectationRat4"= 
 try 
@@ -109,15 +105,23 @@ let%test_unit "testMdeclaraPointeurInt1" =
   with
   | IdentifiantNonDeclare("px") -> ()
 
-(*a revoir et a confirmer*)
-let%test_unit "testMdeclaraPointeurInt2" = 
+(*a revoir et a confirmer / a utiliser pour tester la grammaire*)
+
+(*
+  let%test_unit "testMdeclaraPointeurInt2" = 
   try 
     let _ = compiler (pathFichiersRat^"testMdeclaPointeurInt2.rat")
     in raise ErreurNonDetectee
   with
   | MauvaiseUtilisationIdentifiant("int") -> ()
+*)
+
 
   (*a confirmer et a revoir*)
+  (*ca passe pour gestion id
+  a reutiliser pour la passe de typage car ca plante
+  *)
+
 let%test_unit "testMdeclaPointeurInt3"= 
   let _ = compiler (pathFichiersRat^"testMdeclaPointeurInt3.rat") in ()
 
@@ -130,6 +134,9 @@ with
 | MauvaiseUtilisationIdentifiant("x") -> ()
 
  (*a confirmer et a revoir*)
+ (*ca passe pour gestion id
+  a reutiliser pour la passe de typage car ca plante
+  *)
 let%test_unit "testMdeclaPointeurRat1"= 
  let _ = compiler (pathFichiersRat^"testMdeclaPointeurRat1.rat") in ()
 
@@ -140,13 +147,17 @@ try
 with
 | IdentifiantNonDeclare("px") -> ()
 
-(*a revoir et confirmer*)
-let%test_unit "testMdeclaraPointeurRat2" = 
+(*a revoir et a confirmer / a utiliser pour tester la grammaire*)
+
+(*
+  let%test_unit "testMdeclaraPointeurRat2" = 
 try 
   let _ = compiler (pathFichiersRat^"testMdeclaPointeurRat2.rat")
   in raise ErreurNonDetectee
 with
 | IdentifiantNonDeclare("px") -> ()
+*)
+
 
 
 (*************)
