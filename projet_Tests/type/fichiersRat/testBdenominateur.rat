@@ -1,0 +1,4 @@
+test{
+    rat* px= null;
+    int x= denom (*px);
+}

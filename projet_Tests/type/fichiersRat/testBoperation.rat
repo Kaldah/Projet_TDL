@@ -1,0 +1,5 @@
+test{
+    int* px=null;
+    int* pz= (new int);
+    int x= (*px)+(*pz);
+}

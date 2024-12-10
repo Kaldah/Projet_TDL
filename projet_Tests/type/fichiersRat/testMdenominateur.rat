@@ -1,0 +1,7 @@
+int deno(bool* b){
+    return denom (*b);
+}
+
+test{
+    rat* p=(new rat);
+}

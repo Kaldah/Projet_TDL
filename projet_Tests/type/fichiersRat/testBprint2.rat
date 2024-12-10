@@ -1,0 +1,4 @@
+test{
+    bool* b=null;
+    print (*b);
+}

@@ -1,0 +1,8 @@
+test{
+    int z= 4;
+    int* pz=&z;
+    int** ppz=&pz;
+    int*** px= &ppz;
+    int**** ppx= &px
+    int x= (****ppx);
+}

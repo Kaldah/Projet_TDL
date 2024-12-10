@@ -1,0 +1,5 @@
+test{
+    int** p= null;
+    int* x= (new int);
+    bool s= p<x;
+}

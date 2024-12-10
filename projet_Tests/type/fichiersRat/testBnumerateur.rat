@@ -1,0 +1,9 @@
+int nume( rat* n){
+    return num (*n);
+}
+
+test{
+    rat* p= null;
+    rat** px=&p;
+    *px=nume(p);
+}

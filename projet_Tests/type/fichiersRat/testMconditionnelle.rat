@@ -1,0 +1,11 @@
+ca plante
+test{
+    int* px= (new int);
+    int x=3;
+    px=&x;
+    if(px=3){
+        x=2;
+    }else{
+        x=1;
+    }
+}

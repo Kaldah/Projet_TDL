@@ -1,0 +1,16 @@
+int* add(int* a, int* b){
+    int r= (*a) + (*b);
+    return (&r);
+}
+
+test{
+    int** r= (new int);
+    int* px= null;
+    int i=0;
+    px=&i;
+    while((*px)<4){
+        *r= add(null,null);
+        *px= (*px)+1;
+    }
+    
+}

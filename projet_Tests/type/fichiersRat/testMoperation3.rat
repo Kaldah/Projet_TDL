@@ -1,0 +1,5 @@
+test{
+    rat* px= null;
+    int* pz= (new int);
+    bool r= (*pz)<(*px);
+}

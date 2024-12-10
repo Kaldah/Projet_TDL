@@ -1,0 +1,5 @@
+test{
+    rat* px= null;
+    rat** pz= null;
+    px=pz;
+}

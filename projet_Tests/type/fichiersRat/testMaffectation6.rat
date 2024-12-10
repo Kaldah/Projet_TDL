@@ -1,0 +1,5 @@
+test{
+    bool* b=null;
+    int **c= null;
+    c=b;
+}

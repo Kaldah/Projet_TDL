@@ -1,0 +1,8 @@
+int add(rat* a, int* b){
+    a=b;
+    return 1;
+}
+
+test{
+    int x= add(null, null);
+}

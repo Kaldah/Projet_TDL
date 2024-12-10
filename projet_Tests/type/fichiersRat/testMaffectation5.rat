@@ -1,0 +1,4 @@
+test{
+    rat* px=null;
+    px= [3/4];
+}
