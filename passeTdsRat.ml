@@ -88,7 +88,17 @@ let rec analyse_tds_expression tds e =
     end
   | AstSyntax.Null -> AstTds.Null
   | AstSyntax.New(t) -> AstTds.New(t)
-  | AstSyntax.Adresse(adr) -> AstTds.Adresse(adr)
+  | AstSyntax.Adresse(id) -> 
+    begin
+      match (chercherGlobalement tds id) with
+      | None -> raise (Exceptions.IdentifiantNonDeclare id)
+      | Some ia -> 
+        (
+          match info_ast_to_info ia with
+          | InfoVar _ -> AstTds.Adresse ia
+          | _ -> raise (MauvaiseUtilisationIdentifiant id)
+        )
+      end
   | AstSyntax.Booleen(b) -> AstTds.Booleen(b)
   | AstSyntax.Entier(ent) -> AstTds.Entier(ent)
   | AstSyntax.Unaire(op, e1) -> let exp = analyse_tds_expression tds e1 in AstTds.Unaire(op, exp)

@@ -103,7 +103,7 @@ type affectable =
     | Binaire of AstSyntax.binaire * expression * expression
     | Affectable of affectable
     | New of typ
-    | Adresse of string
+    | Adresse of Tds.info_ast
     | Null
 
   (* instructions existantes dans notre langage *)
@@ -156,7 +156,7 @@ type expression =
   | Binaire of binaire * expression * expression
   | Affectable of AstTds.affectable
   | New of typ
-  | Adresse of string
+  | Adresse of Tds.info_ast
   | Null
 
 (* instructions existantes Rat *)
