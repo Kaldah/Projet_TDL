@@ -58,8 +58,8 @@ struct
 
 let rec string_of_affectable a = 
   match a with
-    | Ident n -> ""
-    | Deref a -> ""
+    | Ident n -> n
+    | Deref a -> "*" ^ (string_of_affectable a)
 
   (* Conversion des expressions *)
   let rec string_of_expression e =
@@ -83,7 +83,7 @@ let rec string_of_affectable a =
   let rec string_of_instruction i =
     match i with
     | Declaration (t, n, e) -> "Declaration  : "^(string_of_type t)^" "^n^" = "^(string_of_expression e)^"\n"
-    | Affectation (n,e) ->  "Affectation  : "^n^" = "^(string_of_expression e)^"\n"
+    | Affectation (a,e) ->  "Affectation  : "^ (string_of_affectable a) ^" = "^(string_of_expression e)^"\n"
     | Constante (n,i) ->  "Constante  : "^n^" = "^(string_of_int i)^"\n"
     | Affichage e ->  "Affichage  : "^(string_of_expression e)^"\n"
     | Conditionnelle (c,t,e) ->  "Conditionnelle  : IF "^(string_of_expression c)^"\n"^

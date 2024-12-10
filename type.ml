@@ -9,7 +9,6 @@ let rec string_of_type t =
   | Null -> "Null"
   | Undefined -> "Undefined"
 
-
 let rec est_compatible t1 t2 =
   match t1, t2 with
   | Bool, Bool -> true

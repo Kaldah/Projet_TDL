@@ -7,6 +7,48 @@ open Ast
 type t1 = Ast.AstSyntax.programme
 type t2 = Ast.AstTds.programme
 
+type affouexpTds = 
+  | Affectable of AstTds.affectable
+  | Expression of AstTds.expression
+
+
+(* analye_gestion_id_affectable : tds -> AstSyntax.affectable -> bool -> AstTds.expression *)
+(* Paramètre tds : la table des symboles courante *)
+(* Paramètre a : l'affectable à analyser *)
+(* Paramètre en_ecriture : le mode, vaut "true" en lecture et "false" en ecriture *)
+(* Vérifie la bonne utilisation des identifiants des affectables et tranforme l'expression *)
+(* en une expression de type AstTds.expression *)
+let rec analyse_gestion_id_affectable tds a en_ecriture =
+  match a with
+  | AstSyntax.Ident id -> 
+    begin
+      match chercherGlobalement tds id with
+      (* L'identifiant n'est pas trouvé dans la tds globale. *)
+      | None -> raise (IdentifiantNonDeclare id)
+      | Some ia -> 
+        (* L'identifiant est trouvé dans la tds globale, *)
+        (* il a donc déjà été déclaré. L'information associée est récupérée. *)
+        begin
+          match info_ast_to_info ia with
+          | InfoVar _ -> Affectable (AstTds.Ident ia)
+          | InfoConst (n, ent) -> 
+            if en_ecriture then
+              (* Modification d'une constante ou d'une fonction *)
+              raise (Exceptions.MauvaiseUtilisationIdentifiant n) 
+            else 
+              Expression (AstTds.Entier(ent))
+          | _ -> raise (MauvaiseUtilisationIdentifiant id)
+        end
+    end
+  | AstSyntax.Deref a -> 
+    let na = analyse_gestion_id_affectable tds a false in
+    begin
+      match na with 
+      | Affectable(AstTds.Ident ia) -> Affectable (AstTds.Deref (AstTds.Ident ia))
+      | Affectable(AstTds.Deref a2) -> Affectable (AstTds.Deref a2)
+      | Expression (AstTds.Entier ent) -> Expression (AstTds.Entier ent)
+      | _ -> failwith "Erreur de déréférencement"
+    end
 
 let afficher_expression_ast e = 
   print_string (PrinterAst.PrinterAstSyntax.string_of_expression e);
@@ -37,18 +79,16 @@ let rec analyse_tds_expression tds e =
           | _ -> raise (MauvaiseUtilisationIdentifiant n)
           end
       end
-  | AstSyntax.Ident(n) -> 
+
+  | AstSyntax.Affectable(a) -> 
     begin
-    match chercherGlobalement tds n with
-      | None -> 
-        (* L'identifiant n'est pas trouvé dans la tds globale,
-        il n'a donc pas été déclaré dans le programme *)
-        raise (Exceptions.IdentifiantNonDeclare n)      
-        (* L'identifiant existe donc on récupère et renvoie la référence sur l'info associée *)
-      | Some info -> match (info_ast_to_info info) with
-      | InfoFun(n,_,_) -> raise (MauvaiseUtilisationIdentifiant n)
-      | _ -> AstTds.Ident(info)
+      match analyse_gestion_id_affectable tds a true with
+      | Affectable na ->  AstTds.Affectable na
+      | Expression e -> e
     end
+  | AstSyntax.Null -> AstTds.Null
+  | AstSyntax.New(t) -> AstTds.New(t)
+  | AstSyntax.Adresse(adr) -> AstTds.Adresse(adr)
   | AstSyntax.Booleen(b) -> AstTds.Booleen(b)
   | AstSyntax.Entier(ent) -> AstTds.Entier(ent)
   | AstSyntax.Unaire(op, e1) -> let exp = analyse_tds_expression tds e1 in AstTds.Unaire(op, exp)
@@ -89,29 +129,19 @@ let rec analyse_tds_instruction tds oia i =
             il a donc déjà été déclaré dans le bloc courant *)
             raise (DoubleDeclaration n)
       end
-  | AstSyntax.Affectation (n,e) ->
-      begin
-        match chercherGlobalement tds n with
-        | None ->
-          (* L'identifiant n'est pas trouvé dans la tds globale. *)
-          raise (IdentifiantNonDeclare n)
-        | Some info ->
-          (* L'identifiant est trouvé dans la tds globale,
-          il a donc déjà été déclaré. L'information associée est récupérée. *)
-          begin
-            match info_ast_to_info info with
-            | InfoVar _ ->
-              (* Vérification de la bonne utilisation des identifiants dans l'expression *)
-              (* et obtention de l'expression transformée *)
-              let ne = analyse_tds_expression tds e in
-              (* Renvoie de la nouvelle affectation où le nom a été remplacé par l'information
-                 et l'expression remplacée par l'expression issue de l'analyse *)
-              AstTds.Affectation (info, ne)
-            |  _ ->
-              (* Modification d'une constante ou d'une fonction *)
-              raise (MauvaiseUtilisationIdentifiant n)
-          end
-      end
+  | AstSyntax.Affectation (a,e) ->
+    let nae = analyse_gestion_id_affectable tds a true in
+    (* Vérification de la bonne utilisation des identifiants dans l'expression *)
+    (* et obtention de l'expression transformée *)
+    let ne = analyse_tds_expression tds e in
+    begin
+    match nae with
+    (* Renvoie de la nouvelle affectation où le nom a été remplacé par l'information
+    et l'expression remplacée par l'expression issue de l'analyse *)
+      | Affectable(na) -> AstTds.Affectation(na, ne)
+      | Expression _ -> failwith "Erreur interne Affectation"
+    end
+
   | AstSyntax.Constante (n,v) ->
       begin
         match chercherLocalement tds n with

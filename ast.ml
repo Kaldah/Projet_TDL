@@ -55,8 +55,8 @@ type bloc = instruction list
 and instruction =
   (* Déclaration de variable représentée par son type, son nom et l'expression d'initialisation *)
   | Declaration of typ * string * expression
-  (* Affectation d'une variable représentée par son nom et la nouvelle valeur affectée *)
-  | Affectation of string * expression
+  (* Affectation d'une variable représentée par son affectable et la nouvelle valeur affectée *)
+  | Affectation of affectable * expression
   (* Déclaration d'une constante représentée par son nom et sa valeur (entier) *)
   | Constante of string * int
   (* Affichage d'une expression *)
@@ -85,16 +85,26 @@ end
 module AstTds =
 struct
 
+type affectable = 
+  (* Accès à un identifiant représenté par son nom *)
+ | Ident of Tds.info_ast (* le nom de l'identifiant est remplacé par ses informations *)
+  (* Déréférencement d'un identifiant *)
+ | Deref of affectable
+
+
   (* Expressions existantes dans notre langage *)
   (* ~ expression de l'AST syntaxique où les noms des identifiants ont été
   remplacés par les informations associées aux identificateurs *)
   type expression =
     | AppelFonction of Tds.info_ast * expression list
-    | Ident of Tds.info_ast (* le nom de l'identifiant est remplacé par ses informations *)
     | Booleen of bool
     | Entier of int
     | Unaire of AstSyntax.unaire * expression
     | Binaire of AstSyntax.binaire * expression * expression
+    | Affectable of affectable
+    | New of typ
+    | Adresse of string
+    | Null
 
   (* instructions existantes dans notre langage *)
   (* ~ instruction de l'AST syntaxique où les noms des identifiants ont été
@@ -103,7 +113,7 @@ struct
   type bloc = instruction list
   and instruction =
     | Declaration of typ * Tds.info_ast * expression (* le nom de l'identifiant est remplacé par ses informations *)
-    | Affectation of  Tds.info_ast * expression (* le nom de l'identifiant est remplacé par ses informations *)
+    | Affectation of  affectable * expression (* le nom de l'identifiant est remplacé par ses informations *)
     | Affichage of expression
     | Conditionnelle of expression * bloc * bloc
     | TantQue of expression * bloc
@@ -133,6 +143,8 @@ type unaire = Numerateur | Denominateur
 (* Opérateurs binaires existants dans Rat - résolution de la surcharge *)
 type binaire = Fraction | PlusInt | PlusRat | MultInt | MultRat | EquInt | EquBool | Inf
 
+type affectable = AstTds.affectable
+
 (* Expressions existantes dans Rat *)
 (* = expression de AstTds *)
 type expression =
@@ -142,6 +154,10 @@ type expression =
   | Entier of int
   | Unaire of unaire * expression
   | Binaire of binaire * expression * expression
+  | Affectable of AstTds.affectable
+  | New of typ
+  | Adresse of string
+  | Null
 
 (* instructions existantes Rat *)
 (* = instruction de AstTds + informations associées aux identificateurs, mises à jour *)
@@ -149,7 +165,7 @@ type expression =
 type bloc = instruction list
  and instruction =
   | Declaration of Tds.info_ast * expression
-  | Affectation of Tds.info_ast * expression
+  | Affectation of affectable * expression
   | AffichageInt of expression
   | AffichageRat of expression
   | AffichageBool of expression
@@ -176,11 +192,13 @@ struct
 (* = expression de AstType  *)
 type expression = AstType.expression
 
+type affectable = AstTds.affectable
+
 (* instructions existantes dans notre langage *)
 type bloc = instruction list * int (* taille du bloc *)
  and instruction =
  | Declaration of Tds.info_ast * expression
- | Affectation of Tds.info_ast * expression
+ | Affectation of AstTds.affectable * expression
  | AffichageInt of expression
  | AffichageRat of expression
  | AffichageBool of expression
