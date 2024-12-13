@@ -115,11 +115,8 @@ let rec analyse_code_expression e =
     let taille_type_e = (getTaille t) in 
     analyse_code_expression e ^ (store taille_type_e d reg) *)
 
-    let sa = analyse_code_affectable a false in
-    let taille_type_e = (getTaille Int) in 
-    let d = 0 in
-    let reg = "ST" in
-    analyse_code_expression e ^ (store taille_type_e d reg) ^ sa
+    let sa = analyse_code_affectable a true in
+    analyse_code_expression e ^ sa
 
     | AstPlacement.AffichageInt e -> analyse_code_expression e ^ (subr "IOut")
     | AstPlacement.AffichageRat e -> analyse_code_expression e ^ (call "ST" "ROut")
