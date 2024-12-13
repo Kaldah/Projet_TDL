@@ -16,6 +16,7 @@ let rec est_compatible t1 t2 =
   | Rat, Rat -> true
   | Pointeur t1, Pointeur t2 -> est_compatible t1 t2
   | Null, _ |_, Null -> true
+  | Undefined, _ | _, Undefined -> true
   | _ -> false 
 
 let%test _ = est_compatible Bool Bool

@@ -12,6 +12,18 @@ type t2 = string
 
 let concat_code liste_codes = List.fold_left ( ^ ) "" liste_codes;;
 
+let rec analyse_code_affectable a = 
+  match a with
+  | AstTds.Ident info -> 
+  (
+    match (info_ast_to_info info) with
+      | InfoVar(_, t, d, reg) -> 
+        let taille_type = (getTaille t) in load taille_type d reg
+      | _ -> failwith "Erreur interne Ident"
+  )
+  | AstTds.Deref a -> 
+    let code_a = analyse_code_affectable a in
+    code_a ^ (pop 0 1)
 
 let rec analyse_code_expression e =
   match e with
@@ -21,14 +33,18 @@ let rec analyse_code_expression e =
     let code_exp = concat_code liste_codes in 
     let nom, _, _ = triplet_info_fun info in
     code_exp ^ (call "SB" nom)
-  | AstType.Ident info -> 
+  | AstType.Affectable a -> analyse_code_affectable a
+  | AstType.New t -> 
+    let taille_type = (getTaille t) in
+    (loadl_int taille_type) ^ (subr "MAlloc") ^ (pop 0 1)
+  | AstType.Adresse info -> 
   (
-  match (info_ast_to_info info) with
-    | InfoVar(_, t, d, reg) -> 
-      let taille_type = (getTaille t) in load taille_type d reg
-    | InfoConst(_, cst) -> loadl_int cst
-    | _ -> failwith "Erreur interne Ident"
+    match (info_ast_to_info info) with
+      | InfoVar(_, t, d, reg) -> 
+        let taille_type = (getTaille t) in load taille_type d reg
+      | _ -> failwith "Erreur interne Ident"
   )
+  | AstType.Null -> loadl_int 0
 
   | AstType.Booleen b ->
     if b then 
@@ -63,9 +79,17 @@ let rec analyse_code_expression e =
     let taille_type_e = (getTaille t) in 
     (push taille_type_e) ^ (analyse_code_expression e) ^ (store taille_type_e d reg)
 
-    | AstPlacement.Affectation ( info , e) ->  let (_, t, d, reg) = quadruplet_info_var info in
+    | AstPlacement.Affectation ( a , e) ->  
+      
+      (*let (_, t, d, reg) = quadruplet_info_var a in
     let taille_type_e = (getTaille t) in 
-    analyse_code_expression e ^ (store taille_type_e d reg)
+    analyse_code_expression e ^ (store taille_type_e d reg) *)
+
+    let sa = analyse_code_affectable a in
+    let taille_type_e = (getTaille Int) in 
+    let d = 0 in
+    let reg = "ST" in
+    analyse_code_expression e ^ (store taille_type_e d reg) ^ sa
 
     | AstPlacement.AffichageInt e -> analyse_code_expression e ^ (subr "IOut")
     | AstPlacement.AffichageRat e -> analyse_code_expression e ^ (call "ST" "ROut")
@@ -100,7 +124,6 @@ let analyser (AstPlacement.Programme (fonctions, prog)) =
   let code_fonctions = concat_code (List.map analyse_code_fonction fonctions) in 
   let code_prog = "main\n" ^ (analyse_code_bloc prog) ^ halt in
   let code_complet = (getEntete ()) ^ code_fonctions ^ code_prog in
-  (*
+  
   print_string ("\n \n CODE \n" ^ code_complet ^ "\n  CODE \n \n");
-  *)
   code_complet

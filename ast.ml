@@ -149,7 +149,6 @@ type affectable = AstTds.affectable
 (* = expression de AstTds *)
 type expression =
   | AppelFonction of Tds.info_ast * expression list
-  | Ident of Tds.info_ast
   | Booleen of bool
   | Entier of int
   | Unaire of unaire * expression

@@ -82,7 +82,7 @@ let rec analyse_tds_expression tds e =
 
   | AstSyntax.Affectable(a) -> 
     begin
-      match analyse_gestion_id_affectable tds a true with
+      match analyse_gestion_id_affectable tds a false with
       | Affectable na ->  AstTds.Affectable na
       | Expression e -> e
     end
