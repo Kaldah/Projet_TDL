@@ -2,7 +2,7 @@ open Rat
 open Compilateur
 
 (* Changer le chemin d'accès du jar. *)
-let runtamcmde = "java -jar ../../../../Projets_Tests/runtam.jar"
+let runtamcmde = "java -jar ../../../../projet_Tests/runtam.jar"
 (* let runtamcmde = "java -jar /mnt/n7fs/.../tools/runtam/runtam.jar" *)
 
 (* Execute the TAM code obtained from the rat file and return the ouptut of this code *)
@@ -25,7 +25,7 @@ let runtam ratfile =
 (** Chemin d'accès aux fichiers de test *)
 (****************************************)
 
-let pathFichiersRat = "../../../../Projets_Tests/tam/fichiersRat/"
+let pathFichiersRat = "../../../../projet_Tests/tam/fichiersRat/"
 
 (**********)
 (*  TESTS *)

@@ -8,7 +8,7 @@ exception ErreurNonDetectee
 (** Chemin d'accès aux fichiers de test *)
 (****************************************)
 
-let pathFichiersRat = "../../../../../Projets_Tests/gestion_id/sans_fonction/fichiersRat/"
+let pathFichiersRat = "../../../../../projet_Tests/gestion_id/sans_fonction/fichiersRat/"
 
 (**********)
 (*  TESTS *)
@@ -206,6 +206,6 @@ let rec test d p_tam =
   with End_of_file -> ()
 
 let%test_unit "all_tam" =
-  let p_tam = "../../../../Projets_Tests/tam/fichiersRat/" in
+  let p_tam = "../../../../projet_Tests/tam/fichiersRat/" in
   let d = opendir p_tam in
   test d p_tam
