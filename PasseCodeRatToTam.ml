@@ -12,18 +12,48 @@ type t2 = string
 
 let concat_code liste_codes = List.fold_left ( ^ ) "" liste_codes;;
 
-let rec analyse_code_affectable a = 
+let rec get_type_affectable a = 
+  match a with
+  | AstTds.Ident info -> 
+    (
+    match info_ast_to_info info with
+      | InfoVar(_, t, _, _) -> t
+      | InfoConst(_, _) -> Int
+      | _ -> failwith "Erreur interne Ident"
+     )
+  | AstTds.Deref a -> 
+    let t = get_type_affectable a in
+    (
+    match t with
+      | Pointeur t -> t
+      | _ -> failwith "Erreur interne Deref"
+    )
+
+let rec analyse_code_affectable a en_ecriture = 
   match a with
   | AstTds.Ident info -> 
   (
-    match (info_ast_to_info info) with
-      | InfoVar(_, t, d, reg) -> 
-        let taille_type = (getTaille t) in load taille_type d reg
+    match (info_ast_to_info info)  with
+      | InfoVar(_, t, d, reg) -> let taille_type = (getTaille t) in 
+      (* On vérifie si on lit la variable ou si on l'affecte *)
+        if en_ecriture then
+          store taille_type d reg
+        else
+          load taille_type d reg
+      | InfoConst(_, c) -> loadl_int c
       | _ -> failwith "Erreur interne Ident"
   )
   | AstTds.Deref a -> 
-    let code_a = analyse_code_affectable a in
-    code_a ^ (pop 0 1)
+    (* On load tout ce qu'on va utiliser *)
+    let t = get_type_affectable a in
+    let taille = getTaille t in
+    let code_a = analyse_code_affectable a false in
+    (* On vérifie si on lit ou affecte la variable *)
+    if en_ecriture then
+      (* Faire attention, vaut 1 tant qu'on déréférence un pointeur mais vaut 2 si c'est un RAT *)
+      code_a ^ (storei taille)
+    else
+      code_a ^ (loadi taille)
 
 let rec analyse_code_expression e =
   match e with
@@ -33,7 +63,7 @@ let rec analyse_code_expression e =
     let code_exp = concat_code liste_codes in 
     let nom, _, _ = triplet_info_fun info in
     code_exp ^ (call "SB" nom)
-  | AstType.Affectable a -> analyse_code_affectable a
+  | AstType.Affectable a -> analyse_code_affectable a false
   | AstType.New t -> 
     let taille_type = (getTaille t) in
     (loadl_int taille_type) ^ (subr "MAlloc") ^ (pop 0 1)
@@ -85,7 +115,7 @@ let rec analyse_code_expression e =
     let taille_type_e = (getTaille t) in 
     analyse_code_expression e ^ (store taille_type_e d reg) *)
 
-    let sa = analyse_code_affectable a in
+    let sa = analyse_code_affectable a false in
     let taille_type_e = (getTaille Int) in 
     let d = 0 in
     let reg = "ST" in
@@ -124,6 +154,7 @@ let analyser (AstPlacement.Programme (fonctions, prog)) =
   let code_fonctions = concat_code (List.map analyse_code_fonction fonctions) in 
   let code_prog = "main\n" ^ (analyse_code_bloc prog) ^ halt in
   let code_complet = (getEntete ()) ^ code_fonctions ^ code_prog in
-  
+  (*
   print_string ("\n \n CODE \n" ^ code_complet ^ "\n  CODE \n \n");
+  *)
   code_complet
