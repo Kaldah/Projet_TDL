@@ -8,7 +8,7 @@ exception ErreurNonDetectee
 (** Chemin d'accès aux fichiers de test *)
 (****************************************)
 
-let pathFichiersRat = "../../../../Projets_Tests/type/fichiersRat/"
+let pathFichiersRat = "../../../../projet_Tests/type/fichiersRat/"
 
 (**********)
 (*  TESTS *)
@@ -279,7 +279,7 @@ try
   let _ = compiler (pathFichiersRat^"testMoperation3.rat")
   in raise ErreurNonDetectee
 with
-| TypeBinaireInattendu(Int,Rat) -> ()
+| TypeBinaireInattendu(Plus, Int, Rat) -> ()
 
 let%test_unit "testMoperation4" = 
 try 
@@ -342,6 +342,6 @@ let rec test d p_tam =
   with End_of_file -> ()
 
 let%test_unit "all_tam" =
-  let p_tam = "../../../../Projets_Tests/tam/fichiersRat/" in
+  let p_tam = "../../../../projet_Tests/tam/fichiersRat/" in
   let d = opendir p_tam in
   test d p_tam

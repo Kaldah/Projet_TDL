@@ -45,8 +45,8 @@ let pathFichiersRat = "../../../../projet_Tests/placement/fichiersRat/"
 (**********)
 
 
-let%test "test1_x" = 
-  test (pathFichiersRat^"test1.rat")  "main" ("x",1)  (0,"SB")
+let%test "test_x" = 
+  test (pathFichiersRat^"test.rat")  "main" ("x",1)  (0,"SB")
 
 (*************)
 (* POINTEURS *)

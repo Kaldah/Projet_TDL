@@ -1,6 +1,9 @@
 open Rat
 open Compilateur
 open Passe
+open Exceptions
+
+exception ErreurNonDetectee
 
 (* Return la liste des adresses des variables d'un programme RAT *)
 let getListeDep ratfile =
@@ -38,7 +41,7 @@ let test fichier fonction (var,occ) (dep,registre) =
 (** Chemin d'accès aux fichiers de test *)
 (****************************************)
 
-let pathFichiersRat = "../../../../projet_Tests/gestion_id/avec_fonction/fichiersRat/"
+let pathFichiersRat = "../../../../../projet_Tests/gestion_id/avec_fonction/fichiersRat/"
 
 (**********)
 (*  TESTS *)

@@ -41,8 +41,8 @@ let pathFichiersRat = "../../../../projet_Tests/tam/fichiersRat/"
 Vérifier l’absence d’erreurs lors de l’utilisation d’un pointeur null.
 *)
 
-let%expect_test "testprintint" =
-  runtam (pathFichiersRat^"testprintint.rat");
+let%expect_test "test" =
+  runtam (pathFichiersRat^"test.rat");
   [%expect{| 42 |}]
 
 (*************)
