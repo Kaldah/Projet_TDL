@@ -67,7 +67,7 @@ bloc : AO li=i* AF      {li}
 
 a :
 | n=ID                              {Ident n}
-| MULT a=a                          {Deref a}
+| PO MULT a=a PF                    {Deref a}
 
 
 i :
@@ -80,10 +80,10 @@ i :
 | RETURN exp=e PV                   {Retour (exp)}
 
 typ :
+| t=typ MULT {Pointeur t}
 | BOOL    {Bool}
 | INT     {Int}
 | RAT     {Rat}
-| t=typ MULT {Pointeur t}
 
 e :
 | n=ID PO lp=separated_list(VIRG,e) PF   {AppelFonction (n,lp)}

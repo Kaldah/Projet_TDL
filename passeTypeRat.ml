@@ -25,14 +25,17 @@ let rec analyse_type_affectable a = match a with
   | AstTds.Ident info -> 
     (
       match info_ast_to_info info with
+
         | InfoVar(_,t,_,_)-> (AstTds.Ident info,t)
         | _ -> failwith "Erreur interne Ident"
     )
   | AstTds.Deref na -> 
     let (na2, ta) = analyse_type_affectable na in
+    (
     match ta with
       | Pointeur t -> (AstTds.Deref na2, t)
       | _ -> raise (Exceptions.TypeInattendu(ta, Pointeur Undefined))
+    )
 
 (* analyse_type_expression : AstTds.expression -> AstType.expression * typ *)
 (* Paramètre e : l'expression à analyser *)
@@ -142,7 +145,6 @@ let rec analyse_type_instruction i =
             AstType.Declaration(info, ne)
         else
           raise (Exceptions.TypeInattendu(te, t))
-        
   | AstTds.Affectation(a, e) -> 
     (* On vérifie si les types sont compatibles *)
     let (ne, te) = analyse_type_expression e in
