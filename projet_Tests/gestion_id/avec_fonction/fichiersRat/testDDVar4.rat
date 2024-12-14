@@ -9,8 +9,8 @@ rat* add1 (rat* a){
 
 test{
     int x=0;
-    while (x>3){
-        int* px=& x;
-        int* px=& x;
+    while (x<3){
+        int* px = & x;
+        int* px = & x;
     }
 }

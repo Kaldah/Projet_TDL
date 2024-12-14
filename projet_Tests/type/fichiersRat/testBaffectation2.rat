@@ -1,5 +1,5 @@
 test{
     rat x= [5/8];
-    int y= deno x;
+    int y= denom x;
     int* py= & y;
 }

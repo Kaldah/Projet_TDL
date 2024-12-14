@@ -206,6 +206,6 @@ let rec test d p_tam =
   with End_of_file -> ()
 
 let%test_unit "all_tam" =
-  let p_tam = "../../../../projet_Tests/tam/fichiersRat/" in
+  let p_tam = "../../../../../projet_Tests/tam/fichiersRat/" in
   let d = opendir p_tam in
   test d p_tam

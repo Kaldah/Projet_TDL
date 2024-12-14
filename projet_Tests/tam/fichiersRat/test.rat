@@ -1,7 +1,10 @@
-main{
-int ∗ px = (new int);
-int x = 423;
-px = &x;
-int y = (∗px);
-print y;
+prog {
+  const a = 5;
+  rat x = [6/a];
+  int y = (a+1);
+  x = (x + [3/2]);
+  while (y < 10) {
+    print ([a/y] * x);
+    y = (y + 1);
+  }
 }

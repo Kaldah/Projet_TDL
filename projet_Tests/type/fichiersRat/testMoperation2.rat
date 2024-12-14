@@ -1,5 +1,5 @@
 test{
     rat* px= null;
     rat* pz= (new rat);
-    bool r= px<pz;
+    bool r= (px<pz);
 }

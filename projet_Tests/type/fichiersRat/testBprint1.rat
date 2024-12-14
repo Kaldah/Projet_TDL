@@ -1,5 +1,5 @@
 int* add(int a, int b){
-    int r;
+    int r = [0/1];
     r= a+b;
     return (&r);
 }

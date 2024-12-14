@@ -1,4 +1,4 @@
 test{
     rat** px=null;
-    int x= num (*(*px));
+    int x= num (**px);
 }

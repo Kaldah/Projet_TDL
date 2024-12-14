@@ -1,41 +1,8 @@
 open Rat
 open Compilateur
-open Passe
 open Exceptions
 
 exception ErreurNonDetectee
-
-(* Return la liste des adresses des variables d'un programme RAT *)
-let getListeDep ratfile =
-  let input = open_in ratfile in
-  let filebuf = Lexing.from_channel input in
-  try
-  let ast = Parser.main Lexer.token filebuf in
-  let past = CompilateurRat.calculer_placement ast in
-  let listeAdresses = VerifPlacement.analyser past in
-  listeAdresses
-  with
-  | Lexer.Error _ as e ->
-      report_error ratfile filebuf "lexical error (unexpected character).";
-      raise e
-  | Parser.Error as e->
-      report_error ratfile filebuf "syntax error.";
-      raise e
-
-(* teste si dans le fichier fichier, dans la fonction fonction (main pour programme principal)
-la occ occurence de la variable var a l'adresse dep[registre]
-*)
-let test fichier fonction (var,occ) (dep,registre) = 
-  let l = getListeDep fichier in
-  let lmain = List.assoc fonction l in
-  let rec aux i lmain = 
-    if i=1 
-    then
-      let (d,r) = List.assoc var lmain in
-      (d=dep && r=registre)
-    else 
-      aux (i-1) (List.remove_assoc var lmain)
-  in aux occ lmain
 
 (****************************************)
 (** Chemin d'accès aux fichiers de test *)
@@ -143,3 +110,28 @@ with
 (*************)
 (* DÉFAUTS   *)
 (*************)
+
+
+
+(* Fichiers de tests de la génération de code -> doivent passer la TDS *)
+open Unix
+open Filename
+
+let rec test d p_tam = 
+  try 
+    let file = readdir d in
+    if (check_suffix file ".rat") 
+    then
+    (
+     try
+       let _ = compiler  (p_tam^file) in (); 
+     with e -> print_string (p_tam^file); print_newline(); raise e;
+    )
+    else ();
+    test d p_tam
+  with End_of_file -> ()
+
+let%test_unit "all_tam" =
+  let p_tam = "../../../../../projet_Tests/tam/fichiersRat/" in
+  let d = opendir p_tam in
+  test d p_tam

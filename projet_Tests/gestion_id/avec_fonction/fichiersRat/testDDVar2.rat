@@ -16,7 +16,7 @@ test{
     while (x<3){
         int* px= (new int);
         px=&x;
-        *px=(*px)+1;
+        *px=((*px)+1);
         x= (*px);
     }
 }

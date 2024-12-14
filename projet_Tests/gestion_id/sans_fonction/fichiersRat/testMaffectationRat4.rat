@@ -1,4 +1,4 @@
 test{
     rat x=[2/6];
-    (*px)= x;
+    *px= x;
 }

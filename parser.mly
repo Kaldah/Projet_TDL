@@ -67,7 +67,7 @@ bloc : AO li=i* AF      {li}
 
 a :
 | n=ID                              {Ident n}
-| PO MULT a=a PF                    {Deref a}
+| MULT a=a                          {Deref a}
 
 
 i :
