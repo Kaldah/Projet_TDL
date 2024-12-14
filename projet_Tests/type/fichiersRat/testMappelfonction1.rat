@@ -1,4 +1,3 @@
-ca plante
 bool* egalite(int a, int b){
     bool r= true;
     return (&r);

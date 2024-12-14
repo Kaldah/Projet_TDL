@@ -1,4 +1,3 @@
-ca plante
 test{
     int* px= (new int);
     int x=3;

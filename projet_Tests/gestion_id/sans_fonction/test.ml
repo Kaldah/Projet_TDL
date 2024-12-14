@@ -63,14 +63,14 @@ try
   let _ = compiler (pathFichiersRat^"testEDoubleDeclaration.rat") 
   in raise ErreurNonDetectee
 with
-| MauvaiseUtilisationIdentifiant("px") -> ()
+| DoubleDeclaration("px") -> ()
 
 let%test_unit "testEDoubleDeclaration2"= 
 try 
   let _ = compiler (pathFichiersRat^"testEDoubleDeclaration2.rat") 
   in raise ErreurNonDetectee
 with
-| MauvaiseUtilisationIdentifiant("px") -> ()
+| DoubleDeclaration("px") -> ()
 
 let%test_unit "testMaffectationRat1"= 
 try 

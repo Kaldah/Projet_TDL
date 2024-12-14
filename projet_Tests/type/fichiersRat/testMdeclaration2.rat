@@ -1,4 +1,3 @@
-ca plante
 test{
     int* px= (new rat);
 }

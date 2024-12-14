@@ -1,4 +1,3 @@
-ca plante
 rat* mult(int a, int b){
     rat x;
     int* p= null;

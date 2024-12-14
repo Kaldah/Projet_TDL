@@ -97,7 +97,7 @@ with
 
 let%test_unit "testDDVar1" = 
 try 
-  let _ = compiler (pathFichiersRat^"testDDVar1.rat")
+  let _ = compiler (pathFichiersRat^"testDDvar1.rat")
   in raise ErreurNonDetectee
 with
 | DoubleDeclaration("a") -> ()

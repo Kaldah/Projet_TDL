@@ -4,6 +4,6 @@ test{
     px=&i;
     while((*px)<5){
         i=i+1;
-        (*px)=(*px)+1;
+        *px=(*px)+1;
     }
 }

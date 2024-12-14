@@ -4,7 +4,6 @@ bool* egalite(int a, int b){
 }
 
 test{
-    bool e;
     bool** r= (new bool);
     *r=egalite(3,4);
 }

@@ -85,7 +85,7 @@ let%test_unit "testBdenominateur"=
 
 let%test_unit "testDeclaF1" = 
 try 
-  let _ = compiler (pathFichiersRat^"testDeclaF11.rat")
+  let _ = compiler (pathFichiersRat^"testDeclaF1.rat")
   in raise ErreurNonDetectee
 with
 | TypeInattendu(Rat, Int) -> ()

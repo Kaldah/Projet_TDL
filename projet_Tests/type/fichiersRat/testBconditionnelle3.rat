@@ -1,7 +1,7 @@
 test{
     bool* e= (new bool);
     bool** t=&e;
-    if((**t)){
+    if((*(*t))){
         int x=2;
     }else{
         int x=3;
