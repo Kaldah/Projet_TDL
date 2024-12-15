@@ -20,12 +20,12 @@ let rec get_type_affectable a =
       | InfoVar(_, t, _, _) -> t
       | InfoConst(_, _) -> Int
       | _ -> failwith "Erreur interne Ident"
-     )
+      )
   | AstTds.Deref a -> 
     let t = get_type_affectable a in
     (
     match t with
-      | Pointeur t -> t
+      | Pointeur d -> d
       | _ -> failwith "Erreur interne Deref"
     )
 
@@ -34,7 +34,8 @@ let rec analyse_code_affectable a en_ecriture =
   | AstTds.Ident info -> 
   (
     match (info_ast_to_info info)  with
-      | InfoVar(_, t, d, reg) -> let taille_type = (getTaille t) in 
+      | InfoVar(_, t, d, reg) ->
+      let taille_type = (getTaille t) in 
       (* On vérifie si on lit la variable ou si on l'affecte *)
         if en_ecriture then
           store taille_type d reg
@@ -43,14 +44,16 @@ let rec analyse_code_affectable a en_ecriture =
       | InfoConst(_, c) -> loadl_int c
       | _ -> failwith "Erreur interne Ident"
   )
-  | AstTds.Deref a -> 
+  | AstTds.Deref na -> 
     (* On load tout ce qu'on va utiliser *)
+    (* Obtient le type de na *)
     let t = get_type_affectable a in
     let taille = getTaille t in
-    let code_a = analyse_code_affectable a false in
+    let code_a = analyse_code_affectable na false in
+    
     (* On vérifie si on lit ou affecte la variable *)
     if en_ecriture then
-      (* Faire attention, vaut 1 tant qu'on déréférence un pointeur mais vaut 2 si c'est un RAT *)
+      (* Faire attention, taille vaut la taille après déréférencement *)
       code_a ^ (storei taille)
     else
       code_a ^ (loadi taille)
@@ -66,12 +69,11 @@ let rec analyse_code_expression e =
   | AstType.Affectable a -> analyse_code_affectable a false
   | AstType.New t -> 
     let taille_type = (getTaille t) in
-    (loadl_int taille_type) ^ (subr "MAlloc") ^ (pop 0 1)
+    (loadl_int taille_type) ^ (subr "MAlloc")
   | AstType.Adresse info -> 
   (
     match (info_ast_to_info info) with
-      | InfoVar(_, t, d, reg) -> 
-        let taille_type = (getTaille t) in load taille_type d reg
+      | InfoVar(_, _, d, reg) -> loada d reg
       | _ -> failwith "Erreur interne Ident"
   )
   | AstType.Null -> loadl_int 0
