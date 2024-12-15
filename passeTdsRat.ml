@@ -3,6 +3,7 @@
 open Tds
 open Exceptions
 open Ast
+open PrinterAst.PrinterAstSyntax
 
 type t1 = Ast.AstSyntax.programme
 type t2 = Ast.AstTds.programme
@@ -45,7 +46,7 @@ let rec analyse_gestion_id_affectable tds a en_ecriture =
     begin
       match na with 
       | Affectable(AstTds.Ident ia) -> Affectable (AstTds.Deref (AstTds.Ident ia))
-      | Affectable(AstTds.Deref a2) -> Affectable (AstTds.Deref a2)
+      | Affectable(AstTds.Deref a2) -> Affectable (AstTds.Deref (AstTds.Deref a2))
       | Expression (AstTds.Entier ent) -> Expression (AstTds.Entier ent)
       | _ -> failwith "Erreur de déréférencement"
     end

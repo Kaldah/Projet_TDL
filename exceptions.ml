@@ -14,3 +14,7 @@ exception TypeBinaireInattendu of binaire * typ * typ (* les types sont les type
 
 (* Utilisation illégale de return dans le programme principal *)
 exception RetourDansMain
+
+(* Exceptions pointeurs *)
+
+exception DereferencementImpossible of typ

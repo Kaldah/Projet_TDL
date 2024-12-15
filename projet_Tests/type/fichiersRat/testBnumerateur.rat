@@ -4,6 +4,8 @@ int nume( rat* n){
 
 test{
     rat* p= null;
-    rat** px=&p;
-    *px=nume(p);
+    *p = [1/1];
+    int * i = null;
+    int** ix=&i;
+    **ix=nume(p);
 }

@@ -17,6 +17,10 @@ let pathFichiersRat = "../../../../projet_Tests/type/fichiersRat/"
 (*************)
 (* POINTEURS *)
 (*************)
+
+let%test_unit "testPointeur"= 
+  let _ = compiler (pathFichiersRat^"testPointeur0.rat") in ()
+
 let%test_unit "testBaffectation1"= 
   let _ = compiler (pathFichiersRat^"testBaffectation1.rat") in ()
 
@@ -88,14 +92,14 @@ try
   let _ = compiler (pathFichiersRat^"testDeclaF1.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Rat, Int) -> ()
+| TypeInattendu(Pointeur Int, Pointeur Rat) -> ()
 
 let%test_unit "testDenominateur" = 
 try 
   let _ = compiler (pathFichiersRat^"testDenominateur.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Int, (Pointeur Int)) -> ()
+| TypeInattendu(Pointeur Int, Int) -> ()
 
 let%test_unit "testMaffectation" = 
 try 
@@ -258,7 +262,7 @@ try
   let _ = compiler (pathFichiersRat^"testMnumerateur2.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Int,(Pointeur Rat)) -> ()
+| TypeInattendu(Int, Rat) -> ()
 
 let%test_unit "testMoperation" = 
 try 
@@ -279,7 +283,7 @@ try
   let _ = compiler (pathFichiersRat^"testMoperation3.rat")
   in raise ErreurNonDetectee
 with
-| TypeBinaireInattendu(Plus, Int, Rat) -> ()
+| TypeBinaireInattendu(Inf, Int, Rat) -> ()
 
 let%test_unit "testMoperation4" = 
 try 

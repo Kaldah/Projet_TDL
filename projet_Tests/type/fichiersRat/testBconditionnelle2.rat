@@ -1,16 +1,16 @@
-int* add(int* a, int* b){
-    int r = [0/1];
-    r= ((*a) + (*b));
+int* add(int* a, int b){
+    int r = 0;
+    r= ((*a) + b);
     return (&r);
 }
 
 test{
-    int** r= (new int);
+    int* r= (new int);
     int* px= null;
     int i=0;
     px=&i;
     while((*px)<4){
-        *r= add(null,null);
+        r= add(r,0);
         *px= ((*px)+1);
     }
     

@@ -168,6 +168,8 @@ type bloc = instruction list
   | AffichageInt of expression
   | AffichageRat of expression
   | AffichageBool of expression
+  | AffichagePointeur of expression * typ
+  | AffichageNull of expression
   | Conditionnelle of expression * bloc * bloc
   | TantQue of expression * bloc
   | Retour of expression * Tds.info_ast

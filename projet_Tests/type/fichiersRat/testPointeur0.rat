@@ -1,0 +1,8 @@
+pointeur{
+    int * x = (new int);
+    int * * y = & x;
+    int z = 4;
+    *x = z;
+    *y = &z;
+    **y = 6;
+}

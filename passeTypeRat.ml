@@ -7,6 +7,7 @@ open Type
 type t1 = Ast.AstTds.programme
 type t2 = Ast.AstType.programme
 
+
 (* obtenir_type_info : info_ast -> typ *)
 (* Paramètre ia : l'information dont on veut obtenir le type *)
 (* Renvoie le type associé à l'information *)
@@ -16,12 +17,24 @@ let obtenir_type_info ia =
   | InfoVar (_,t,_,_) -> t            (* Si c'est une variable, on renvoie son type *)
   | InfoConst (_,_) -> Int            (* Si c'est une constante, le type est Int *)
 
+  let obtenir_nom_info ia = 
+    match (info_ast_to_info ia) with
+    | InfoFun (n,_,_) -> n              (* Si c'est une fonction, on renvoie son nom *)
+    | InfoVar (n,_,_,_) -> n            (* Si c'est une variable, on renvoie son nom *)
+    | InfoConst (n,_) -> n              (* Si c'est une constante, on renvoie son nom *)
+  
+let rec string_of_affectable a = 
+  match a with
+    | AstTds.Ident n -> obtenir_nom_info n ^ " (type : " ^ string_of_type (obtenir_type_info n) ^ ")"
+    | AstTds.Deref a -> "*" ^ (string_of_affectable a)
+
 (* analyse_type_affectable : AstTds.affectable -> AstType.affectable * typ *)
 (* Paramètre a : l'affectable à analyser *)
 (* Vérifie la bonne utilisation des types et tranforme l'affectable
 en un affectable de type AstType.affectable *)
 (* Erreur si mauvaise utilisation des types *)
-let rec analyse_type_affectable a = match a with
+let rec analyse_type_affectable a =
+  match a with
   | AstTds.Ident info -> 
     (
       match info_ast_to_info info with
@@ -34,7 +47,7 @@ let rec analyse_type_affectable a = match a with
     (
     match ta with
       | Pointeur t -> (AstTds.Deref na2, t)
-      | _ -> raise (Exceptions.TypeInattendu(ta, Pointeur Undefined))
+      | t -> raise (Exceptions.DereferencementImpossible t)
     )
 
 (* analyse_type_expression : AstTds.expression -> AstType.expression * typ *)
@@ -153,7 +166,6 @@ let rec analyse_type_instruction i =
         AstType.Affectation(na, ne)
       else
         raise (Exceptions.TypeInattendu(te, ta))
-
   | AstTds.Affichage (e) -> 
     let (ne, te) = analyse_type_expression e in
     (
@@ -161,17 +173,19 @@ let rec analyse_type_instruction i =
       | Int -> AstType.AffichageInt ne
       | Bool -> AstType.AffichageBool ne
       | Rat -> AstType.AffichageRat ne
-      | _ -> failwith "Erreur interne"
+      | Pointeur t -> AstType.AffichagePointeur(ne, t)
+      | Null -> AstType.AffichageNull ne
+      | _ -> failwith "Erreur interne Affichage"
     )
       
   | AstTds.Conditionnelle (c, t, e) ->
-    let (nc, te) = analyse_type_expression c in
-      if (est_compatible te Bool) then
+    let (nc, tc) = analyse_type_expression c in
+      if (est_compatible tc Bool) then
         let nbt = analyse_type_bloc t in
         let nbe = analyse_type_bloc e in
         AstType.Conditionnelle(nc, nbt, nbe)
       else
-        raise (Exceptions.TypeInattendu (te, Bool))
+        raise (Exceptions.TypeInattendu (tc, Bool))
 
   | AstTds.TantQue (e, b) -> 
     let (ne, te) = analyse_type_expression e in
