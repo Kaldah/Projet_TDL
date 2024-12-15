@@ -66,8 +66,8 @@ param : t=typ n=ID  {(t,n)}
 bloc : AO li=i* AF      {li}
 
 a :
-| n=ID                              {Ident n}
 | MULT a=a                          {Deref a}
+| n=ID                              {Ident n}
 
 
 i :
@@ -86,9 +86,9 @@ typ :
 | RAT     {Rat}
 
 e :
+| n=a                     {Affectable n}
 | n=ID PO lp=separated_list(VIRG,e) PF   {AppelFonction (n,lp)}
 | CO e1=e SLASH e2=e CF   {Binaire(Fraction,e1,e2)}
-| n=a                     {Affectable n}
 | TRUE                    {Booleen true}
 | FALSE                   {Booleen false}
 | e=ENTIER                {Entier e}
@@ -100,6 +100,5 @@ e :
 | PO e1=e INF e2=e PF     {Binaire (Inf,e1,e2)}
 | PO exp=e PF             {exp}
 | REF n=ID                {Adresse n}
-| NEW t=typ               {New t}
+| PO NEW t=typ  PF        {New t}
 | NULL                    {Null}
-

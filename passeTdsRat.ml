@@ -3,7 +3,7 @@
 open Tds
 open Exceptions
 open Ast
-open PrinterAst.PrinterAstSyntax
+(* open PrinterAst.PrinterAstSyntax *)
 
 type t1 = Ast.AstSyntax.programme
 type t2 = Ast.AstTds.programme
