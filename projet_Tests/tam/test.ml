@@ -41,13 +41,21 @@ let pathFichiersRat = "../../../../projet_Tests/tam/fichiersRat/"
 Vérifier l’absence d’erreurs lors de l’utilisation d’un pointeur null.
 *)
 
-let%expect_test "test" =
-  runtam (pathFichiersRat^"test.rat");
-  [%expect{| 42 |}]
+let%expect_test "testPointeur" =
+  runtam (pathFichiersRat^"testPointeur.rat");
+  [%expect{| 423 |}]
 
 (*************)
 (*  GLOBALES *)
 (*************)
+
+let%expect_test "testVarGlobales1" =
+  runtam (pathFichiersRat^"testVarGlobales1.rat");
+  [%expect{| 13574 |}]
+
+let%expect_test "testVarGlobalesEtPointeur" =
+  runtam (pathFichiersRat^"testVarGlobalesEtPointeur.rat");
+  [%expect{| 13574 |}]
 
 (*
 S’assurer que les instructions générées permettent une modification correcte depuis différentes fonctions.

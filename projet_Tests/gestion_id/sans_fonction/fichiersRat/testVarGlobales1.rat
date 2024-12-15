@@ -1,0 +1,9 @@
+static int a = 3;
+
+test{
+    int b= a;
+    int* pa= (new int);
+    pa=&a;
+    int* pb= (new int);
+    pb=&a;
+}

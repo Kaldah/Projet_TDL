@@ -1,0 +1,7 @@
+static rat a = [3/2];
+
+test{
+    rat r = a;
+    rat* px= (new rat);
+    px=&a;
+}

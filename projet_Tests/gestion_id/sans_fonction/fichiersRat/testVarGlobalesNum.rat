@@ -1,0 +1,9 @@
+static rat a = [3/2];
+
+test{
+    rat r = a;
+    int b = (num r);
+    int c = (num a);
+    rat* px= (new rat);
+    px=&a;
+}

@@ -159,6 +159,7 @@ let rec analyse_code_expression e =
     let (_, t, d, reg) = quadruplet_info_var ia in
     let taille_type = (getTaille t) in 
     (push taille_type) ^ (analyse_code_expression e) ^ (store taille_type d reg)
+    
 
 let analyser (AstPlacement.Programme (vg, fonctions, prog)) = 
   let code_vg = concat_code (List.map analyse_code_variables_globales vg) in

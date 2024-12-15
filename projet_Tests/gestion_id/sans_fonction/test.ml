@@ -172,6 +172,26 @@ Valider l’unicité des noms de variables globales.
 Vérifier que les variables globales sont accessibles depuis n’importe quelle fonction.
 *)
 
+let%test_unit "testVarGlobales1"= 
+  let _ = compiler (pathFichiersRat^"testVarGlobales1.rat") in ()
+
+let%test_unit "testVarGlobales2"= 
+  let _ = compiler (pathFichiersRat^"testVarGlobales2.rat") in ()
+
+let%test_unit "testVarGlobales3"= 
+  let _ = compiler (pathFichiersRat^"testVarGlobales3.rat") in ()
+
+let%test_unit "testVarGlobalesNum"= 
+  let _ = compiler (pathFichiersRat^"testVarGlobalesNum.rat") in ()
+
+
+let%test_unit "testVarGlobalesDoubleDeclaration"= 
+try 
+  let _ = compiler (pathFichiersRat^"testVarGlobalesDoubleDeclaration.rat") 
+  in raise ErreurNonDetectee
+with
+| DoubleDeclaration("a") -> ()
+
 (*************)
 (*  LOCALES  *)
 (*************)

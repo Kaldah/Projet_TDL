@@ -58,11 +58,11 @@ open Ast.AstSyntax
 
 %%
 
+var : STATIC t=typ n=ID EQUAL e1=e PV {Var (n,t, e1)}
+
 main : lfi=prog EOF     {lfi}
 
 prog : lg=var* lf=fonc* ID li=bloc  {Programme (lg,lf,li)}
-
-var : STATIC t=typ n=ID EQUAL e1=e PV {Var (n,t, e1)}
 
 fonc : t=typ n=ID PO lp=separated_list(VIRG,param) PF li=bloc {Fonction(t,n,lp,li)}
 
@@ -78,14 +78,15 @@ a :
 
 
 i :
-| STATIC t=typ n=ID EQUAL e1=e PV   {DeclarationStatic (n,t,e1)}
 | t=typ n=ID EQUAL e1=e PV          {Declaration (t,n,e1)}
 | n=a EQUAL e1=e PV                 {Affectation (n,e1)}
-| CONST n=ID EQUAL e=ENTIER PV      {Constante (n,e)}
+| CONST n=ID EQUAL e1=ENTIER PV      {Constante (n,e1)}
 | PRINT e1=e PV                     {Affichage (e1)}
 | IF exp=e li1=bloc ELSE li2=bloc   {Conditionnelle (exp,li1,li2)}
 | WHILE exp=e li=bloc               {TantQue (exp,li)}
 | RETURN exp=e PV                   {Retour (exp)}
+| STATIC t=typ n=ID EQUAL e1=e PV   {DeclarationStatic (n,t,e1)}
+
 
 typ :
 | t=typ MULT {Pointeur t}
