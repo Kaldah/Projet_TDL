@@ -61,7 +61,7 @@ type defaut = Defaut of expression
 type bloc = instruction list
 and instruction =
   (* Déclaration et affectation d'une variable static *)
-  | Static of string * typ * expression
+  | DeclarationStatic of string * typ * expression
   (* Déclaration de variable représentée par son type, son nom et l'expression d'initialisation *)
   | Declaration of typ * string * expression
   (* Affectation d'une variable représentée par son affectable et la nouvelle valeur affectée *)
@@ -126,7 +126,7 @@ type defaut = Defaut of expression
   + suppression de nœuds (const) *)
   type bloc = instruction list
   and instruction =
-    | Static of Tds.info_ast * expression
+    | DeclarationStatic of Tds.info_ast * expression
     | Declaration of typ * Tds.info_ast * expression (* le nom de l'identifiant est remplacé par ses informations *)
     | Affectation of  affectable * expression (* le nom de l'identifiant est remplacé par ses informations *)
     | Affichage of expression
@@ -183,7 +183,7 @@ type defaut = Defaut of expression
 (* + résolution de la surcharge de l'affichage *)
 type bloc = instruction list
  and instruction =
-  | Static of Tds.info_ast * expression
+  | DeclarationStatic of Tds.info_ast * expression
   | Declaration of Tds.info_ast * expression
   | Affectation of affectable * expression
   | AffichageInt of expression
@@ -224,7 +224,7 @@ type defaut = AstType.defaut
 (* instructions existantes dans notre langage *)
 type bloc = instruction list * int (* taille du bloc *)
  and instruction =
- | Static of Tds.info_ast * expression
+ | DeclarationStatic of Tds.info_ast * expression
  | Declaration of Tds.info_ast * expression
  | Affectation of AstTds.affectable * expression
  | AffichageInt of expression

@@ -3,8 +3,13 @@ open Type
 
 (* Définition du type des informations associées aux identifiants *)
 type info =
+  (* nom, valeur *)
   | InfoConst of string * int
+  (* nom, type, déplacement, registre *)
   | InfoVar of string * typ * int * string
+  (* nom, type, déplacement, registre, est_initialisée *)
+  | InfoStaticVar of string * typ * int * string * bool
+  (* nom, type retour, liste des paramètres *)
   | InfoFun of string * typ * typ list
 
 (* Données stockées dans la tds  et dans les AST : pointeur sur une information *)
@@ -285,6 +290,7 @@ let string_of_info info =
   match info with
   | InfoConst (n,value) -> "Constante "^n^" : "^(string_of_int value)
   | InfoVar (n,t,dep,base) -> "Variable "^n^" : "^(string_of_type t)^" "^(string_of_int dep)^"["^base^"]"
+  | InfoStaticVar (n,t,dep,base,init) -> "Variable statique "^n^" : "^(string_of_type t)^" "^(string_of_int dep)^"["^base^"] initialisée : "^(string_of_bool init)
   | InfoFun (n,t,tp) -> "Fonction "^n^" : "^(List.fold_right (fun elt tq -> if tq = "" then (string_of_type elt) else (string_of_type elt)^" * "^tq) tp "" )^
                       " -> "^(string_of_type t)
 

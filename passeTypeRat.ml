@@ -15,12 +15,14 @@ let obtenir_type_info ia =
   match (info_ast_to_info ia) with
   | InfoFun (_,t,_) -> t              (* Si c'est une fonction, on renvoie son type *)
   | InfoVar (_,t,_,_) -> t            (* Si c'est une variable, on renvoie son type *)
+  | InfoStaticVar (_,t,_,_,_) -> t    (* Si c'est une variable statique, on renvoie son type *)
   | InfoConst (_,_) -> Int            (* Si c'est une constante, le type est Int *)
 
   let obtenir_nom_info ia = 
     match (info_ast_to_info ia) with
     | InfoFun (n,_,_) -> n              (* Si c'est une fonction, on renvoie son nom *)
     | InfoVar (n,_,_,_) -> n            (* Si c'est une variable, on renvoie son nom *)
+    | InfoStaticVar (n,_,_,_,_) -> n    (* Si c'est une variable statique, on renvoie son nom *)
     | InfoConst (n,_) -> n              (* Si c'est une constante, on renvoie son nom *)
   
 let rec string_of_affectable a = 
@@ -151,10 +153,10 @@ en une instruction de type AstType.instruction *)
 (* Erreur si mauvaise utilisation des types *)
 let rec analyse_type_instruction i = 
   match i with
-  | AstTds.Static (info, e) -> 
+  | AstTds.DeclarationStatic (info, e) -> 
     let (ne, te) = analyse_type_expression e in
     if (est_compatible te Int) then
-      AstType.Static(info, ne)
+      AstType.DeclarationStatic(info, ne)
     else
       raise (Exceptions.TypeInattendu(te, Int))
   | AstTds.Declaration (t, info , e) ->

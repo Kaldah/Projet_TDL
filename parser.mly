@@ -78,7 +78,7 @@ a :
 
 
 i :
-| STATIC t=typ n=ID EQUAL e1=e PV   {Static (n,t,e1)}
+| STATIC t=typ n=ID EQUAL e1=e PV   {DeclarationStatic (n,t,e1)}
 | t=typ n=ID EQUAL e1=e PV          {Declaration (t,n,e1)}
 | n=a EQUAL e1=e PV                 {Affectation (n,e1)}
 | CONST n=ID EQUAL e=ENTIER PV      {Constante (n,e)}

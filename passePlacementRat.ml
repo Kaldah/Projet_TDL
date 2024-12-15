@@ -10,7 +10,7 @@ type t2 = Ast.AstPlacement.programme
 
 let rec analyse_placement_instruction i depl reg =
 match i with
-  | AstType.Static (info, e) -> (AstPlacement.Static(info, e), 0)
+  | AstType.DeclarationStatic (info, e) -> (AstPlacement.DeclarationStatic(info, e), 0)
   | AstType.Declaration (info, e) -> 
     (
     match (info_ast_to_info info) with
@@ -77,8 +77,27 @@ let analyse_placement_fonction (AstType.Fonction(info,lp, li )) =
     AstPlacement.Fonction(info, lp, (analyse_placement_bloc li 3 "LB"))
   | _-> failwith "Erreur interne Placement Fonction"
 
+let analyse_placement_variable_globale lg = 
+
+  let rec aux_globales lg compteur = 
+  match lg with
+  | [] -> (compteur, [])
+  | h::q -> 
+    begin
+    match h with
+    | AstType.Var(info, e) -> 
+      (
+      match (info_ast_to_info info) with
+      | InfoVar(_, t, _, _) -> 
+        modifier_adresse_variable compteur "SB" info;
+        let (ncompteur, nlg) = aux_globales q (compteur + (getTaille t)) in
+        (ncompteur, (AstType.Var(info, e))::nlg)
+      | _ -> failwith "Erreur interne"
+      )
+    end 
+    in aux_globales (List.rev lg) 0
 let analyser (AstType.Programme (lg, fonctions, prog)) = 
-  let nlg = lg in
+  let (depl, nlg) = analyse_placement_variable_globale lg in
   let nfs = List.map analyse_placement_fonction fonctions in
-  let np = analyse_placement_bloc prog 0 "SB" in
+  let np = analyse_placement_bloc prog depl "SB" in
   AstPlacement.Programme (nlg, nfs,np)

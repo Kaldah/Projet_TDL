@@ -3,7 +3,7 @@
 open Tds
 open Exceptions
 open Ast
-open PrinterAst.PrinterAstSyntax
+(* open PrinterAst.PrinterAstSyntax *)
 
 type t1 = Ast.AstSyntax.programme
 type t2 = Ast.AstTds.programme
@@ -51,12 +51,14 @@ let rec analyse_gestion_id_affectable tds a en_ecriture =
       | _ -> failwith "Erreur de déréférencement"
     end
 
+(* On commente pour éviter un Warning - Utile pour le débugage
 (* afficher_expression : tds -> unit *)
 (* Paramètre tds : la table des symboles à afficher *)
 (* Affiche la table des symboles *)
 let afficher_expression_ast e = 
   print_string (PrinterAst.PrinterAstSyntax.string_of_expression e);
   print_newline ();;
+*)
 
 (* analyse_tds_expression : tds -> AstSyntax.expression -> AstTds.expression *)
 (* Paramètre tds : la table des symboles courante *)
@@ -120,8 +122,8 @@ en une instruction de type AstTds.instruction *)
 (* Erreur si mauvaise utilisation des identifiants *)
 let rec analyse_tds_instruction tds oia i =
   match i with
-  | AstSyntax.Static (n, t, e) -> 
-      AstTds.Static (info_to_info_ast (InfoVar(n, t, 0, "")), analyse_tds_expression tds e)
+  | AstSyntax.DeclarationStatic (n, t, e) -> 
+      AstTds.DeclarationStatic (info_to_info_ast (InfoVar(n, t, 0, "")), analyse_tds_expression tds e)
   | AstSyntax.Declaration (t, n, e) ->
       begin
         match chercherLocalement tds n with
@@ -270,7 +272,7 @@ let analyse_tds_fonction maintds (AstSyntax.Fonction(t,n,lp,li))  =
   let bloc = analyse_tds_bloc tds_param (Some info_fun) li in
   AstTds.Fonction (t, info_fun, infos_param, bloc)
 
-let analyse_gestion_id_variable_locale tds (AstSyntax.Var(n,t,e)) = 
+let analyse_gestion_id_variable_globale tds (AstSyntax.Var(n,t,e)) = 
   match chercherLocalement tds n with
   | None -> 
     let ne = analyse_tds_expression tds e in
@@ -288,7 +290,7 @@ en un programme de type AstTds.programme *)
 (* Erreur si mauvaise utilisation des identifiants *)
 let analyser (AstSyntax.Programme (lg, fonctions,prog)) =
   let tds = creerTDSMere () in
-  let nlg = List.map (analyse_gestion_id_variable_locale tds) lg in
+  let nlg = List.map (analyse_gestion_id_variable_globale tds) lg in
   let nf = List.map (analyse_tds_fonction tds) fonctions in
   let nb = analyse_tds_bloc tds None prog in
   AstTds.Programme (nlg, nf,nb)
