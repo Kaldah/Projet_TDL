@@ -10,6 +10,7 @@ type t2 = Ast.AstPlacement.programme
 
 let rec analyse_placement_instruction i depl reg =
 match i with
+  | AstType.Static (info, e) -> (AstPlacement.Static(info, e), 0)
   | AstType.Declaration (info, e) -> 
     (
     match (info_ast_to_info info) with
@@ -76,7 +77,8 @@ let analyse_placement_fonction (AstType.Fonction(info,lp, li )) =
     AstPlacement.Fonction(info, lp, (analyse_placement_bloc li 3 "LB"))
   | _-> failwith "Erreur interne Placement Fonction"
 
-let analyser (AstType.Programme (fonctions, prog)) = 
+let analyser (AstType.Programme (lg, fonctions, prog)) = 
+  let nlg = lg in
   let nfs = List.map analyse_placement_fonction fonctions in
   let np = analyse_placement_bloc prog 0 "SB" in
-  AstPlacement.Programme (nfs,np)
+  AstPlacement.Programme (nlg, nfs,np)

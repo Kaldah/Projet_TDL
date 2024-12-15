@@ -39,9 +39,11 @@ open Ast.AstSyntax
 %token NEW
 %token NULL
 %token REF
+%token STATIC
 
 (* Type de l'attribut synthétisé des non-terminaux *)
 %type <programme> prog
+%type <variable_globale> var
 %type <instruction list> bloc
 %type <fonction> fonc
 %type <instruction> i
@@ -49,6 +51,7 @@ open Ast.AstSyntax
 %type <typ*string> param
 %type <expression> e
 %type <affectable> a
+%type <defaut> d
 
 (* Type et définition de l'axiome *)
 %start <Ast.AstSyntax.programme> main
@@ -57,13 +60,17 @@ open Ast.AstSyntax
 
 main : lfi=prog EOF     {lfi}
 
-prog : lf=fonc* ID li=bloc  {Programme (lf,li)}
+prog : lg=var* lf=fonc* ID li=bloc  {Programme (lg,lf,li)}
+
+var : STATIC t=typ n=ID EQUAL e1=e PV {Var (n,t, e1)}
 
 fonc : t=typ n=ID PO lp=separated_list(VIRG,param) PF li=bloc {Fonction(t,n,lp,li)}
 
-param : t=typ n=ID  {(t,n)}
+param : t=typ n=ID  option(d)  {(t,n)}
 
 bloc : AO li=i* AF      {li}
+
+d : EQUAL e1=e         {Defaut e1}
 
 a :
 | MULT a=a                          {Deref a}
@@ -71,6 +78,7 @@ a :
 
 
 i :
+| STATIC t=typ n=ID EQUAL e1=e PV   {Static (n,t,e1)}
 | t=typ n=ID EQUAL e1=e PV          {Declaration (t,n,e1)}
 | n=a EQUAL e1=e PV                 {Affectation (n,e1)}
 | CONST n=ID EQUAL e=ENTIER PV      {Constante (n,e)}

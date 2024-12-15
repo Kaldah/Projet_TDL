@@ -151,6 +151,12 @@ en une instruction de type AstType.instruction *)
 (* Erreur si mauvaise utilisation des types *)
 let rec analyse_type_instruction i = 
   match i with
+  | AstTds.Static (info, e) -> 
+    let (ne, te) = analyse_type_expression e in
+    if (est_compatible te Int) then
+      AstType.Static(info, ne)
+    else
+      raise (Exceptions.TypeInattendu(te, Int))
   | AstTds.Declaration (t, info , e) ->
     (* On vérifie si les types sont compatibles *)
       let (ne, te) = analyse_type_expression e in 
@@ -233,13 +239,21 @@ let analyse_type_fonction (AstTds.Fonction(_,info,lp,li))  =
   let analyse_type_fonctions lf =
     List.map analyse_type_fonction lf
 
+let analyse_type_variable_globale (AstTds.Var(info, e)) =
+  let (ne, te) = analyse_type_expression e in
+  let t = obtenir_type_info info in
+  if (est_compatible t te) then
+    AstType.Var(info, ne)
+  else
+    raise (Exceptions.TypeInattendu(te, t))
 
 (* analyser : AstTds.programme -> AstType.programme *)
 (* Paramètre : le programme à analyser *)
 (* Vérifie la bonne utilisation des types et tranforme le programme
 en un programme de type AstType.programme *)
 (* Erreur si mauvaise utilisation des types *)
-let analyser (AstTds.Programme (fonctions, prog)) =
+let analyser (AstTds.Programme (lg, fonctions, prog)) =
+  let nlg = List.map analyse_type_variable_globale lg in
   let nfs = analyse_type_fonctions fonctions in
   let np = analyse_type_bloc prog in
-  AstType.Programme (nfs,np)
+  AstType.Programme (nlg, nfs,np)

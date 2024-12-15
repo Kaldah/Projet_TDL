@@ -28,7 +28,6 @@ let rec get_type_affectable a =
       | Pointeur d -> d
       | _ -> failwith "Erreur interne Deref"
     )
-
 let rec analyse_code_affectable a en_ecriture = 
   match a with
   | AstTds.Ident info -> 
@@ -107,6 +106,10 @@ let rec analyse_code_expression e =
 
   let rec analyse_code_instruction i =
     match i with
+    | AstPlacement.Static (info, e) -> let (_, t, d, reg) = quadruplet_info_var info in
+      let taille_type_e = (getTaille t) in
+        (analyse_code_expression e) ^ (store taille_type_e d reg)
+
     | AstPlacement.Declaration ( info , e) -> let (_, t, d, reg) = quadruplet_info_var info in
     let taille_type_e = (getTaille t) in 
     (push taille_type_e) ^ (analyse_code_expression e) ^ (store taille_type_e d reg)
@@ -149,11 +152,16 @@ let rec analyse_code_expression e =
     (concat_code liste_codes) ^ (pop 0 taille)
 
   let analyse_code_fonction (AstPlacement.Fonction (info ,_ , bloc)) = 
+    let nom, _, _ = triplet_info_fun info in
+      (label nom) ^ analyse_code_bloc bloc ^ halt
 
-  let nom, _, _ = triplet_info_fun info in
-  (label nom) ^ analyse_code_bloc bloc ^ halt
+  let rec analyse_code_variables_globales (AstType.Var (ia, e)) = 
+  let taille_type = (getTaille Int) in
+  (loadl_int 0) ^ (subr "MAlloc") ^ (analyse_code_expression e) ^ (store taille_type 1 "")
 
-let analyser (AstPlacement.Programme (fonctions, prog)) = 
+
+let analyser (AstPlacement.Programme (vg, fonctions, prog)) = 
+  let code_vg = concat_code (List.map analyse_code_variables_globales vg) in
   let code_fonctions = concat_code (List.map analyse_code_fonction fonctions) in 
   let code_prog = "main\n" ^ (analyse_code_bloc prog) ^ halt in
   let code_complet = (getEntete ()) ^ code_fonctions ^ code_prog in

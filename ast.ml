@@ -8,6 +8,8 @@ sig
    type fonction
    type programme
    type affectable
+   type variable_globale
+   type defaut
 end
 
 
@@ -50,9 +52,16 @@ type expression =
   (* Type Null *)
   | Null
 
+type variable_globale = Var of string * typ * expression
+
+type defaut = Defaut of expression
+
+
 (* Instructions de Rat *)
 type bloc = instruction list
 and instruction =
+  (* Déclaration et affectation d'une variable static *)
+  | Static of string * typ * expression
   (* Déclaration de variable représentée par son type, son nom et l'expression d'initialisation *)
   | Declaration of typ * string * expression
   (* Affectation d'une variable représentée par son affectable et la nouvelle valeur affectée *)
@@ -74,7 +83,7 @@ type fonction = Fonction of typ * string * (typ * string) list * bloc
 
 (* Structure d'un programme Rat *)
 (* liste de fonction - programme principal *)
-type programme = Programme of fonction list * bloc
+type programme = Programme of variable_globale list * fonction list * bloc
 
 end
 
@@ -106,12 +115,18 @@ type affectable =
     | Adresse of Tds.info_ast
     | Null
 
+(* le nom de l'identifiant est remplacé par ses informations *)
+type variable_globale = Var of Tds.info_ast * expression
+
+type defaut = Defaut of expression
+
   (* instructions existantes dans notre langage *)
   (* ~ instruction de l'AST syntaxique où les noms des identifiants ont été
   remplacés par les informations associées aux identificateurs
   + suppression de nœuds (const) *)
   type bloc = instruction list
   and instruction =
+    | Static of Tds.info_ast * expression
     | Declaration of typ * Tds.info_ast * expression (* le nom de l'identifiant est remplacé par ses informations *)
     | Affectation of  affectable * expression (* le nom de l'identifiant est remplacé par ses informations *)
     | Affichage of expression
@@ -126,7 +141,7 @@ type affectable =
   type fonction = Fonction of typ * Tds.info_ast * (typ * Tds.info_ast ) list * bloc
 
   (* Structure d'un programme dans notre langage *)
-  type programme = Programme of fonction list * bloc
+  type programme = Programme of variable_globale list * fonction list * bloc
 
 end
 
@@ -158,11 +173,17 @@ type expression =
   | Adresse of Tds.info_ast
   | Null
 
+type variable_globale = Var of Tds.info_ast * expression
+
+type defaut = Defaut of expression
+
+
 (* instructions existantes Rat *)
 (* = instruction de AstTds + informations associées aux identificateurs, mises à jour *)
 (* + résolution de la surcharge de l'affichage *)
 type bloc = instruction list
  and instruction =
+  | Static of Tds.info_ast * expression
   | Declaration of Tds.info_ast * expression
   | Affectation of affectable * expression
   | AffichageInt of expression
@@ -179,7 +200,7 @@ type bloc = instruction list
 type fonction = Fonction of Tds.info_ast * Tds.info_ast list * bloc
 
 (* Structure d'un programme dans notre langage *)
-type programme = Programme of fonction list * bloc
+type programme = Programme of variable_globale list * fonction list * bloc
 
 end
 
@@ -195,9 +216,15 @@ type expression = AstType.expression
 
 type affectable = AstTds.affectable
 
+type variable_globale = AstType.variable_globale
+
+type defaut = AstType.defaut
+
+
 (* instructions existantes dans notre langage *)
 type bloc = instruction list * int (* taille du bloc *)
  and instruction =
+ | Static of Tds.info_ast * expression
  | Declaration of Tds.info_ast * expression
  | Affectation of AstTds.affectable * expression
  | AffichageInt of expression
@@ -215,6 +242,6 @@ type bloc = instruction list * int (* taille du bloc *)
 type fonction = Fonction of Tds.info_ast * Tds.info_ast list * bloc
 
 (* Structure d'un programme dans notre langage *)
-type programme = Programme of fonction list * bloc
+type programme = Programme of variable_globale list * fonction list * bloc
 
 end
