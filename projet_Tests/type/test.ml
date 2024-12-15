@@ -99,63 +99,63 @@ try
   let _ = compiler (pathFichiersRat^"testDenominateur.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Pointeur Int, Int) -> ()
+| TypeInattendu(Pointeur Int, Rat) -> ()
 
 let%test_unit "testMaffectation" = 
 try 
   let _ = compiler (pathFichiersRat^"testMaffectation.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu((Pointeur Rat), Pointeur( (Pointeur Rat))) -> ()
+| TypeInattendu(Pointeur( (Pointeur Rat)), (Pointeur Rat)) -> ()
 
 let%test_unit "testMaffectation1" = 
 try 
   let _ = compiler (pathFichiersRat^"testMaffectation1.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Int, Rat) -> ()
+| TypeInattendu(Rat, Int) -> ()
 
 let%test_unit "testMaffectation3" = 
 try 
   let _ = compiler (pathFichiersRat^"testMaffectation3.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Bool, Rat) -> ()
+| TypeInattendu(Rat, Bool) -> ()
 
 let%test_unit "testMaffectation4" = 
 try 
   let _ = compiler (pathFichiersRat^"testMaffectation4.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu((Pointeur Bool), (Pointeur Rat)) -> ()
+| TypeInattendu(Pointeur Rat, Pointeur Bool) -> ()
 
 let%test_unit "testMaffectation5" = 
 try 
   let _ = compiler (pathFichiersRat^"testMaffectation5.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu((Pointeur Rat), Rat) -> ()
+| TypeInattendu(Rat, Pointeur Rat) -> ()
 
 let%test_unit "testMaffectation6" = 
 try 
   let _ = compiler (pathFichiersRat^"testMaffectation6.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu((Pointeur (Pointeur Int)), (Pointeur Bool)) -> ()
+| TypeInattendu(Pointeur Bool, Pointeur (Pointeur Int)) -> ()
 
 let%test_unit "testMappelfonction1" = 
 try 
   let _ = compiler (pathFichiersRat^"testMappelfonction1.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu((Pointeur (Pointeur Bool)), (Pointeur Bool)) -> ()
+| TypeInattendu(Pointeur Bool, Pointeur (Pointeur Bool)) -> ()
 
 let%test_unit "testMconditionnelle" = 
 try 
   let _ = compiler (pathFichiersRat^"testMconditionnelle.rat")
   in raise ErreurNonDetectee
 with
-| TypeBinaireInattendu(Equ,Int,Rat) -> ()
+| TypeBinaireInattendu(Equ,Pointeur _, Int) -> ()
 
 let%test_unit "testMconditionnelle2" = 
 try 
@@ -169,21 +169,21 @@ try
   let _ = compiler (pathFichiersRat^"testMdeclaPointeurInt3.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu((Pointeur Int),Rat) -> ()
+| TypeInattendu(Pointeur Rat, Pointeur Int) -> ()
 
 let%test_unit "testMdeclaration1" = 
 try 
   let _ = compiler (pathFichiersRat^"testMdeclaration1.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu((Pointeur Rat),Int) -> ()
+| TypeInattendu(Pointeur Int, Pointeur Rat) -> ()
 
 let%test_unit "testMdeclaration2" = 
 try 
   let _ = compiler (pathFichiersRat^"testMdeclaration2.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu((Pointeur Int),Rat) -> ()
+| TypeInattendu(Pointeur Rat, Pointeur Int) -> ()
 
 (*a verifier et a confirmer*)
 
@@ -192,91 +192,91 @@ try
   let _ = compiler (pathFichiersRat^"testMdeclaration3.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Pointeur((Pointeur Rat)),(Pointeur (Pointeur Int))) -> ()
+| TypeInattendu(Pointeur (Pointeur Int), Pointeur(Pointeur Rat)) -> ()
 
 let%test_unit "testMdeclaration4" = 
 try 
   let _ = compiler (pathFichiersRat^"testMdeclaration4.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Pointeur((Pointeur Int)),(Pointeur (Pointeur Rat))) -> ()
+| TypeInattendu(Pointeur (Pointeur Rat), Pointeur(Pointeur Int)) -> ()
 
 let%test_unit "testMdeclaration5" = 
 try 
   let _ = compiler (pathFichiersRat^"testMdeclaration5.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Rat,Null) -> ()
+| TypeInattendu(Null, Rat) -> ()
 
 let%test_unit "testMdeclaration6" = 
 try 
   let _ = compiler (pathFichiersRat^"testMdeclaration6.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Int,Null) -> ()
+| TypeInattendu(Null, Int) -> ()
 
 let%test_unit "testMdenominateur" = 
 try 
   let _ = compiler (pathFichiersRat^"testMdenominateur.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Int,Bool) -> ()
+| TypeInattendu(Bool, Rat) -> ()
 
 let%test_unit "testMident" = 
 try 
   let _ = compiler (pathFichiersRat^"testMident.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu((Pointeur Rat),(Pointeur Int)) -> ()
+| TypeInattendu(Pointeur Int, Pointeur Rat) -> ()
 
 let%test_unit "testMident1" = 
 try 
   let _ = compiler (pathFichiersRat^"testMident1.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu((Pointeur Int),(Pointeur Bool)) -> ()
+| TypeInattendu(Pointeur Bool, Pointeur Int) -> ()
 
 let%test_unit "testMident3" = 
 try 
   let _ = compiler (pathFichiersRat^"testMident3.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu((Pointeur Bool),(Pointeur Rat)) -> ()
+| TypeInattendu(Pointeur Rat, Pointeur Bool) -> ()
 
 let%test_unit "testMident4" = 
 try 
   let _ = compiler (pathFichiersRat^"testMident4.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Pointeur((Pointeur Rat)),(Pointeur Rat)) -> ()
+| TypeInattendu(Pointeur Rat, Pointeur(Pointeur Rat)) -> ()
 
 let%test_unit "testMnumerateur" = 
 try 
   let _ = compiler (pathFichiersRat^"testMnumerateur.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Int,Bool) -> ()
+| TypeInattendu(Bool, Rat) -> ()
 
 let%test_unit "testMnumerateur2" = 
 try 
   let _ = compiler (pathFichiersRat^"testMnumerateur2.rat")
   in raise ErreurNonDetectee
 with
-| TypeInattendu(Int, Rat) -> ()
+| TypeInattendu(Pointeur Rat, Rat) -> ()
 
 let%test_unit "testMoperation" = 
 try 
   let _ = compiler (pathFichiersRat^"testMoperation.rat")
   in raise ErreurNonDetectee
 with
-| TypeBinaireInattendu(Plus,(Pointeur Int),(Pointeur Int)) -> ()
+| TypeBinaireInattendu(Plus, Pointeur Int, Pointeur Int) -> ()
 
 let%test_unit "testMoperation2" = 
 try 
   let _ = compiler (pathFichiersRat^"testMoperation2.rat")
   in raise ErreurNonDetectee
 with
-| TypeBinaireInattendu(Inf,(Pointeur Rat),(Pointeur Rat)) -> ()
+| TypeBinaireInattendu(Inf, Pointeur Rat, Pointeur Rat) -> ()
 
 let%test_unit "testMoperation3" = 
 try 
@@ -290,7 +290,7 @@ try
   let _ = compiler (pathFichiersRat^"testMoperation4.rat")
   in raise ErreurNonDetectee
 with
-| TypeBinaireInattendu(Inf,Pointeur((Pointeur Int)),(Pointeur Int)) -> ()
+| TypeBinaireInattendu(Inf, Pointeur(Pointeur Int), Pointeur Int) -> ()
 
 
 
