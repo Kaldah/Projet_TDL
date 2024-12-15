@@ -123,6 +123,10 @@ let rec analyse_code_expression e =
     | AstPlacement.AffichageInt e -> analyse_code_expression e ^ (subr "IOut")
     | AstPlacement.AffichageRat e -> analyse_code_expression e ^ (call "ST" "ROut")
     | AstPlacement.AffichageBool e -> analyse_code_expression e ^ (subr "BOut")
+    | AstPlacement.AffichagePointeur (e, t) -> 
+      let taille_type = (getTaille t) in
+      analyse_code_expression e ^ (loadi taille_type) ^ (subr "IOut")
+    | AstPlacement.AffichageNull e -> analyse_code_expression e ^ (subr "SOut")
 
     | AstPlacement.Conditionnelle (c, t , e) -> 
       let etiquetteE = getEtiquette () in 

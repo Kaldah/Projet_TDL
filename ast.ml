@@ -203,6 +203,8 @@ type bloc = instruction list * int (* taille du bloc *)
  | AffichageInt of expression
  | AffichageRat of expression
  | AffichageBool of expression
+ | AffichagePointeur of expression * typ
+ | AffichageNull of expression
  | Conditionnelle of expression * bloc * bloc
  | TantQue of expression * bloc
  | Retour of expression * int * int (* taille du retour et taille des paramètres *)

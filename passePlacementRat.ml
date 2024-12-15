@@ -36,6 +36,8 @@ match i with
   | AstType.AffichageInt e -> (AstPlacement.AffichageInt e, 0)
   | AstType.AffichageRat e -> (AstPlacement.AffichageRat e, 0)
   | AstType.AffichageBool e -> (AstPlacement.AffichageBool e, 0)
+  | AstType.AffichagePointeur (e, t) -> (AstPlacement.AffichagePointeur (e, t), 0)
+  | AstType.AffichageNull e -> (AstPlacement.AffichageNull e, 0)
   | AstType.Empty -> (AstPlacement.Empty, 0)
 and
 analyse_placement_bloc li depl reg =

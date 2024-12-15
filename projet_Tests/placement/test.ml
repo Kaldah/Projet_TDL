@@ -45,9 +45,6 @@ let pathFichiersRat = "../../../../projet_Tests/placement/fichiersRat/"
 (**********)
 
 
-let%test "test_x" = 
-  test (pathFichiersRat^"test.rat")  "main" ("x",1)  (0,"SB")
-
 (*************)
 (* POINTEURS *)
 (*************)
@@ -56,6 +53,15 @@ let%test "test_x" =
 Vérifier que chaque pointeur dispose d’une adresse unique en mémoire.
 S’assurer de la gestion correcte des adresses et des valeurs pointées.
 *)
+
+let%test "test_px" = 
+  test (pathFichiersRat^"test.rat")  "main" ("px", 1)  (0,"SB")
+
+let%test "test_x" = 
+  test (pathFichiersRat^"test.rat")  "main" ("x", 1)  (1,"SB")
+
+let%test "test_y" = 
+  test (pathFichiersRat^"test.rat")  "main" ("y", 1)  (2,"SB")
 
 (*************)
 (*  GLOBALES *)
