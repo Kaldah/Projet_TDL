@@ -41,7 +41,8 @@
 
 rule token = parse
   (* ignore les sauts de lignes mais les compte quand même *)
-| '\n'         { new_line lexbuf; token lexbuf }
+| '\n' ? '\r'         { new_line lexbuf; token lexbuf }
+| '\n'                { new_line lexbuf; token lexbuf }
   (* ignore les espaces et tabulations *)
 | [' ' '\t']   { token lexbuf }
   (* ignore les commentaires *)

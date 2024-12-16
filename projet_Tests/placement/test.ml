@@ -85,6 +85,13 @@ S’assurer que l’espace mémoire pour ces variables est bien isolé des varia
 (* DÉFAUTS   *)
 (*************)
 
+
 (*
-Vérifier la gestion mémoire pour les paramètres par défaut (e.g., valeurs complexes comme (2+2)).
+Vérifier la gestion mémoire pour les paramètres par défaut (valeurs expressions comme (1+2)).
 *)
+
+let%test_unit "testParamDef1" = 
+  let _ = compiler (pathFichiersRat^"testParamDef1.rat") in ()
+
+  let%test_unit "testParamDef2" = 
+  let _ = compiler (pathFichiersRat^"testParamDef2.rat") in ()

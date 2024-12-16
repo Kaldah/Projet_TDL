@@ -63,7 +63,7 @@ let rec analyse_code_expression e =
     (* On charge toutes les expressions de le *)
     let liste_codes = List.map analyse_code_expression le in
     let code_exp = concat_code liste_codes in 
-    let nom, _, _ = triplet_info_fun info in
+    let nom, _, _, _ = info_fun info in
     code_exp ^ (call "SB" nom)
   | AstType.Affectable a -> analyse_code_affectable a false
   | AstType.New t -> 
@@ -106,11 +106,11 @@ let rec analyse_code_expression e =
 
   let rec analyse_code_instruction i =
     match i with
-    | AstPlacement.DeclarationStatic (info, e) -> let (_, t, d, reg) = quadruplet_info_var info in
+    | AstPlacement.DeclarationStatic (info, e) -> let (_, t, d, reg, _) = info_static_var info in
       let taille_type_e = (getTaille t) in
         (analyse_code_expression e) ^ (store taille_type_e d reg)
 
-    | AstPlacement.Declaration ( info , e) -> let (_, t, d, reg) = quadruplet_info_var info in
+    | AstPlacement.Declaration ( info , e) -> let (_, t, d, reg) = info_var info in
     let taille_type_e = (getTaille t) in 
     (push taille_type_e) ^ (analyse_code_expression e) ^ (store taille_type_e d reg)
 
@@ -152,11 +152,11 @@ let rec analyse_code_expression e =
     (concat_code liste_codes) ^ (pop 0 taille)
 
   let analyse_code_fonction (AstPlacement.Fonction (info ,_ , bloc)) = 
-    let nom, _, _ = triplet_info_fun info in
+    let nom, _, _, _ = info_fun info in
       (label nom) ^ analyse_code_bloc bloc ^ halt
 
   let analyse_code_variables_globales (AstType.Var (ia, e)) = 
-    let (_, t, d, reg) = quadruplet_info_var ia in
+    let (_, t, d, reg) = info_var ia in
     let taille_type = (getTaille t) in 
     (push taille_type) ^ (analyse_code_expression e) ^ (store taille_type d reg)
     

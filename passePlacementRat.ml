@@ -25,7 +25,7 @@ match i with
   | AstType.Retour (e, ia) -> 
     (
     match (info_ast_to_info ia) with
-    | InfoFun(_, t, lt) -> 
+    | InfoFun(_, t, lt,_) -> 
       let tailleParams = List.fold_left (fun acc x -> acc + (getTaille x)) 0 lt in 
       let tailleRetour = getTaille t in
       (AstPlacement.Retour (e, tailleRetour, tailleParams), tailleRetour + tailleParams)
@@ -56,7 +56,7 @@ let rec aux compteur lst = match lst with
 
 let analyse_placement_fonction (AstType.Fonction(info,lp, li )) = 
   match (info_ast_to_info info) with
-  | InfoFun(_, _, _) -> 
+  | InfoFun(_, _, _,_) -> 
   (* Traiter lp la liste des infos des paramèters *)
   let rec aux_params compteur lst = 
     (

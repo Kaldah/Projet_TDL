@@ -327,6 +327,15 @@ Vérifier que les valeurs par défaut respectent le type déclaré.
 Tester les cas où des paramètres sont omis lors de l’appel.
 *)
 
+
+let%test_unit "testParamDef1" = 
+  let _ = compiler (pathFichiersRat^"testParamDef1.rat") in ()
+
+let%test_unit "testParamDef2" = 
+  let _ = compiler (pathFichiersRat^"testParamDef2.rat") in ()
+
+
+
 (* Fichiers de tests de la génération de code -> doivent passer la TDS *)
 open Unix
 open Filename

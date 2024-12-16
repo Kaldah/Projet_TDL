@@ -1,4 +1,5 @@
-open Type 
+open Type
+open AstSyntax 
 
 (* Définition du type des informations associées aux identifiants *)
 type info =
@@ -10,7 +11,7 @@ type info =
   (* nom, type, déplacement, registre, est_initialisée *)
   | InfoStaticVar of string * typ * int * string * bool
   (* Information associée à une fonction : son nom (utile pour l'appel), son type de retour et la liste des types des paramètres *)
-  | InfoFun of string * typ * typ list
+  | InfoFun of string * typ * typ list * (AstSyntax.defaut option) list
 
 (* Table des symboles *)
 type tds 
@@ -67,7 +68,13 @@ val modifier_adresse_variable : int -> string -> info_ast -> unit
 (* Ajout de fonctions supplémentaires *)
 
 (* Récupère  directement le triplet d'information d'un InfoFun *)
-val triplet_info_fun : info_ast -> string * typ * typ list
+val info_fun : info_ast -> string * typ * typ list * defaut option list
 
-(* Récupère  directement le quadruplet d'information d'un InfoFun *)
-val quadruplet_info_var : info_ast -> string * typ * int * string
+(* Récupère  directement le triplet d'information d'un InfoConst *)
+val info_const : info_ast -> string * int
+
+(* Récupère  directement le quadruplet d'information d'un InfoVar *)
+val info_var : info_ast -> string * typ * int * string
+
+(* Récupère  directement le 5-uplet d'information d'un InfoStaticVar *)
+val info_static_var : info_ast -> string * typ * int * string * bool

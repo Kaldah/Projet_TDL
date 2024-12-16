@@ -13,14 +13,14 @@ type t2 = Ast.AstType.programme
 (* Renvoie le type associé à l'information *)
 let obtenir_type_info ia = 
   match (info_ast_to_info ia) with
-  | InfoFun (_,t,_) -> t              (* Si c'est une fonction, on renvoie son type *)
+  | InfoFun (_,t,_,_) -> t              (* Si c'est une fonction, on renvoie son type *)
   | InfoVar (_,t,_,_) -> t            (* Si c'est une variable, on renvoie son type *)
   | InfoStaticVar (_,t,_,_,_) -> t    (* Si c'est une variable statique, on renvoie son type *)
   | InfoConst (_,_) -> Int            (* Si c'est une constante, le type est Int *)
 
   let obtenir_nom_info ia = 
     match (info_ast_to_info ia) with
-    | InfoFun (n,_,_) -> n              (* Si c'est une fonction, on renvoie son nom *)
+    | InfoFun (n,_,_,_) -> n              (* Si c'est une fonction, on renvoie son nom *)
     | InfoVar (n,_,_,_) -> n            (* Si c'est une variable, on renvoie son nom *)
     | InfoStaticVar (n,_,_,_,_) -> n    (* Si c'est une variable statique, on renvoie son nom *)
     | InfoConst (n,_) -> n              (* Si c'est une constante, on renvoie son nom *)
@@ -60,7 +60,7 @@ en une expression de type AstType.expression *)
 let rec analyse_type_expression e = match e with
   | AstTds.AppelFonction(info, le) -> (
     match info_ast_to_info info with
-    | InfoFun(_, tr, ltp) -> 
+    | InfoFun(_, tr, ltp,_) -> 
       (* On analyse et récupère les expression et les types *)
       let lnet = List.map analyse_type_expression le in
 
@@ -207,7 +207,7 @@ let rec analyse_type_instruction i =
     let (ne, te) = analyse_type_expression e in
     (
     match info_ast_to_info ia with
-      | InfoFun(_,tr , _) ->
+      | InfoFun(_,tr , _,_) ->
         if (est_compatible te tr) then 
           AstType.Retour(ne, ia)
         else

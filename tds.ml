@@ -10,7 +10,7 @@ type info =
   (* nom, type, déplacement, registre, est_initialisée *)
   | InfoStaticVar of string * typ * int * string * bool
   (* nom, type retour, liste des paramètres *)
-  | InfoFun of string * typ * typ list
+  | InfoFun of string * typ * typ list * (AstSyntax.defaut option) list
 
 (* Données stockées dans la tds  et dans les AST : pointeur sur une information *)
 type info_ast = info ref
@@ -291,7 +291,7 @@ let string_of_info info =
   | InfoConst (n,value) -> "Constante "^n^" : "^(string_of_int value)
   | InfoVar (n,t,dep,base) -> "Variable "^n^" : "^(string_of_type t)^" "^(string_of_int dep)^"["^base^"]"
   | InfoStaticVar (n,t,dep,base,init) -> "Variable statique "^n^" : "^(string_of_type t)^" "^(string_of_int dep)^"["^base^"] initialisée : "^(string_of_bool init)
-  | InfoFun (n,t,tp) -> "Fonction "^n^" : "^(List.fold_right (fun elt tq -> if tq = "" then (string_of_type elt) else (string_of_type elt)^" * "^tq) tp "" )^
+  | InfoFun (n,t,tp, _) -> "Fonction "^n^" : "^(List.fold_right (fun elt tq -> if tq = "" then (string_of_type elt) else (string_of_type elt)^" * "^tq) tp "" )^
                       " -> "^(string_of_type t)
 
 (* Affiche la tds locale *)
@@ -327,15 +327,16 @@ let%test _ =
 (* Modifie les types de retour et des paramètres si c'est une InfoFun, ne fait rien sinon *)
 let modifier_type_fonction t tp i =
        match !i with
-       | InfoFun(n,_,_) -> i:= InfoFun(n,t,tp)
+       (* On retire les paramètres par défaut car ils sont devenus inutiles après la passe de gestion des ID *)
+       | InfoFun(n,_,_,_) -> i:= InfoFun(n,t,tp, [])
        | _ -> failwith "Appel modifier_type_fonction pas sur un InfoFun"
 
 let%test _ = 
-  let info = InfoFun ("f", Undefined, []) in
+  let info = InfoFun ("f", Undefined, [],[]) in
   let ia = info_to_info_ast info in
   modifier_type_fonction Rat [Int ; Int] ia;
   match info_ast_to_info ia with
-  | InfoFun ("f", Rat, [Int ; Int]) -> true
+  | InfoFun ("f", Rat, [Int ; Int], []) -> true
   | _ -> false
  
 (* Modifie l'emplacement (dépl, registre) si c'est une InfoVar, ne fait rien sinon *)
@@ -353,13 +354,25 @@ let%test _ =
   | _ -> false
     
 (* Ajout de fonctions supplémentaires *)
-   
-(* Récupère  directement le triplet d'information d'un InfoFun *)
-let triplet_info_fun i = match (info_ast_to_info i) with
-  | InfoFun(nom, t, lt) -> (nom, t, lt)
+
+let info_const ia = match (info_ast_to_info ia) with
+  | InfoConst(nom, v) -> (nom, v)
+  | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos const"
+
+(* Récupère le nom d'une fonction *)
+
+let info_fun ia = match (info_ast_to_info ia) with
+  | InfoFun(nom, t, tp, lp) -> (nom, t, tp, lp)
   | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos fun"
 
-(* Récupère  directement le quadruplet d'information d'un InfoFun *)
-let quadruplet_info_var i = match (info_ast_to_info i) with
+(* Récupère le nom d'une fonction *)
+
+(* Récupère  directement le quadruplet d'information d'un InfoVar, InfoStaticVar ou InfoFun*)
+let info_var ia = match (info_ast_to_info ia) with
   | InfoVar(nom, t, d, reg) -> (nom, t, d, reg)
   | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos var"
+
+(* Renvoie si une Variable static a déjà été initialisée *)
+let info_static_var ia = match (info_ast_to_info ia) with
+| InfoStaticVar(nom, t, d, reg, b) -> (nom, t, d, reg,b)
+| _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos d'une variable statique"

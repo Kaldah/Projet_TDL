@@ -1,5 +1,5 @@
 open Type
-open Ast.AstSyntax
+open AstSyntax
 
 (* Exceptions pour la gestion des identificateurs *)
 exception DoubleDeclaration of string 
@@ -22,5 +22,5 @@ exception DereferencementImpossible of typ
 (* Exceptions paramètre par défaut *)
 
 exception ParametreObligatoireInterdit of string
-exception ParametreObligatoireManquant of string
+exception ParametreObligatoireManquant
 exception TropArguments

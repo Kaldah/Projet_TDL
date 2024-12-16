@@ -14,9 +14,9 @@ end
 (* Passe AstSyntax.programme -> AstTds.programme *)
 (* Ne fait rien *)
 (* Nécessaire aux compilateurs intermédiaires (non complets) *)
-module PasseTdsNop : Passe  with type t1 = Ast.AstSyntax.programme and type t2 =  Ast.AstTds.programme =
+module PasseTdsNop : Passe  with type t1 = AstSyntax.programme and type t2 =  Ast.AstTds.programme =
 struct
-  type t1 = Ast.AstSyntax.programme
+  type t1 = AstSyntax.programme
   type t2 = Ast.AstTds.programme
 
   let analyser _ =  Ast.AstTds.Programme([],[], [])
@@ -92,7 +92,7 @@ let analyser_param info =
     (*La liste des paramètres n'est plus présente, pour tester le placement des paramètres, on utilisera une astuce :
     il faudra écrire un programme qui renvoie le paramètre *)
     match info_ast_to_info info with
-    | InfoFun(n,_,_) -> [(n,(List.flatten (List.map analyser_param lp))@(List.flatten (List.map (analyser_instruction) li)))]
+    | InfoFun(n,_,_,_) -> [(n,(List.flatten (List.map analyser_param lp))@(List.flatten (List.map (analyser_instruction) li)))]
     | _ -> failwith "Internal error"
 
 let analyser_variable_globale (Ast.AstType.Var(ia,_)) = match (info_ast_to_info ia) with

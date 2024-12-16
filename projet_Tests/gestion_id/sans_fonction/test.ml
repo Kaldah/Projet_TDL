@@ -205,10 +205,8 @@ S’assurer que leur initialisation est correcte et unique.
 (* DÉFAUTS   *)
 (*************)
 
-(*
-Vérifier la présence d’une valeur par défaut pour les paramètres dans les définitions.
-S’assurer que les paramètres sans valeur par défaut sont placés avant ceux avec une valeur par défaut.
-*)
+(* Voir dans avec_fonction *)
+
 
 (* Fichiers de tests de la génération de code -> doivent passer la TDS *)
 open Unix
