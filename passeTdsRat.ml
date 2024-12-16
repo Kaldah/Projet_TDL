@@ -78,11 +78,11 @@ let rec analyse_tds_expression tds e =
           (analyse_tds_expression tds e) :: aux q []
       | None :: _, [] ->
           (* Paramètre obligatoire manquant *)
-          raise ParametreObligatoireManquant
+          raise (Exceptions.TypesParametresInattendus ([], []))
       | _:: q, arg :: args_q ->
           (* Argument fourni : on continue *)
           arg :: aux q args_q
-      | [], _ :: _ -> raise Exceptions.TropArguments
+      | [], _ :: _ -> raise (Exceptions.TypesParametresInattendus ([], []))
         in
     aux params args
     in
