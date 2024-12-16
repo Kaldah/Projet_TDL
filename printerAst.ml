@@ -94,8 +94,11 @@ let rec string_of_affectable a =
                                   "FAIRE \n"^((List.fold_right (fun i tq -> (string_of_instruction i)^tq) b ""))^"\n"
     | Retour (e) -> "Retour  : RETURN "^(string_of_expression e)^"\n"
 
+  let string_of_default_option od = match od with
+    | None -> ""
+    | Some (Defaut e) -> " = " ^ (string_of_expression e)
   (* Conversion des fonctions *)
-  let string_of_fonction (Fonction(t,n,lp,li)) = (string_of_type t)^" "^n^" ("^((List.fold_right (fun (t,n) tq -> (string_of_type t)^" "^n^" "^tq) lp ""))^") = \n"^
+  let string_of_fonction (Fonction(t,n,lp,li)) = (string_of_type t)^" "^n^" ("^((List.fold_right (fun (t,n, od) tq -> (string_of_type t)^" "^n^" "^tq ^ (string_of_default_option od)) lp ""))^") = \n"^
                                         ((List.fold_right (fun i tq -> (string_of_instruction i)^tq) li ""))^"\n"
 
   let string_of_variable_globale vg = match vg with

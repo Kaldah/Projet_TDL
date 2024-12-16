@@ -51,6 +51,7 @@ let rec analyse_gestion_id_affectable tds a en_ecriture =
       | _ -> failwith "Erreur de déréférencement"
     end
 
+
 (* On commente pour éviter un Warning - Utile pour le débugage
 (* afficher_expression : tds -> unit *)
 (* Paramètre tds : la table des symboles à afficher *)
@@ -60,6 +61,7 @@ let afficher_expression_ast e =
   print_newline ();;
 *)
 
+
 (* analyse_tds_expression : tds -> AstSyntax.expression -> AstTds.expression *)
 (* Paramètre tds : la table des symboles courante *)
 (* Paramètre e : l'expression à analyser *)
@@ -67,6 +69,24 @@ let afficher_expression_ast e =
 en une expression de type AstTds.expression *)
 (* Erreur si mauvaise utilisation des identifiants *)
 let rec analyse_tds_expression tds e =
+  let completer_arguments tds params args =
+    let rec aux params args =
+      match (params, args) with
+      | [], [] -> [] (* Aucun paramètre restant, aucun argument manquant *)
+      | (_, _, Some (AstSyntax.Defaut(e)))::q, [] ->
+          (* Paramètre avec défaut et argument manquant : utiliser la valeur par défaut *)
+          (analyse_tds_expression tds e) :: aux q []
+      | (_, p, None) :: _, [] ->
+          (* Paramètre obligatoire manquant *)
+          raise (ParametreObligatoireManquant p)
+      | (_, _, _) :: q, arg :: args_q ->
+          (* Argument fourni : on continue *)
+          arg :: aux q args_q
+      | [], _ :: _ -> raise Exceptions.TropArguments
+        in
+    aux params args
+    in
+
   match e with
   | AstSyntax.AppelFonction(n, l) -> 
     begin
@@ -79,9 +99,10 @@ let rec analyse_tds_expression tds e =
         | Some info_tds -> 
           begin
           match (info_ast_to_info info_tds) with
-          | InfoFun(_, _, _) ->
-            let dts_l = List.map (analyse_tds_expression tds) l in
-            AstTds.AppelFonction(info_tds, dts_l)
+          | InfoFun(_, _, lp) ->
+            let tds_l = List.map (analyse_tds_expression tds) l in
+            (*let ntds_l = completer_arguments tds lp tds_l in*)
+            AstTds.AppelFonction(info_tds, tds_l)
           | _ -> raise (MauvaiseUtilisationIdentifiant n)
           end
       end
@@ -123,7 +144,8 @@ en une instruction de type AstTds.instruction *)
 let rec analyse_tds_instruction tds oia i =
   match i with
   | AstSyntax.DeclarationStatic (n, t, e) -> 
-      AstTds.DeclarationStatic (info_to_info_ast (InfoVar(n, t, 0, "")), analyse_tds_expression tds e)
+      AstTds.DeclarationStatic (info_to_info_ast (InfoStaticVar(n, t, 0, "", false)), analyse_tds_expression tds e)
+
   | AstSyntax.Declaration (t, n, e) ->
       begin
         match chercherLocalement tds n with
@@ -210,7 +232,6 @@ let rec analyse_tds_instruction tds oia i =
         AstTds.Retour (ne,ia)
       end
 
-
 (* analyse_tds_bloc : tds -> info_ast option -> AstSyntax.bloc -> AstTds.bloc *)
 (* Paramètre tds : la table des symboles courante *)
 (* Paramètre oia : None si le bloc li est dans le programme principal,
@@ -244,31 +265,42 @@ let analyse_tds_fonction maintds (AstSyntax.Fonction(t,n,lp,li))  =
   | None -> (* La fonction n'a pas encore été déclarée *)
   (* On récupère les infos *)
   (* Récupère les types dans lp *)
-  let tlp = List.map fst lp in
+  let tlp = List.map (fun (x, _, _) -> x) lp in
+  (* On crée l'information associée à la fonction *)
   let info_fun = info_to_info_ast (InfoFun(n, t, tlp)) in
   ajouter maintds n info_fun;
   (* On récupère la liste (type * Tds.info_ast) des paramètres *)
   (* On crée une TDS fille de mainTDS pour contenir les paramètres de la fonction *)
   let tds_param = creerTDSFille maintds in 
 
-  let aux_infos_param (t, p) = 
+  let rec verifier_param params defaut_present =
+    match params with
+    | [] -> []
+    | (_, p, None)::_ when defaut_present -> raise (Exceptions.ParametreObligatoireInterdit p)
+    | (_,_,Some (AstSyntax.Defaut e) )::q -> (Some (AstTds.Defaut (analyse_tds_expression maintds e)))::(verifier_param q true)
+    | (_,_,None)::q -> None::(verifier_param q false)
+  in
+  (* On vérifie que les paramètres par défauts sont bien utilisés *)
+  let nod = verifier_param lp false in
+
+  let aux_infos_param (t, p, _) =
     (* créer une référence pour le paramètre dans la table *)
     let info = InfoVar(p, t, 0, "") in
     let ref_param = info_to_info_ast info in
     begin
     (* On ajoute la référence dans la TDS fille *)
     let test_info_p = chercherLocalement tds_param p in
-    match test_info_p with
-    | Some _ -> raise (DoubleDeclaration p)
-    | _ -> ajouter tds_param p ref_param;
-    (* On renvoie le couple du type et la référence associée pour les récupérer *)
-    (t, ref_param);
+      match test_info_p with
+        | Some _ -> raise (DoubleDeclaration p)
+        | _ -> ajouter tds_param p ref_param;
+        (* On renvoie le couple du type et la référence associée pour les récupérer *)
+        (t, ref_param);
     end
   in
   (* On utilise la fonction aux_infos_param pour initialiser la TDS fille *)
   (* et on construit la liste des paramètres avec leur type et la référence de leurs infos dans la TDS fille *)
   let infos_param = List.map aux_infos_param lp in
-
+  (* On analyse le bloc de la fonction *)
   let bloc = analyse_tds_bloc tds_param (Some info_fun) li in
   AstTds.Fonction (t, info_fun, infos_param, bloc)
 

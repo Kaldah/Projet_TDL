@@ -18,3 +18,9 @@ exception RetourDansMain
 (* Exceptions pointeurs *)
 
 exception DereferencementImpossible of typ
+
+(* Exceptions paramètre par défaut *)
+
+exception ParametreObligatoireInterdit of string
+exception ParametreObligatoireManquant of string
+exception TropArguments

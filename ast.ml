@@ -9,7 +9,6 @@ sig
    type programme
    type affectable
    type variable_globale
-   type defaut
 end
 
 
@@ -79,7 +78,7 @@ and instruction =
 
 (* Structure des fonctions de Rat *)
 (* type de retour - nom - liste des paramètres (association type et nom) - corps de la fonction *)
-type fonction = Fonction of typ * string * (typ * string) list * bloc
+type fonction = Fonction of typ * string * (typ * string * defaut option) list * bloc
 
 (* Structure d'un programme Rat *)
 (* liste de fonction - programme principal *)

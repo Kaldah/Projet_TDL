@@ -48,10 +48,10 @@ open Ast.AstSyntax
 %type <fonction> fonc
 %type <instruction> i
 %type <typ> typ
-%type <typ*string> param
+%type <defaut> d
+%type <typ*string*(defaut option)> param
 %type <expression> e
 %type <affectable> a
-%type <defaut> d
 
 (* Type et définition de l'axiome *)
 %start <Ast.AstSyntax.programme> main
@@ -66,7 +66,7 @@ prog : lg=var* lf=fonc* ID li=bloc  {Programme (lg,lf,li)}
 
 fonc : t=typ n=ID PO lp=separated_list(VIRG,param) PF li=bloc {Fonction(t,n,lp,li)}
 
-param : t=typ n=ID  option(d)  {(t,n)}
+param : t=typ n=ID  dp=option(d)  {(t,n,dp)}
 
 bloc : AO li=i* AF      {li}
 
@@ -80,7 +80,7 @@ a :
 i :
 | t=typ n=ID EQUAL e1=e PV          {Declaration (t,n,e1)}
 | n=a EQUAL e1=e PV                 {Affectation (n,e1)}
-| CONST n=ID EQUAL e1=ENTIER PV      {Constante (n,e1)}
+| CONST n=ID EQUAL e1=ENTIER PV     {Constante (n,e1)}
 | PRINT e1=e PV                     {Affichage (e1)}
 | IF exp=e li1=bloc ELSE li2=bloc   {Conditionnelle (exp,li1,li2)}
 | WHILE exp=e li=bloc               {TantQue (exp,li)}

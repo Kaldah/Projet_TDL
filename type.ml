@@ -1,4 +1,5 @@
 type typ = Bool | Int | Rat | Pointeur of typ | Null | Undefined
+(* type pour les opérateurs unaires *)
 
 let rec string_of_type t = 
   match t with
