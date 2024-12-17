@@ -42,7 +42,7 @@ let pathFichiersRat = "../../../../projet_Tests/tam/fichiersRat/"
 (* Tester les opérations générées pour le déréférencement et l’assignation.
 Vérifier l’absence d’erreurs lors de l’utilisation d’un pointeur null.
 *)
-(*
+
 let%expect_test "testPointeur1" =
   runtam (pathFichiersRat^"testPointeur1.rat");
   [%expect{| 423 |}]
@@ -86,7 +86,7 @@ let%expect_test "testVarGlobalesInt" =
 let%expect_test "testVarGlobalesRat" =
   runtam (pathFichiersRat^"testVarGlobalesRat.rat");
   [%expect{| [1/5][2/5][4/5][7/5][11/5][11/5] |}]
-*)
+
 
 let%expect_test "testVarGlobalesEtPointeurSimple" =
   runtam (pathFichiersRat^"testVarGlobalesEtPointeurSimple.rat");
@@ -95,7 +95,7 @@ let%expect_test "testVarGlobalesEtPointeurSimple" =
 
 let%expect_test "testVarGlobalesEtPointeur" =
   runtam (pathFichiersRat^"testVarGlobalesEtPointeur.rat");
-  [%expect{| 13574 |}]
+  [%expect{| 3355770024 |}]
 
 (*
 S’assurer que les instructions générées permettent une modification correcte depuis différentes fonctions.
@@ -120,7 +120,7 @@ Tester les réinitialisations illégales.
 Valider que le code gère correctement les appels avec des paramètres omis.
 Tester les cas où les valeurs par défaut interagissent avec d’autres arguments.
 *)
-(*
+
 let%expect_test "testParamDef1" =
   runtam (pathFichiersRat^"testParamDef1.rat");
   [%expect{| 54 |}]
@@ -128,4 +128,3 @@ let%expect_test "testParamDef1" =
 let%expect_test "testParamDef2" =
   runtam (pathFichiersRat^"testParamDef2.rat");
   [%expect{| 56 |}]
-*)

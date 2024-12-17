@@ -6,3 +6,6 @@ Ils sont ensuite effacé lorsqu'on modifie le type de InfoFun car il n'est plus 
 
 
 Faire en sorte que les fonctions cherchent d'abord dans la TDS locale puis la TDS globale en vérifiant, si une variable est trouvée, si elle est du type InfoVarGlobale
+
+
+Avec un pop 0 taille_bloc à la fin du bloc ça permet d'avoir des variables statiques locales

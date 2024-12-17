@@ -18,6 +18,5 @@ main {
   print (*x);
   a = inc (0);
   a = inc (0);
-
   print (*x);
 }

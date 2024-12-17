@@ -2,7 +2,7 @@ static int * x = (new int);
 
 int inc (){
   print (*x);
-  *x = *x+2;
+  *x = (*x+2);
   return *x;
 }
 
@@ -10,13 +10,13 @@ int inc (){
 main {
   *x = 2;
   print (*x);
-  int a = inc (0);
+  int a = inc ();
   print (*x);
-  a = inc (0);
+  a = inc ();
   print (*x);
-  a = inc (0);
+  a = inc ();
   *x = 0;
   print (*x);
-  a = inc (0);
+  a = inc ();
   print (*x);
 }

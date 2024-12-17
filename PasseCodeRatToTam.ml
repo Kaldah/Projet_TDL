@@ -142,12 +142,12 @@ let rec analyse_code_expression e =
     
     | AstPlacement.Retour (e, tailleRet , tailleParam) -> (analyse_code_expression e) ^ (return tailleRet tailleParam)
     | AstPlacement.Empty -> ""
-    and analyse_code_bloc (li , taille ) = let liste_codes = List.map analyse_code_instruction li in
-    (concat_code liste_codes) ^ (pop 0 taille)
+    and analyse_code_bloc (li , _ ) = let liste_codes = List.map analyse_code_instruction li in
+    concat_code liste_codes
 
   let analyse_code_fonction (AstPlacement.Fonction (info ,_ , bloc)) = 
     let nom, _, _, _ = info_fun info in
-      (label nom) ^ analyse_code_bloc bloc ^ halt
+      (label nom) ^ analyse_code_bloc bloc ^ halt 
 
   let analyse_code_variables_globales (AstType.DeclarationGlobale (ia, e)) = 
     let (_, t, d, reg) = info_var ia in
@@ -164,6 +164,6 @@ let analyser (AstPlacement.Programme (vg, fonctions, prog)) =
   (*
   print_string ("\n \n CODE \n" ^ code_fonctions ^ "main\n" ^ code_vg 
   ^ "Fin Variables globales \n" ^ code_prog ^ "\n  CODE \n \n");
-  *)
-  print_string code_complet;  
+ 
+  print_string code_complet;   *)
   code_complet

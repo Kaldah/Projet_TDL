@@ -58,7 +58,7 @@ let rec aux compteur lst = match lst with
     let taille = ((List.fold_left (fun acc n -> acc + n) 0 listeTaille)) in
     (*print_string "Taille :\n";
     print_int taille; print_newline ();*)
-  (nli, taille - depl)
+  (nli, taille)
 
 let analyse_placement_fonction (AstType.Fonction(info,lp, li )) = 
   match (info_ast_to_info info) with
