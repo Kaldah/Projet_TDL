@@ -106,9 +106,7 @@ let rec analyse_code_expression e =
 
   let rec analyse_code_instruction i =
     match i with
-    | AstPlacement.DeclarationStatic (info, e) -> let (_, t, d, reg, _) = info_static_var info in
-      let taille_type_e = (getTaille t) in
-        (analyse_code_expression e) ^ (store taille_type_e d reg)
+    | AstPlacement.DeclarationStatic (_, _) -> print_string "Static !!!?"; ""
 
     | AstPlacement.Declaration ( info , e) -> let (_, t, d, reg) = info_var info in
     let taille_type_e = (getTaille t) in 
@@ -116,7 +114,7 @@ let rec analyse_code_expression e =
 
     | AstPlacement.Affectation ( a , e) ->  
       
-      (*let (_, t, d, reg) = quadruplet_info_var a in
+      (*let (_, t, d, reg) = info_var a in
     let taille_type_e = (getTaille t) in 
     analyse_code_expression e ^ (store taille_type_e d reg) *)
 

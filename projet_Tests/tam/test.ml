@@ -44,9 +44,13 @@ Vérifier l’absence d’erreurs lors de l’utilisation d’un pointeur null.
 *)
 
 let%expect_test "testPointeur1" =
-  print_string "\n\n ça marche ici \n\n";
   runtam (pathFichiersRat^"testPointeur1.rat");
   [%expect{| 423 |}]
+  
+let%expect_test "testPointeurFun" =
+  runtam (pathFichiersRat^"testPointeurFun.rat");
+  [%expect{| 312 |}]
+
 
 (*************)
 (*  GLOBALES *)
