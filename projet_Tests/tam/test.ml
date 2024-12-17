@@ -88,6 +88,11 @@ let%expect_test "testVarGlobalesRat" =
   [%expect{| [1/5][2/5][4/5][7/5][11/5][11/5] |}]
 *)
 
+let%expect_test "testVarGlobalesEtPointeurSimple" =
+  runtam (pathFichiersRat^"testVarGlobalesEtPointeurSimple.rat");
+  [%expect{| 224466002 |}]
+
+
 let%expect_test "testVarGlobalesEtPointeur" =
   runtam (pathFichiersRat^"testVarGlobalesEtPointeur.rat");
   [%expect{| 13574 |}]
