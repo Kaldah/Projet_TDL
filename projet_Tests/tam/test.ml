@@ -61,8 +61,12 @@ let%expect_test "testPointeurFunParam" =
 (*  GLOBALES *)
 (*************)
 
-let%expect_test "testVarGlobales1" =
-  runtam (pathFichiersRat^"testVarGlobales1.rat");
+let%expect_test "testVarGlobalesInt" =
+  runtam (pathFichiersRat^"testVarGlobalesInt.rat");
+  [%expect{| 13574 |}]
+
+let%expect_test "testVarGlobalesRat" =
+  runtam (pathFichiersRat^"testVarGlobalesRat.rat");
   [%expect{| 13574 |}]
 
 let%expect_test "testVarGlobalesEtPointeur" =
