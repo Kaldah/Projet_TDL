@@ -10,7 +10,7 @@ type t2 = Ast.AstPlacement.programme
 
 let rec analyse_placement_instruction i depl reg =
 match i with
-  | AstType.DeclarationStatic (info, e) -> (AstPlacement.DeclarationStatic(info, e), 0)
+  | AstType.DeclarationStatic (info, e) -> print_string "Static ?!";(AstPlacement.DeclarationStatic(info, e), 0)
   | AstType.Declaration (info, e) -> 
     (
     match (info_ast_to_info info) with
@@ -48,11 +48,17 @@ let rec aux compteur lst = match lst with
       (i, taille)::(aux (compteur + taille) q)
       | [] -> []
     in
+    (* La liste des instructions avec leur taille *)
     let nliTaille = aux depl li in
+    (* Liste des instructions *)
     let nli = List.map fst nliTaille in
+    (* Liste des tailles des instructions *)
     let listeTaille  = List.map snd nliTaille in
-    let taille = List.fold_left (fun acc n -> acc + n) 0 listeTaille in
-  (nli, taille)
+    (* pour obtenir la taille il faut retirer la valeur du déplacement d'origine *)
+    let taille = ((List.fold_left (fun acc n -> acc + n) 0 listeTaille)) in
+    (*print_string "Taille :\n";
+    print_int taille; print_newline ();*)
+  (nli, taille - depl)
 
 let analyse_placement_fonction (AstType.Fonction(info,lp, li )) = 
   match (info_ast_to_info info) with
@@ -85,19 +91,19 @@ let analyse_placement_variable_globale lg =
   | h::q -> 
     begin
     match h with
-    | AstType.Var(info, e) -> 
+    | AstType.DeclarationGlobale(info, e) -> 
       (
       match (info_ast_to_info info) with
       | InfoVar(_, t, _, _) -> 
         modifier_adresse_variable compteur "SB" info;
         let (ncompteur, nlg) = aux_globales q (compteur + (getTaille t)) in
-        (ncompteur, (AstType.Var(info, e))::nlg)
+        (ncompteur, (AstType.DeclarationGlobale(info, e))::nlg)
       | _ -> failwith "Erreur interne"
       )
     end 
     in aux_globales (List.rev lg) 0
 let analyser (AstType.Programme (lg, fonctions, prog)) = 
-  let (depl, nlg) = analyse_placement_variable_globale lg in
+  let (nlg, depl) = analyse_placement_bloc lg 0 "SB" in
   let nfs = List.map analyse_placement_fonction fonctions in
-  let np = analyse_placement_bloc prog depl "SB" in
-  AstPlacement.Programme (nlg, nfs,np)
+  let (np,npTaille) = analyse_placement_bloc prog depl "SB" in
+  AstPlacement.Programme ((nlg, depl), nfs,(np,npTaille))

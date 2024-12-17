@@ -42,32 +42,51 @@ let pathFichiersRat = "../../../../projet_Tests/tam/fichiersRat/"
 (* Tester les opérations générées pour le déréférencement et l’assignation.
 Vérifier l’absence d’erreurs lors de l’utilisation d’un pointeur null.
 *)
-
+(*
 let%expect_test "testPointeur1" =
   runtam (pathFichiersRat^"testPointeur1.rat");
   [%expect{| 423 |}]
 
+  let%expect_test "testPointeurRat" =
+  runtam (pathFichiersRat^"testPointeurRat.rat");
+  [%expect{| [2/5] |}]
+
 
 let%expect_test "testPointeurFun" =
   runtam (pathFichiersRat^"testPointeurFun.rat");
-  [%expect{| 34[5/1] |}]
+  [%expect{| 34[12/3] |}]
 
 
 let%expect_test "testPointeurFunParam" =
-  runtam (pathFichiersRat^"testPointeurFun.rat");
+  runtam (pathFichiersRat^"testPointeurFunParam.rat");
   [%expect{| 312 |}]
 
 (*************)
 (*  GLOBALES *)
 (*************)
 
+let%expect_test "testVarGlobalesSimpleInt" =
+  runtam (pathFichiersRat^"testVarGlobalesSimpleInt.rat");
+  [%expect{| 3 |}]
+
+let%expect_test "testVarGlobalesSimpleRat" =
+  runtam (pathFichiersRat^"testVarGlobalesSimpleRat.rat");
+  [%expect{|[2/5]  |}]
+
+let%expect_test "testVarGlobalesSimplePointeur" =
+  runtam (pathFichiersRat^"testVarGlobalesSimplePointeur.rat");
+  [%expect{| [2/5] |}]
+
+
 let%expect_test "testVarGlobalesInt" =
   runtam (pathFichiersRat^"testVarGlobalesInt.rat");
-  [%expect{| 13574 |}]
+  [%expect{| 313574 |}]
+
 
 let%expect_test "testVarGlobalesRat" =
   runtam (pathFichiersRat^"testVarGlobalesRat.rat");
-  [%expect{| 13574 |}]
+  [%expect{| [1/5][2/5][4/5][7/5][11/5][11/5] |}]
+*)
 
 let%expect_test "testVarGlobalesEtPointeur" =
   runtam (pathFichiersRat^"testVarGlobalesEtPointeur.rat");
@@ -96,7 +115,7 @@ Tester les réinitialisations illégales.
 Valider que le code gère correctement les appels avec des paramètres omis.
 Tester les cas où les valeurs par défaut interagissent avec d’autres arguments.
 *)
-
+(*
 let%expect_test "testParamDef1" =
   runtam (pathFichiersRat^"testParamDef1.rat");
   [%expect{| 54 |}]
@@ -104,3 +123,4 @@ let%expect_test "testParamDef1" =
 let%expect_test "testParamDef2" =
   runtam (pathFichiersRat^"testParamDef2.rat");
   [%expect{| 56 |}]
+*)

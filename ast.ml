@@ -47,7 +47,7 @@ type affectable =
     | Null
 
 (* le nom de l'identifiant est remplacé par ses informations *)
-type variable_globale = Var of Tds.info_ast * expression
+type variable_globale = DeclarationGlobale of Tds.info_ast * expression
 
 type defaut = Defaut of expression
 
@@ -72,7 +72,8 @@ type defaut = Defaut of expression
   type fonction = Fonction of typ * Tds.info_ast * (typ * Tds.info_ast ) list * bloc
 
   (* Structure d'un programme dans notre langage *)
-  type programme = Programme of variable_globale list * fonction list * bloc
+  (* Le premier bloc ne contient que des instructions de déclaration de variables globales *)
+  type programme = Programme of bloc * fonction list * bloc
 
 end
 
@@ -104,7 +105,7 @@ type expression =
   | Adresse of Tds.info_ast
   | Null
 
-type variable_globale = Var of Tds.info_ast * expression
+type variable_globale = DeclarationGlobale of Tds.info_ast * expression
 
 type defaut = Defaut of expression
 
@@ -131,7 +132,7 @@ type bloc = instruction list
 type fonction = Fonction of Tds.info_ast * Tds.info_ast list * bloc
 
 (* Structure d'un programme dans notre langage *)
-type programme = Programme of variable_globale list * fonction list * bloc
+type programme = Programme of bloc * fonction list * bloc
 
 end
 
@@ -173,6 +174,6 @@ type bloc = instruction list * int (* taille du bloc *)
 type fonction = Fonction of Tds.info_ast * Tds.info_ast list * bloc
 
 (* Structure d'un programme dans notre langage *)
-type programme = Programme of variable_globale list * fonction list * bloc
+type programme = Programme of bloc * fonction list * bloc
 
 end

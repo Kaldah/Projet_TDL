@@ -43,7 +43,7 @@ struct
   type t1 = Ast.AstType.programme
   type t2 = Ast.AstPlacement.programme
 
-  let analyser _ = Ast.AstPlacement.Programme([],[],([],0))
+  let analyser _ = Ast.AstPlacement.Programme(([],0),[],([],0))
 
 end
 
@@ -95,13 +95,13 @@ let analyser_param info =
     | InfoFun(n,_,_,_) -> [(n,(List.flatten (List.map analyser_param lp))@(List.flatten (List.map (analyser_instruction) li)))]
     | _ -> failwith "Internal error"
 
-let analyser_variable_globale (Ast.AstType.Var(ia,_)) = match (info_ast_to_info ia) with
+let analyser_variable_globale (Ast.AstType.DeclarationGlobale(ia,_)) = match (info_ast_to_info ia) with
     | InfoVar (n,_,d,r) -> [(n,(d,r))]
     | _ -> []
 
   (* Renvoie la suite des adresses des variables déclarées dans les fonctions et dans le programme principal *)
-  let analyser (Ast.AstPlacement.Programme (lg, fonctions, (prog,_))) =
-    ("main", List.flatten (List.map (analyser_instruction) prog))::(List.flatten (List.map (analyser_fonction) fonctions))@["",List.flatten (List.map (analyser_variable_globale) lg)]
+  let analyser (Ast.AstPlacement.Programme ((lg,_), fonctions, (prog,_))) =
+    ("main", List.flatten (List.map (analyser_instruction) prog))::(List.flatten (List.map (analyser_fonction) fonctions))@["",List.flatten (List.map analyser_instruction lg)]
 
 
 end

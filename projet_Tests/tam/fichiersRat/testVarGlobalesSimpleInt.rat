@@ -1,0 +1,5 @@
+static int x = 3;
+
+main {
+  print x;
+}

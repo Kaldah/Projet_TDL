@@ -43,7 +43,7 @@ open Ast.AstSyntax
 
 (* Type de l'attribut synthétisé des non-terminaux *)
 %type <programme> prog
-%type <variable_globale> var
+%type <variable_globale> globale
 %type <instruction list> bloc
 %type <fonction> fonc
 %type <instruction> i
@@ -58,11 +58,11 @@ open Ast.AstSyntax
 
 %%
 
-var : STATIC t=typ n=ID EQUAL e1=e PV {Var (n,t, e1)}
+globale : STATIC t=typ n=ID EQUAL e1=e PV {DeclarationGlobale (t,n,e1)}
 
 main : lfi=prog EOF     {lfi}
 
-prog : lg=var* lf=fonc* ID li=bloc  {Programme (lg,lf,li)}
+prog : lg=globale* lf=fonc* ID li=bloc  {Programme (lg,lf,li)}
 
 fonc : t=typ n=ID PO lp=separated_list(VIRG,param) PF li=bloc {Fonction(t,n,lp,li)}
 

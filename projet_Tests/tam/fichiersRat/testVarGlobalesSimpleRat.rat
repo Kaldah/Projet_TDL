@@ -1,0 +1,5 @@
+static rat x =[2/5] ;
+
+main {
+  print x;
+}

@@ -75,7 +75,7 @@ let rec analyse_code_expression e =
       | InfoVar(_, _, d, reg) -> loada d reg
       | _ -> failwith "Erreur interne Ident"
   )
-  | AstType.Null -> loadl_int 0
+  | AstType.Null -> ""
 
   | AstType.Booleen b ->
     if b then 
@@ -114,10 +114,6 @@ let rec analyse_code_expression e =
 
     | AstPlacement.Affectation ( a , e) ->  
       
-      (*let (_, t, d, reg) = info_var a in
-    let taille_type_e = (getTaille t) in 
-    analyse_code_expression e ^ (store taille_type_e d reg) *)
-
     let sa = analyse_code_affectable a true in
     analyse_code_expression e ^ sa
 
@@ -153,18 +149,21 @@ let rec analyse_code_expression e =
     let nom, _, _, _ = info_fun info in
       (label nom) ^ analyse_code_bloc bloc ^ halt
 
-  let analyse_code_variables_globales (AstType.Var (ia, e)) = 
+  let analyse_code_variables_globales (AstType.DeclarationGlobale (ia, e)) = 
     let (_, t, d, reg) = info_var ia in
     let taille_type = (getTaille t) in 
     (push taille_type) ^ (analyse_code_expression e) ^ (store taille_type d reg)
     
 
 let analyser (AstPlacement.Programme (vg, fonctions, prog)) = 
-  let code_vg = concat_code (List.map analyse_code_variables_globales vg) in
+  let code_vg = analyse_code_bloc vg in
   let code_fonctions = concat_code (List.map analyse_code_fonction fonctions) in 
-  let code_prog = "main\n" ^ (analyse_code_bloc prog) ^ halt in
-  let code_complet = (getEntete ()) ^ code_vg ^ code_fonctions ^ code_prog in
+  let code_prog = (analyse_code_bloc prog) in
+  let code_complet = (getEntete ()) ^ code_fonctions ^ "main\n" ^ code_vg ^ code_prog ^ halt in
+  
   (*
-  print_string ("\n \n CODE \n" ^ code_complet ^ "\n  CODE \n \n");
+  print_string ("\n \n CODE \n" ^ code_fonctions ^ "main\n" ^ code_vg 
+  ^ "Fin Variables globales \n" ^ code_prog ^ "\n  CODE \n \n");
   *)
+  print_string code_complet;  
   code_complet

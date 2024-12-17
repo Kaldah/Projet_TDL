@@ -241,11 +241,11 @@ let analyse_type_fonction (AstTds.Fonction(_,info,lp,li))  =
   let analyse_type_fonctions lf =
     List.map analyse_type_fonction lf
 
-let analyse_type_variable_globale (AstTds.Var(info, e)) =
+let analyse_type_variable_globale (AstTds.DeclarationGlobale(info, e)) =
   let (ne, te) = analyse_type_expression e in
   let t = obtenir_type_info info in
   if (est_compatible t te) then
-    AstType.Var(info, ne)
+    AstType.DeclarationGlobale(info, ne)
   else
     raise (Exceptions.TypeInattendu(te, t))
 
@@ -255,7 +255,7 @@ let analyse_type_variable_globale (AstTds.Var(info, e)) =
 en un programme de type AstType.programme *)
 (* Erreur si mauvaise utilisation des types *)
 let analyser (AstTds.Programme (lg, fonctions, prog)) =
-  let nlg = List.map analyse_type_variable_globale lg in
+  let nlg = analyse_type_bloc lg in
   let nfs = analyse_type_fonctions fonctions in
   let np = analyse_type_bloc prog in
   AstType.Programme (nlg, nfs,np)

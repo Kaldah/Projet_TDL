@@ -1,17 +1,23 @@
 static int * x = (new int);
 
-
 int inc (int y){
   print (*x);
-  *x = (*x+1);
-  print (*x);
+  *x = (*x+2);
   return (*x+y);
 }
+
 main {
-  *x = 0;
+  *x = 3;
   print (*x);
   int a = inc (0);
   print (*x);
   a = inc (0);
+  print (*x);
+  a = inc (0);
+  *x = 0;
+  print (*x);
+  a = inc (0);
+  a = inc (0);
+
   print (*x);
 }

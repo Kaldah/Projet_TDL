@@ -1,0 +1,8 @@
+static rat * x = (new rat);
+
+main {
+  int a = 7;
+  *x = [2/5];
+  rat b = [3/8];
+  print *x;
+}

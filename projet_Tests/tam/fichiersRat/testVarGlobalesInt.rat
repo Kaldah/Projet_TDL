@@ -1,4 +1,4 @@
-static int x = 0;
+static int x = 3;
 
 
 int inc ( int y){
@@ -6,6 +6,8 @@ int inc ( int y){
   return (x+y);
 }
 main {
+  print x;
+  x = 0;
   int a = inc (0);
   print a;
   a = inc (1);

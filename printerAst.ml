@@ -102,7 +102,7 @@ let rec string_of_affectable a =
                                         ((List.fold_right (fun i tq -> (string_of_instruction i)^tq) li ""))^"\n"
 
   let string_of_variable_globale vg = match vg with
-    | AstSyntax.Var (n,t,e) -> "Var : "^n^" : "^(string_of_type t)^" = "^(string_of_expression e)^"\n"
+    | AstSyntax.DeclarationGlobale (t,n,e) -> "Var : "^n^" : "^(string_of_type t)^" = "^(string_of_expression e)^"\n"
 
   (* Conversion d'un programme Rat *)
   let string_of_programme (Programme (lg, fonctions, instruction)) =

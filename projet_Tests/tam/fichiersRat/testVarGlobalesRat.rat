@@ -1,11 +1,12 @@
 static rat x = [1/5];
 
-
 rat inc ( int y){
-  x = [((num x) + 1 + y)/(denom x)] ;
+  x = [(((num x) + 1) + y)/(denom x)] ;
   return x;
 }
+
 main {
+  print x;
   rat a = inc (0);
   print a;
   a = inc (1);

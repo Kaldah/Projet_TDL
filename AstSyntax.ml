@@ -49,7 +49,7 @@ type expression =
   (* Type Null *)
   | Null
 
-type variable_globale = Var of string * typ * expression
+type variable_globale = DeclarationGlobale of typ * string * expression
 
 type defaut = Defaut of expression
 

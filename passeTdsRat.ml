@@ -101,6 +101,7 @@ let rec analyse_tds_expression tds e =
           match (info_ast_to_info info_tds) with
           | InfoFun(_, _, _,lod) ->
             let tds_l = List.map (analyse_tds_expression tds) l in
+            (* On complète les paramètres avec les paramètres par défaut *)
             let ntds_l = completer_arguments tds lod tds_l in
             AstTds.AppelFonction(info_tds, ntds_l)
           | _ -> raise (MauvaiseUtilisationIdentifiant n)
@@ -306,14 +307,14 @@ in
   let bloc = analyse_tds_bloc tds_param (Some info_fun) li in
   AstTds.Fonction (t, info_fun, infos_param, bloc)
 
-let analyse_gestion_id_variable_globale tds (AstSyntax.Var(n,t,e)) = 
+let analyse_gestion_id_variable_globale tds (AstSyntax.DeclarationGlobale(t, n, e)) = 
   match chercherLocalement tds n with
   | None -> 
     let ne = analyse_tds_expression tds e in
     let info = InfoVar(n, t, 0, "") in
     let ia = info_to_info_ast info in
     ajouter tds n ia;
-    AstTds.Var(ia, ne)
+    AstTds.Declaration(t, ia, ne)
   | Some _ -> raise (DoubleDeclaration n)
 
 
@@ -327,4 +328,4 @@ let analyser (AstSyntax.Programme (lg, fonctions,prog)) =
   let nlg = List.map (analyse_gestion_id_variable_globale tds) lg in
   let nf = List.map (analyse_tds_fonction tds) fonctions in
   let nb = analyse_tds_bloc tds None prog in
-  AstTds.Programme (nlg, nf,nb)
+  AstTds.Programme (nlg, nf, nb)
