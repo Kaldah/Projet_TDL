@@ -2,4 +2,7 @@ J'ai restructuré Ast en plaçant le module AstSyntax dans un autre fichier pour
 
 J'ai fait ceci afin de pouvoir utiliser le type AstSyntax.defaut pour le placer dans le type InfoFun afin de pouvoir récupérer les paramètres par défaut dans la phase de gestion des identifiants et les intégrer à l'appel de fonction.
 
-Ils sont ensuite effacé lorsqu'on modifie le type de InfoFun car il n'est plus nécessaire de les stocker en mémoire
+Ils sont ensuite effacé lorsqu'on modifie le type de InfoFun car il n'est plus nécessaire de les stocker en mémoire.
+
+
+Faire en sorte que les fonctions cherchent d'abord dans la TDS locale puis la TDS globale en vérifiant, si une variable est trouvée, si elle est du type InfoVarGlobale
