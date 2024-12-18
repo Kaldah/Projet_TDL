@@ -314,6 +314,7 @@ let afficher_globale tds =
 let modifier_type_variable t i =
     match !i with
     | InfoVar (n,_,dep,base) -> i:= InfoVar (n,t,dep,base)
+    | InfoStaticVar (n,_,dep,base, b) -> i:= InfoStaticVar (n,t,dep,base, b)
     | _ -> failwith "Appel modifier_type_variable pas sur un InfoVar"
 
 let%test _ = 
@@ -343,7 +344,8 @@ let%test _ =
  let modifier_adresse_variable d b i =
      match !i with
      |InfoVar (n,t,_,_) -> i:= InfoVar (n,t,d,b)
-     | _ -> failwith "Appel modifier_adresse_variable pas sur un InfoVar"
+     |InfoStaticVar (n,t,_,_,estDecl) -> i:= InfoStaticVar (n,t,d,b,estDecl)
+     | _ -> failwith "Appel modifier_adresse_variable pas sur un InfoVar ou InfoStaticVar"
 
 let%test _ = 
   let info = InfoVar ("x", Rat, 4 , "SB") in
@@ -365,14 +367,20 @@ let info_fun ia = match (info_ast_to_info ia) with
   | InfoFun(nom, t, tp, lp) -> (nom, t, tp, lp)
   | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos fun"
 
-(* Récupère le nom d'une fonction *)
-
-(* Récupère  directement le quadruplet d'information d'un InfoVar, InfoStaticVar ou InfoFun*)
-let info_var ia = match (info_ast_to_info ia) with
-  | InfoVar(nom, t, d, reg) -> (nom, t, d, reg)
-  | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos var"
-
 (* Renvoie si une Variable static a déjà été initialisée *)
 let info_static_var ia = match (info_ast_to_info ia) with
 | InfoStaticVar(nom, t, d, reg, b) -> (nom, t, d, reg,b)
 | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos d'une variable statique"
+
+(* Récupère  directement le quadruplet d'information d'un InfoVar, InfoStaticVar ou InfoFun*)
+let info_var ia = match (info_ast_to_info ia) with
+  | InfoVar(nom, t, d, reg) -> (nom, t, d, reg, false)
+  | InfoStaticVar _ -> info_static_var ia
+  | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos var"
+
+(* Modifie la valeur du booleen d'une variable statique pour noter la déclaration *)
+let declaration_variable estDeclaree i =
+  match !i with
+  | InfoVar _ -> ()
+  | InfoStaticVar (n,t,d,b,_) -> i:= InfoStaticVar (n,t,d,b, estDeclaree)
+  | _ -> failwith "Appel modifier_booleen_variable_statique pas sur un InfoStaticVar"

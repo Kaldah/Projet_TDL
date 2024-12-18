@@ -31,7 +31,7 @@ let rec analyse_gestion_id_affectable tds a en_ecriture =
         (* il a donc déjà été déclaré. L'information associée est récupérée. *)
         begin
           match info_ast_to_info ia with
-          | InfoVar _ -> Affectable (AstTds.Ident ia)
+          | InfoVar _ | InfoStaticVar _ -> Affectable (AstTds.Ident ia)
           | InfoConst (n, ent) -> 
             if en_ecriture then
               (* Modification d'une constante ou d'une fonction *)
@@ -144,10 +144,7 @@ en une instruction de type AstTds.instruction *)
 (* Erreur si mauvaise utilisation des identifiants *)
 let rec analyse_tds_instruction tds oia i =
   match i with
-  | AstSyntax.DeclarationStatic (n, t, e) -> 
-      AstTds.DeclarationStatic (info_to_info_ast (InfoStaticVar(n, t, 0, "", false)), analyse_tds_expression tds e)
-
-  | AstSyntax.Declaration (t, n, e) ->
+    | AstSyntax.Declaration (t, n, e) ->
       begin
         match chercherLocalement tds n with
         | None ->
@@ -170,68 +167,75 @@ let rec analyse_tds_instruction tds oia i =
             il a donc déjà été déclaré dans le bloc courant *)
             raise (DoubleDeclaration n)
       end
-  | AstSyntax.Affectation (a,e) ->
-    let nae = analyse_gestion_id_affectable tds a true in
-    (* Vérification de la bonne utilisation des identifiants dans l'expression *)
-    (* et obtention de l'expression transformée *)
-    let ne = analyse_tds_expression tds e in
-    begin
-    match nae with
-    (* Renvoie de la nouvelle affectation où le nom a été remplacé par l'information
-    et l'expression remplacée par l'expression issue de l'analyse *)
-      | Affectable(na) -> AstTds.Affectation(na, ne)
-      | Expression _ -> failwith "Erreur interne Affectation"
-    end
+    | AstSyntax.DeclarationStatic (n, t, e) -> 
+      let ne = analyse_tds_expression tds e in
+        let info = InfoStaticVar(n, t, 0, "", false) in
+          let ia = info_to_info_ast info in
+            ajouter tds n ia;
+            AstTds.Declaration (t, ia, ne)
 
-  | AstSyntax.Constante (n,v) ->
-      begin
-        match chercherLocalement tds n with
-        | None ->
-          (* L'identifiant n'est pas trouvé dans la tds locale,
-             il n'a donc pas été déclaré dans le bloc courant *)
-          (* Ajout dans la tds de la constante *)
-          ajouter tds n (info_to_info_ast (InfoConst (n,v)));
-          (* Suppression du noeud de déclaration des constantes devenu inutile *)
-          AstTds.Empty
-        | Some _ ->
-          (* L'identifiant est trouvé dans la tds locale,
-          il a donc déjà été déclaré dans le bloc courant *)
-          raise (DoubleDeclaration n)
-      end
-  | AstSyntax.Affichage e ->
+    | AstSyntax.Affectation (a,e) ->
+      let nae = analyse_gestion_id_affectable tds a true in
       (* Vérification de la bonne utilisation des identifiants dans l'expression *)
       (* et obtention de l'expression transformée *)
       let ne = analyse_tds_expression tds e in
-      (* Renvoie du nouvel affichage où l'expression remplacée par l'expression issue de l'analyse *)
-      AstTds.Affichage (ne)
-  | AstSyntax.Conditionnelle (c,t,e) ->
-      (* Analyse de la condition *)
-      let nc = analyse_tds_expression tds c in
-      (* Analyse du bloc then *)
-      let tast = analyse_tds_bloc tds oia t in
-      (* Analyse du bloc else *)
-      let east = analyse_tds_bloc tds oia e in
-      (* Renvoie la nouvelle structure de la conditionnelle *)
-      AstTds.Conditionnelle (nc, tast, east)
-  | AstSyntax.TantQue (c,b) ->
-      (* Analyse de la condition *)
-      let nc = analyse_tds_expression tds c in
-      (* Analyse du bloc *)
-      let bast = analyse_tds_bloc tds oia b in
-      (* Renvoie la nouvelle structure de la boucle *)
-      AstTds.TantQue (nc, bast)
-  | AstSyntax.Retour (e) ->
       begin
-      (* On récupère l'information associée à la fonction à laquelle le return est associée *)
-      match oia with
-        (* Il n'y a pas d'information -> l'instruction est dans le bloc principal : erreur *)
-      | None -> raise RetourDansMain
-        (* Il y a une information -> l'instruction est dans une fonction *)
-      | Some ia ->
-        (* Analyse de l'expression *)
-        let ne = analyse_tds_expression tds e in
-        AstTds.Retour (ne,ia)
+      match nae with
+      (* Renvoie de la nouvelle affectation où le nom a été remplacé par l'information
+      et l'expression remplacée par l'expression issue de l'analyse *)
+        | Affectable(na) -> AstTds.Affectation(na, ne)
+        | Expression _ -> failwith "Erreur interne Affectation"
       end
+
+    | AstSyntax.Constante (n,v) ->
+        begin
+          match chercherLocalement tds n with
+          | None ->
+            (* L'identifiant n'est pas trouvé dans la tds locale,
+              il n'a donc pas été déclaré dans le bloc courant *)
+            (* Ajout dans la tds de la constante *)
+            ajouter tds n (info_to_info_ast (InfoConst (n,v)));
+            (* Suppression du noeud de déclaration des constantes devenu inutile *)
+            AstTds.Empty
+          | Some _ ->
+            (* L'identifiant est trouvé dans la tds locale,
+            il a donc déjà été déclaré dans le bloc courant *)
+            raise (DoubleDeclaration n)
+        end
+    | AstSyntax.Affichage e ->
+        (* Vérification de la bonne utilisation des identifiants dans l'expression *)
+        (* et obtention de l'expression transformée *)
+        let ne = analyse_tds_expression tds e in
+        (* Renvoie du nouvel affichage où l'expression remplacée par l'expression issue de l'analyse *)
+        AstTds.Affichage (ne)
+    | AstSyntax.Conditionnelle (c,t,e) ->
+        (* Analyse de la condition *)
+        let nc = analyse_tds_expression tds c in
+        (* Analyse du bloc then *)
+        let tast = analyse_tds_bloc tds oia t in
+        (* Analyse du bloc else *)
+        let east = analyse_tds_bloc tds oia e in
+        (* Renvoie la nouvelle structure de la conditionnelle *)
+        AstTds.Conditionnelle (nc, tast, east)
+    | AstSyntax.TantQue (c,b) ->
+        (* Analyse de la condition *)
+        let nc = analyse_tds_expression tds c in
+        (* Analyse du bloc *)
+        let bast = analyse_tds_bloc tds oia b in
+        (* Renvoie la nouvelle structure de la boucle *)
+        AstTds.TantQue (nc, bast)
+    | AstSyntax.Retour (e) ->
+        begin
+        (* On récupère l'information associée à la fonction à laquelle le return est associée *)
+        match oia with
+          (* Il n'y a pas d'information -> l'instruction est dans le bloc principal : erreur *)
+        | None -> raise RetourDansMain
+          (* Il y a une information -> l'instruction est dans une fonction *)
+        | Some ia ->
+          (* Analyse de l'expression *)
+          let ne = analyse_tds_expression tds e in
+          AstTds.Retour (ne,ia)
+        end
 
 (* analyse_tds_bloc : tds -> info_ast option -> AstSyntax.bloc -> AstTds.bloc *)
 (* Paramètre tds : la table des symboles courante *)

@@ -10,7 +10,7 @@ type t2 = Ast.AstPlacement.programme
 
 let rec analyse_placement_instruction i depl reg =
 match i with
-  | AstType.DeclarationStatic (info, e) -> print_string "Static ?!";(AstPlacement.DeclarationStatic(info, e), 0)
+  | AstType.DeclarationStatic (info, e) -> (AstPlacement.DeclarationStatic(info, e), 0)
   | AstType.Declaration (info, e) -> 
     (
     match (info_ast_to_info info) with
@@ -18,6 +18,14 @@ match i with
       (* On met à jour les infos de la variable *)
       modifier_adresse_variable depl reg info;
       (AstPlacement.Declaration(info, e), getTaille t)
+    | InfoStaticVar(_, t, _, _, est_declaree) ->
+      if (est_declaree) then 
+        (AstPlacement.Declaration(info, e), getTaille t)
+      else
+        begin
+          modifier_adresse_variable depl "SB" info;
+          (AstPlacement.Declaration(info, e), getTaille t)
+        end
     | _ -> failwith "Erreur interne"
   )
   | AstType.Conditionnelle (c, t, e) -> (AstPlacement.Conditionnelle(c, analyse_placement_bloc t depl reg, analyse_placement_bloc e depl reg), 0)
@@ -63,7 +71,7 @@ let rec aux compteur lst = match lst with
 let analyse_placement_fonction (AstType.Fonction(info,lp, li )) = 
   match (info_ast_to_info info) with
   | InfoFun(_, _, _,_) -> 
-  (* Traiter lp la liste des infos des paramèters *)
+  (* Traiter lp la liste des infos des paramètres *)
   let rec aux_params compteur lst = 
     (
     match lst with 

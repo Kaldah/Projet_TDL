@@ -1,0 +1,16 @@
+int inc (int y){
+  static int x = 0;
+  x = (x+1);
+  print x;
+  return (x);
+}
+
+test {
+  int x = 0;
+  int a = inc(0);
+  print a;
+  a = inc(0);
+  print a;
+  a = inc(0);
+  print a;
+}

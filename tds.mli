@@ -74,7 +74,10 @@ val info_fun : info_ast -> string * typ * typ list * defaut option list
 val info_const : info_ast -> string * int
 
 (* Récupère  directement le quadruplet d'information d'un InfoVar *)
-val info_var : info_ast -> string * typ * int * string
+val info_var : info_ast -> string * typ * int * string * bool
 
 (* Récupère  directement le 5-uplet d'information d'un InfoStaticVar *)
 val info_static_var : info_ast -> string * typ * int * string * bool
+
+(* Modifie la valeur du booleen d'une variable statique pour noter la déclaration *)
+val  declaration_variable : bool -> info_ast -> unit

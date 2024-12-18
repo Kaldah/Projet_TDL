@@ -41,7 +41,7 @@ let rec analyse_type_affectable a =
     (
       match info_ast_to_info info with
 
-        | InfoVar(_,t,_,_)-> (AstTds.Ident info,t)
+        | InfoVar _ | InfoStaticVar _ -> (AstTds.Ident info, obtenir_type_info info)
         | _ -> failwith "Erreur interne Ident"
     )
   | AstTds.Deref na -> 

@@ -104,8 +104,12 @@ Tester les dépendances et initialisations successives.
 
 
 (*************)
-(*  LOCALES  *)
+(* STATIQUES *)
 (*************)
+
+let%expect_test "testVarStatiqueSimple" =
+  runtam (pathFichiersRat^"testVarStatiqueSimple.rat");
+  [%expect{| 112233 |}]
 
 (*
 Vérifier la persistance des valeurs entre appels via le code généré.

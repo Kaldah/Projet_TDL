@@ -19,6 +19,7 @@ let rec get_type_affectable a =
     match info_ast_to_info info with
       | InfoVar(_, t, _, _) -> t
       | InfoConst(_, _) -> Int
+      | InfoStaticVar(_, t, _, _, _) -> t
       | _ -> failwith "Erreur interne Ident"
       )
   | AstTds.Deref a -> 
@@ -33,7 +34,7 @@ let rec analyse_code_affectable a en_ecriture =
   | AstTds.Ident info -> 
   (
     match (info_ast_to_info info)  with
-      | InfoVar(_, t, d, reg) ->
+      | InfoVar(_, t, d, reg) | InfoStaticVar(_, t, d, reg, _) ->
       let taille_type = (getTaille t) in 
       (* On vérifie si on lit la variable ou si on l'affecte *)
         if en_ecriture then
@@ -108,9 +109,15 @@ let rec analyse_code_expression e =
     match i with
     | AstPlacement.DeclarationStatic (_, _) -> print_string "Static !!!?"; ""
 
-    | AstPlacement.Declaration ( info , e) -> let (_, t, d, reg) = info_var info in
-    let taille_type_e = (getTaille t) in 
-    (push taille_type_e) ^ (analyse_code_expression e) ^ (store taille_type_e d reg)
+    | AstPlacement.Declaration ( info , e) -> let (_, t, d, reg, estDeclaree) = info_var info in
+    if (estDeclaree) then
+      ""
+    else 
+      begin
+      let taille_type_e = (getTaille t) in 
+        declaration_variable true info;
+        (push taille_type_e) ^ (analyse_code_expression e) ^ (store taille_type_e d reg)
+      end
 
     | AstPlacement.Affectation ( a , e) ->  
       
@@ -150,7 +157,7 @@ let rec analyse_code_expression e =
       (label nom) ^ analyse_code_bloc bloc ^ halt 
 
   let analyse_code_variables_globales (AstType.DeclarationGlobale (ia, e)) = 
-    let (_, t, d, reg) = info_var ia in
+    let (_, t, d, reg, _) = info_var ia in
     let taille_type = (getTaille t) in 
     (push taille_type) ^ (analyse_code_expression e) ^ (store taille_type d reg)
     

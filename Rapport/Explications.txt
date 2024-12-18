@@ -9,3 +9,12 @@ Faire en sorte que les fonctions cherchent d'abord dans la TDS locale puis la TD
 
 
 Avec un pop 0 taille_bloc à la fin du bloc ça permet d'avoir des variables statiques locales
+
+Ou mémoriser le décalage dans SB grâce à InfoFun, on mémorise le décalage des emplacements des variables locales statiques de la fonctions et on augmente la taille occupée par les variables statiques à chaque déclaration statique.
+
+Ensuite on utilise une fonction pour récupérer la taille occupée par les variables statiques de la fonction
+
+Donc on donne à analyse fonction le depl actuel du registre ST.
+On augmente la valeur dans l'InfoFun.
+
+Voir si InfoFun peut uniquement contenir la taille occupée.
