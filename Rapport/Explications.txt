@@ -1,3 +1,6 @@
+J'ai choisi d'introduire un nouveau type, le type Null pour gérer les pointeurs null plutôt que de réutiliser le type Undefined, cela permet de rester cohérent avec les tests de la fonction est_compatible.
+
+
 J'ai restructuré Ast en plaçant le module AstSyntax dans un autre fichier pour éviter un bug de compilation qui pensait qu'il y avait un double import à cause du module AstTds même lorsque je n'importais que AstSyntax qui ne l'utilise pas.
 
 J'ai fait ceci afin de pouvoir utiliser le type AstSyntax.defaut pour le placer dans le type InfoFun afin de pouvoir récupérer les paramètres par défaut dans la phase de gestion des identifiants et les intégrer à l'appel de fonction.
