@@ -11,7 +11,7 @@ Ils sont ensuite effacé lorsqu'on modifie le type de InfoFun car il n'est plus 
 Faire en sorte que les fonctions cherchent d'abord dans la TDS locale puis la TDS globale en vérifiant, si une variable est trouvée, si elle est du type InfoVarGlobale
 
 
-Avec un pop 0 taille_bloc à la fin du bloc ça permet d'avoir des variables statiques locales
+
 
 Ou mémoriser le décalage dans SB grâce à InfoFun, on mémorise le décalage des emplacements des variables locales statiques de la fonctions et on augmente la taille occupée par les variables statiques à chaque déclaration statique.
 
@@ -21,3 +21,16 @@ Donc on donne à analyse fonction le depl actuel du registre ST.
 On augmente la valeur dans l'InfoFun.
 
 Voir si InfoFun peut uniquement contenir la taille occupée.
+
+
+Je peux mettre deplSB dans analyse_placement_instruction
+
+et dans 
+
+analyse_placement_fonction et créer une fonction analyse_placement_instruction_fonction i depl reg = (AstPlacement.instruction(…) * deplSB)
+
+et analyse_placement_bloc_fonction renvoie (AstPlacement.bloc(…) * deplSB)
+
+Implanter les nouvelles exceptions
+
+Elles traitent uniquement différemment les cas nécessaires sinon elles renvoient (analyse_placement_instruction i depl reg, 0)

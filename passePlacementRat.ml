@@ -18,14 +18,6 @@ match i with
       (* On met à jour les infos de la variable *)
       modifier_adresse_variable depl reg info;
       (AstPlacement.Declaration(info, e), getTaille t)
-    | InfoStaticVar(_, t, _, _, est_declaree) ->
-      if (est_declaree) then 
-        (AstPlacement.Declaration(info, e), getTaille t)
-      else
-        begin
-          modifier_adresse_variable depl "SB" info;
-          (AstPlacement.Declaration(info, e), getTaille t)
-        end
     | _ -> failwith "Erreur interne"
   )
   | AstType.Conditionnelle (c, t, e) -> (AstPlacement.Conditionnelle(c, analyse_placement_bloc t depl reg, analyse_placement_bloc e depl reg), 0)
@@ -68,7 +60,43 @@ let rec aux compteur lst = match lst with
     print_int taille; print_newline ();*)
   (nli, taille)
 
-let analyse_placement_fonction (AstType.Fonction(info,lp, li )) = 
+
+(* On défini des fonctions pour traiter spécifiquement certaines instructions des fonctions. *)
+(* Notamment les variables statiques locales pour renvoyer le déplacement dans ST et le prendre en compte*)
+
+let analyse_placement_instruction_fonction i depl reg deplSB = match i with
+    | AstType.DeclarationStatic (info, e) -> let (_, t, _,_,_) = info_var info in
+     let taille = getTaille t in 
+     ((AstPlacement.DeclarationStatic(info, e), 0), deplSB +  taille)
+    | AstType.Declaration (info, e) -> 
+      begin
+        match (info_ast_to_info info) with
+        | InfoStaticVar(_, t, _, _, _) -> 
+          let taille = getTaille t in
+            let nDeplSB = deplSB + taille in
+              modifier_adresse_variable (nDeplSB) "SB" info;
+              ((AstPlacement.Declaration(info, e), getTaille t), nDeplSB)
+        | _ -> (analyse_placement_instruction i depl reg, deplSB)
+      end
+    | _ -> (analyse_placement_instruction i depl reg, deplSB)
+
+let analyse_placement_bloc_fonction li depl reg deplSB = 
+  let rec aux compteur compteurSB lst = match lst with
+      | h::q -> 
+        let ((i, taille), nDeplSB) = analyse_placement_instruction_fonction h compteur reg deplSB in 
+        let (nli, ntaille) = (aux (compteur + taille) (compteurSB + nDeplSB) q) in
+        ((i, taille)::nli, ntaille)
+      | [] -> ([], 0)
+    in
+    let (nliTaille, nDeplSB) = aux depl deplSB li
+  in
+  let nli = List.map fst nliTaille in
+    let listeTaille  = List.map snd nliTaille in
+    let taille = ((List.fold_left (fun acc n -> acc + n) 0 listeTaille)) in
+    (* nDeplSB correspond au décalage causé par les variables satiques de la fonction dans la SB *)
+    ((nli, taille), nDeplSB)
+
+let analyse_placement_fonction (AstType.Fonction(info,lp, li )) deplSB = 
   match (info_ast_to_info info) with
   | InfoFun(_, _, _,_) -> 
   (* Traiter lp la liste des infos des paramètres *)
@@ -88,8 +116,18 @@ let analyse_placement_fonction (AstType.Fonction(info,lp, li )) =
     in
     aux_params 0 (List.rev lp);
     (* Lors de la création du registre, on décale de 3 places pour le registre *)
-    AstPlacement.Fonction(info, lp, (analyse_placement_bloc li 3 "LB"))
+    let (bloc, deplSB) = analyse_placement_bloc_fonction li 3 "LB" deplSB in
+    (AstPlacement.Fonction(info, lp, bloc), deplSB)
   | _-> failwith "Erreur interne Placement Fonction"
+
+
+let rec analyse_placement_fonctions lf deplSB = 
+  match lf with
+  | h::q -> 
+    let (nf, nDeplSB) = analyse_placement_fonction h deplSB in
+    nf::(analyse_placement_fonctions q nDeplSB)
+  | [] -> []
+
 
 let analyse_placement_variable_globale lg = 
 
@@ -111,7 +149,7 @@ let analyse_placement_variable_globale lg =
     end 
     in aux_globales (List.rev lg) 0
 let analyser (AstType.Programme (lg, fonctions, prog)) = 
-  let (nlg, depl) = analyse_placement_bloc lg 0 "SB" in
-  let nfs = List.map analyse_placement_fonction fonctions in
-  let (np,npTaille) = analyse_placement_bloc prog depl "SB" in
-  AstPlacement.Programme ((nlg, depl), nfs,(np,npTaille))
+  let (nlg, deplSB) = analyse_placement_bloc lg 0 "SB" in
+  let nfs = analyse_placement_fonctions fonctions deplSB in
+  let (np, npTaille) = analyse_placement_bloc prog deplSB "SB" in
+  AstPlacement.Programme ((nlg, deplSB), nfs,(np,npTaille))

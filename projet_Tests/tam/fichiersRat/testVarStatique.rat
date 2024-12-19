@@ -1,0 +1,25 @@
+int inc1 (int y){
+  static int x = 0;
+  x = (x+1);
+  print x;
+  return (x);
+}
+
+int inc2 (int y){
+  static int x = 0;
+  x = (x+2);
+  print x;
+  return (x);
+}
+
+test {
+  int x = 0;
+  int a = inc2(0);
+  print a;
+  a = inc1(0);
+  print a;
+  a = inc2(0);
+  print a;
+  a = inc1(0);
+  print a;
+}

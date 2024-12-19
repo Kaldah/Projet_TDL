@@ -367,7 +367,7 @@ let info_fun ia = match (info_ast_to_info ia) with
   | InfoFun(nom, t, tp, lp) -> (nom, t, tp, lp)
   | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos fun"
 
-(* Renvoie si une Variable static a déjà été initialisée *)
+(* Renvoie si une Variable static a déjà été initialisée et les autres infos *)
 let info_static_var ia = match (info_ast_to_info ia) with
 | InfoStaticVar(nom, t, d, reg, b) -> (nom, t, d, reg,b)
 | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos d'une variable statique"

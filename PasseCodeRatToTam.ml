@@ -112,7 +112,7 @@ let rec analyse_code_expression e =
     | AstPlacement.Declaration ( info , e) -> let (_, t, d, reg, estDeclaree) = info_var info in
     if (estDeclaree) then
       ""
-    else 
+    else
       begin
       let taille_type_e = (getTaille t) in 
         declaration_variable true info;
