@@ -43,7 +43,7 @@ struct
   type t1 = Ast.AstType.programme
   type t2 = Ast.AstPlacement.programme
 
-  let analyser _ = Ast.AstPlacement.Programme(([],0),[],([],0))
+  let analyser _ = Ast.AstPlacement.Programme(([],0),[],([],0),([],0))
 
 end
 
@@ -73,7 +73,7 @@ struct
     | Ast.AstPlacement.Declaration (info,_) -> 
       begin
         match Tds.info_ast_to_info info with
-        | InfoVar (n,_,d,r) -> [(n,(d,r))]
+        | InfoVar (n,_,d,r) | InfoStaticVar (n,_,d,r,_) -> [(n,(d,r))]
         | _ -> []
         end
     | Ast.AstPlacement.Conditionnelle(_,(bt,_),(be,_)) -> (List.flatten (List.map (analyser_instruction) bt))@(List.flatten (List.map (analyser_instruction) be))
@@ -100,8 +100,8 @@ let analyser_variable_globale (Ast.AstType.DeclarationGlobale(ia,_)) = match (in
     | _ -> []
 
   (* Renvoie la suite des adresses des variables déclarées dans les fonctions et dans le programme principal *)
-  let analyser (Ast.AstPlacement.Programme ((lg,_), fonctions, (prog,_))) =
-    ("main", List.flatten (List.map (analyser_instruction) prog))::(List.flatten (List.map (analyser_fonction) fonctions))@["",List.flatten (List.map analyser_instruction lg)]
+  let analyser (Ast.AstPlacement.Programme ((lg,_), fonctions, (ls,_) ,(prog,_))) =
+    ("main", List.flatten (List.map (analyser_instruction) prog))::(List.flatten (List.map (analyser_fonction) fonctions))@["main",List.flatten (List.map analyser_instruction lg)]@["main",List.flatten (List.map analyser_instruction ls)]
 
 
 end

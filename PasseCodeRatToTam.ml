@@ -109,13 +109,17 @@ let rec analyse_code_expression e =
     match i with
     | AstPlacement.DeclarationStatic (_, _) -> print_string "Static !!!?"; ""
 
-    | AstPlacement.Declaration ( info , e) -> let (_, t, d, reg, estDeclaree) = info_var info in
+    | AstPlacement.Declaration ( info , e) -> let (n, t, d, reg, estDeclaree) = info_var info in
     if (estDeclaree) then
       ""
     else
       begin
       let taille_type_e = (getTaille t) in 
         declaration_variable true info;
+       (*
+        print_string ("Déclaration Var : " ^ n ^ " dans SB, depl SB : ");
+        print_int d; print_string (" et registre : " ^ reg); print_newline ();
+        *)
         (push taille_type_e) ^ (analyse_code_expression e) ^ (store taille_type_e d reg)
       end
 
@@ -162,15 +166,15 @@ let rec analyse_code_expression e =
     (push taille_type) ^ (analyse_code_expression e) ^ (store taille_type d reg)
     
 
-let analyser (AstPlacement.Programme (vg, fonctions, prog)) = 
+let analyser (AstPlacement.Programme (vg, fonctions, varStatic, prog)) = 
   let code_vg = analyse_code_bloc vg in
   let code_fonctions = concat_code (List.map analyse_code_fonction fonctions) in 
-  let code_prog = (analyse_code_bloc prog) in
-  let code_complet = (getEntete ()) ^ code_fonctions ^ "main\n" ^ code_vg ^ code_prog ^ halt in
-  
+  let code_vars_static = analyse_code_bloc varStatic in
+  let code_prog = analyse_code_bloc prog in
+  let code_complet = (getEntete ()) ^ code_fonctions ^ "main\n" ^ code_vg ^ code_vars_static ^ code_prog ^ halt in
   (*
   print_string ("\n \n CODE \n" ^ code_fonctions ^ "main\n" ^ code_vg 
   ^ "Fin Variables globales \n" ^ code_prog ^ "\n  CODE \n \n");
- 
-  print_string code_complet;   *)
+ *)
+  (*print_string code_complet;   *)
   code_complet

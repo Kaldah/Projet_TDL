@@ -15,8 +15,10 @@ match i with
     (
     match (info_ast_to_info info) with
     | InfoVar(_, t, _, _) ->
+      (*
       print_string "Déclaration Var Main, nDepl : ";
       print_int depl; print_newline ();
+      *)
       (* On met à jour les infos de la variable *)
       modifier_adresse_variable depl reg info;
       (AstPlacement.Declaration(info, e), getTaille t)
@@ -75,13 +77,16 @@ let analyse_placement_instruction_fonction i depl reg deplSB = match i with
         match (info_ast_to_info info) with
         | InfoStaticVar(_, t, _, _, _) -> 
           let taille = getTaille t in
+          (*
             print_string "Déclaration Var Statique, nDepl : ";
             print_int deplSB; print_newline ();
+            *)
             modifier_adresse_variable (deplSB) "SB" info;
             let nDeplSB = deplSB + taille in
               ((AstPlacement.Declaration(info, e), getTaille t), nDeplSB)
-        | _ -> print_string "Déclaration Var Fonction, nDepl : ";
+        | _ -> (* print_string "Déclaration Var Fonction, nDepl : ";
               print_int deplSB; print_newline (); 
+              *)
               (analyse_placement_instruction i depl reg, deplSB)
       end
     | _ -> (analyse_placement_instruction i depl reg, deplSB)
@@ -101,6 +106,20 @@ let analyse_placement_bloc_fonction li depl reg deplSB =
     let taille = ((List.fold_left (fun acc n -> acc + n) 0 listeTaille)) in
     (* nDeplSB correspond au décalage causé par les variables satiques de la fonction dans la SB *)
     ((nli, taille), nDeplSB)
+
+let rec recuperer_declaration_static li =  
+  match li with
+  | h::q -> 
+    let (lstFun, lstStatic) = recuperer_declaration_static q in 
+    begin
+      match h with 
+        (*| AstPlacement.DeclarationStatic _ -> (lstFun, h::lstStatic)*)
+        | AstPlacement.Declaration (info, _) -> (match (info_ast_to_info info) with
+          | InfoStaticVar _ -> (lstFun, h::lstStatic)
+          | _ -> (h::lstFun, lstStatic) )
+        | _ -> (h::lstFun, lstStatic)
+    end
+  | [] -> ([],[])
 
 let analyse_placement_fonction (AstType.Fonction(info,lp, li )) deplSB = 
   match (info_ast_to_info info) with
@@ -122,9 +141,9 @@ let analyse_placement_fonction (AstType.Fonction(info,lp, li )) deplSB =
     in
     aux_params 0 (List.rev lp);
     (* Lors de la création du registre, on décale de 3 places pour le registre *)
-    let (bloc, ndeplSB) = analyse_placement_bloc_fonction li 3 "LB" deplSB in
-    
-    (AstPlacement.Fonction(info, lp, bloc), ndeplSB)
+    let ((nli, tailleBloc), ndeplSB) = analyse_placement_bloc_fonction li 3 "LB" deplSB in
+    let (nliFun, nliStatic) = recuperer_declaration_static nli in
+    (AstPlacement.Fonction(info, lp, (nliFun, tailleBloc)), (nliStatic, ndeplSB))
   | _-> failwith "Erreur interne Placement Fonction"
 
 
@@ -132,10 +151,10 @@ let analyse_placement_fonctions lf deplSB =
   let rec aux lst depl =
   match lst with
   | h::q -> 
-    let (nf, ndeplSB) = analyse_placement_fonction h depl in
-      let (nlf, nDeplSB) = aux q ndeplSB in
-        (nf::nlf, nDeplSB)
-  | [] -> ([],depl)
+    let (niFun, (liStatic, ndeplSB)) = analyse_placement_fonction h depl in
+      let (nlf, (nliStatic, ndeplSB)) = aux q ndeplSB in
+        (niFun::nlf, (nliStatic@liStatic, ndeplSB))
+  | [] -> ([],([], depl))
   in
     aux lf deplSB
 
@@ -161,10 +180,13 @@ let analyse_placement_variable_globale lg =
     in aux_globales (List.rev lg) 0
 let analyser (AstType.Programme (lg, fonctions, prog)) = 
   let (nlg, deplSB) = analyse_placement_bloc lg 0 "SB" in
-  let (nfs, ndeplSB) = analyse_placement_fonctions fonctions deplSB in
-  
+  let (nfs, (liStatic, ndeplSB)) = analyse_placement_fonctions fonctions deplSB in
+  let blocVarStatique = (liStatic, ndeplSB) in
+  let bloc_var_globale = (nlg, deplSB) in
+  let bloc_main = analyse_placement_bloc prog ndeplSB "SB" in
+  (*
   print_string "\n déplacementSB post globale : "; print_int deplSB;
   print_string "\n déplacementSB post fonctions : "; print_int ndeplSB; print_string "\n";
-  
-  let (np, npTaille) = analyse_placement_bloc prog ndeplSB "SB" in
-  AstPlacement.Programme ((nlg, deplSB), nfs,(np,npTaille))
+  *)
+
+  AstPlacement.Programme (bloc_var_globale, nfs, blocVarStatique, bloc_main)

@@ -115,7 +115,7 @@ let%expect_test "testVarStatiqueSimple" =
 let%expect_test "testVarStatique" =
   runtam (pathFichiersRat^"testVarStatique.rat");
   [%expect{| 22114422 |}]
-  
+(*
 (*
 Vérifier la persistance des valeurs entre appels via le code généré.
 Tester les réinitialisations illégales.
@@ -125,7 +125,7 @@ Tester les réinitialisations illégales.
 (* DÉFAUTS   *)
 (*************)
 
-(*
+
 Valider que le code gère correctement les appels avec des paramètres omis.
 Tester les cas où les valeurs par défaut interagissent avec d’autres arguments.
 *)
