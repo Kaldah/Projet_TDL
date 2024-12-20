@@ -57,7 +57,7 @@ type defaut = Defaut of expression
   + suppression de nœuds (const) *)
   type bloc = instruction list
   and instruction =
-    | DeclarationStatic of Tds.info_ast * expression
+    | DeclarationStatic of typ * Tds.info_ast * expression
     | Declaration of typ * Tds.info_ast * expression (* le nom de l'identifiant est remplacé par ses informations *)
     | Affectation of  affectable * expression (* le nom de l'identifiant est remplacé par ses informations *)
     | Affichage of expression

@@ -67,6 +67,12 @@ val modifier_adresse_variable : int -> string -> info_ast -> unit
 
 (* Ajout de fonctions supplémentaires *)
 
+(* Récupère le nom d'une info *)
+val obtenir_nom_info : info_ast -> string
+
+(* Récupère le type d'une info *)
+val obtenir_type_info : info_ast -> typ
+
 (* Récupère  directement le triplet d'information d'un InfoFun *)
 val info_fun : info_ast -> string * typ * typ list * defaut option list
 

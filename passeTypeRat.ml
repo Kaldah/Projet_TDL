@@ -8,26 +8,10 @@ type t1 = Ast.AstTds.programme
 type t2 = Ast.AstType.programme
 
 
-(* obtenir_type_info : info_ast -> typ *)
-(* Paramètre ia : l'information dont on veut obtenir le type *)
-(* Renvoie le type associé à l'information *)
-let obtenir_type_info ia = 
-  match (info_ast_to_info ia) with
-  | InfoFun (_,t,_,_) -> t              (* Si c'est une fonction, on renvoie son type *)
-  | InfoVar (_,t,_,_) -> t            (* Si c'est une variable, on renvoie son type *)
-  | InfoStaticVar (_,t,_,_,_) -> t    (* Si c'est une variable statique, on renvoie son type *)
-  | InfoConst (_,_) -> Int            (* Si c'est une constante, le type est Int *)
-
-  let obtenir_nom_info ia = 
-    match (info_ast_to_info ia) with
-    | InfoFun (n,_,_,_) -> n              (* Si c'est une fonction, on renvoie son nom *)
-    | InfoVar (n,_,_,_) -> n            (* Si c'est une variable, on renvoie son nom *)
-    | InfoStaticVar (n,_,_,_,_) -> n    (* Si c'est une variable statique, on renvoie son nom *)
-    | InfoConst (n,_) -> n              (* Si c'est une constante, on renvoie son nom *)
-  
+(* Permet d'afficher sous forme de string un AstTds.affectable, permet de débuguer *)
 let rec string_of_affectable a = 
   match a with
-    | AstTds.Ident n -> obtenir_nom_info n ^ " (type : " ^ string_of_type (obtenir_type_info n) ^ ")"
+    | AstTds.Ident ia -> obtenir_nom_info ia ^ " (type : " ^ string_of_type (obtenir_type_info ia) ^ ")"
     | AstTds.Deref a -> "*" ^ (string_of_affectable a)
 
 (* analyse_type_affectable : AstTds.affectable -> AstType.affectable * typ *)
@@ -152,12 +136,12 @@ en une instruction de type AstType.instruction *)
 (* Erreur si mauvaise utilisation des types *)
 let rec analyse_type_instruction i = 
   match i with
-  | AstTds.DeclarationStatic (info, e) -> 
+  | AstTds.DeclarationStatic (t, info, e) ->
     let (ne, te) = analyse_type_expression e in
-    if (est_compatible te Int) then
+    if (est_compatible te t) then
       AstType.DeclarationStatic(info, ne)
     else
-      raise (Exceptions.TypeInattendu(te, Int))
+      raise (Exceptions.TypeInattendu(te, t))
   | AstTds.Declaration (t, info , e) ->
     (* On vérifie si les types sont compatibles *)
       let (ne, te) = analyse_type_expression e in 

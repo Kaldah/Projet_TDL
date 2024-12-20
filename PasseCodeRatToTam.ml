@@ -107,22 +107,10 @@ let rec analyse_code_expression e =
 
   let rec analyse_code_instruction i =
     match i with
-    | AstPlacement.DeclarationStatic (_, _) -> print_string "Static !!!?"; ""
-
-    | AstPlacement.Declaration ( info , e) -> let (n, t, d, reg, estDeclaree) = info_var info in
-    if (estDeclaree) then
-      ""
-    else
-      begin
+    | AstPlacement.Declaration ( info , e) | AstPlacement.DeclarationStatic (info, e)  -> let (_, t, d, reg, _) = info_var info in
       let taille_type_e = (getTaille t) in 
         declaration_variable true info;
-       (*
-        print_string ("Déclaration Var : " ^ n ^ " dans SB, depl SB : ");
-        print_int d; print_string (" et registre : " ^ reg); print_newline ();
-        *)
         (push taille_type_e) ^ (analyse_code_expression e) ^ (store taille_type_e d reg)
-      end
-
     | AstPlacement.Affectation ( a , e) ->  
       
     let sa = analyse_code_affectable a true in

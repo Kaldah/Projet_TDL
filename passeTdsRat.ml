@@ -172,7 +172,7 @@ let rec analyse_tds_instruction tds oia i =
         let info = InfoStaticVar(n, t, 0, "", false) in
           let ia = info_to_info_ast info in
             ajouter tds n ia;
-            AstTds.Declaration (t, ia, ne)
+            AstTds.DeclarationStatic (t, ia, ne)
 
     | AstSyntax.Affectation (a,e) ->
       let nae = analyse_gestion_id_affectable tds a true in

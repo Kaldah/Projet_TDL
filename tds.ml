@@ -357,6 +357,28 @@ let%test _ =
     
 (* Ajout de fonctions supplémentaires *)
 
+
+(* obtenir_type_info : info_ast -> typ *)
+(* Paramètre ia : l'information dont on veut obtenir le type *)
+(* Renvoie le type associé à l'information *)
+let obtenir_type_info ia = 
+  match (info_ast_to_info ia) with
+  | InfoFun (_,t,_,_) -> t            (* Si c'est une fonction, on renvoie son type *)
+  | InfoVar (_,t,_,_) -> t            (* Si c'est une variable, on renvoie son type *)
+  | InfoStaticVar (_,t,_,_,_) -> t    (* Si c'est une variable statique, on renvoie son type *)
+  | InfoConst (_,_) -> Int            (* Si c'est une constante, le type est Int *)
+
+(* obtenir_nom_info : info_ast -> string *)
+(* Paramètre ia : l'information dont on veut obtenir le type *)
+(* Renvoie le nom associé à l'information *)
+  let obtenir_nom_info ia = 
+    match (info_ast_to_info ia) with
+    | InfoFun (n,_,_,_) -> n              (* Si c'est une fonction, on renvoie son nom *)
+    | InfoVar (n,_,_,_) -> n            (* Si c'est une variable, on renvoie son nom *)
+    | InfoStaticVar (n,_,_,_,_) -> n    (* Si c'est une variable statique, on renvoie son nom *)
+    | InfoConst (n,_) -> n              (* Si c'est une constante, on renvoie son nom *)
+
+
 let info_const ia = match (info_ast_to_info ia) with
   | InfoConst(nom, v) -> (nom, v)
   | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos const"
