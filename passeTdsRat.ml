@@ -8,12 +8,14 @@ open Ast
 type t1 = Ast.AstSyntax.programme
 type t2 = Ast.AstTds.programme
 
+
+(* Types permettant d'avoir des paramètres par défauts sous la forme d'expressions ou d'affectables *)
 type affouexpTds = 
   | Affectable of AstTds.affectable
   | Expression of AstTds.expression
 
 
-(* analye_gestion_id_affectable : tds -> AstSyntax.affectable -> bool -> AstTds.expression *)
+(* analye_gestion_id_affectable : tds -> AstSyntax.affectable -> bool -> affouexpTds *)
 (* Paramètre tds : la table des symboles courante *)
 (* Paramètre a : l'affectable à analyser *)
 (* Paramètre en_ecriture : le mode, vaut "true" en lecture et "false" en ecriture *)
