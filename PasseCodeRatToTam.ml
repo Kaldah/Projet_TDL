@@ -34,7 +34,7 @@ let rec analyse_code_affectable a en_ecriture =
   | AstTds.Ident info -> 
   (
     match (info_ast_to_info info)  with
-      | InfoVar(_, t, d, reg) | InfoStaticVar(_, t, d, reg, _) ->
+      | InfoVar(_, t, d, reg) ->
       let taille_type = (getTaille t) in 
       (* On vérifie si on lit la variable ou si on l'affecte *)
         if en_ecriture then

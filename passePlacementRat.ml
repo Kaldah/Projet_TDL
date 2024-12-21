@@ -19,7 +19,7 @@ type t2 = Ast.AstPlacement.programme
 
 let rec analyse_placement_instruction i depl reg =
 match i with
-  | AstType.DeclarationStatic (info, e) -> (AstPlacement.DeclarationStatic(info, e), 0)
+  | AstType.DeclarationStatic _ -> raise Exceptions.VariableStatiqueDansMain
   | AstType.Declaration (info, e) -> 
     (
     match (info_ast_to_info info) with
@@ -90,11 +90,13 @@ let rec aux depl lst = match lst with
 (* dans le registre LB et la taille prise dans le registre SB et est de type (AstPlacement.instruction * int) * int *)
 
 let analyse_placement_instruction_fonction i deplLB deplSB = match i with
-    | AstType.DeclarationStatic (info, e) -> let (_, t, _,_,_) = info_var info in
+    | AstType.DeclarationStatic (info, e) -> 
+      let (_, t, _,_,_) = info_var info in
       let taille = getTaille t in
         modifier_adresse_variable (deplSB) "SB" info;
+        
         ((AstPlacement.DeclarationStatic(info, e), 0), taille)
-    | _ -> (analyse_placement_instruction i deplLB ("LB"), deplSB)
+    | _ -> (analyse_placement_instruction i deplLB ("LB"), 0)
 
 
 (* analyse_placement_bloc_fonction : AstType.instruction list -> int -> int -> (AstPlacement.instruction list * int) * int *)
@@ -153,9 +155,6 @@ let rec recuperer_declaration_static li =
     begin
       match h with 
         | AstPlacement.DeclarationStatic _ -> (lstFun, h::lstStatic)
-        | AstPlacement.Declaration (info, _) -> (match (info_ast_to_info info) with
-          | InfoStaticVar _ -> (lstFun, h::lstStatic)
-          | _ -> (h::lstFun, lstStatic) )
         | _ -> (h::lstFun, lstStatic)
     end
   | [] -> ([],[])

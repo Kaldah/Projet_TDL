@@ -1,0 +1,46 @@
+static int x = 42;
+static rat * y = (new rat); 
+
+int inc (int y = x){
+  static int * x = (new int);
+  if (*x = 0){
+    *x = y;
+  }
+  else{
+     *x = (*x+1);
+  }
+  print y;
+  print *x;
+  return (*x);
+}
+
+rat * incRat (rat y = *y){
+  static rat * x = (new rat);
+  if ((num *x) = 0){
+    *x = y;
+  }
+  else{
+     *x = [((num y)+(denom y)) / (denom y)];
+  }
+  print y;
+  print *x;
+  return (x);
+}
+
+test {
+  *y = [5/2];
+  print x;
+  int x = 0;
+  rat * b = (new rat);
+  rat * c = (new rat);
+  int a = inc(2);
+  print a;
+  b = incRat();
+  print *b;
+  print a;
+  a = inc(7);
+  print a;
+  c = incRat([7/2]);
+  print *b;
+  print *c;
+}

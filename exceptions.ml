@@ -19,6 +19,9 @@ exception RetourDansMain
 
 exception DereferencementImpossible of typ
 
+(* Exceptions variables statiques globales et locales *)
+exception VariableStatiqueDansMain
+
 (* Exceptions paramètre par défaut *)
 
 exception ParametreObligatoireInterdit of string

@@ -16,7 +16,7 @@ let runtamcode cmde ratfile =
   let ic = Unix.open_process_in (cmde ^ " " ^ tamfile) in
   let printed = input_line ic in
   close_in ic;
-  (*Sys.remove tamfile;    à commenter si on veut étudier le code TAM. *)
+  Sys.remove tamfile;    (* à commenter si on veut étudier le code TAM. *)
   String.trim printed
 
 (* Compile and run ratfile, then print its output *)
@@ -115,6 +115,12 @@ let%expect_test "testVarStatiqueSimple" =
 let%expect_test "testVarStatique" =
   runtam (pathFichiersRat^"testVarStatique.rat");
   [%expect{| 22114422 |}]
+
+
+let%expect_test "testVarStatique" =
+  runtam (pathFichiersRat^"testVarStatique.rat");
+  [%expect{| 22114422 |}]
+
 (*
 (*
 Vérifier la persistance des valeurs entre appels via le code généré.
@@ -137,3 +143,8 @@ let%expect_test "testParamDef1" =
 let%expect_test "testParamDef2" =
   runtam (pathFichiersRat^"testParamDef2.rat");
   [%expect{| 56 |}]
+
+let%expect_test "testTout" =
+  runtam (pathFichiersRat^"testTout.rat");
+  [%expect{| 42222[5/2][5/2][5/2]2733[7/2][9/2][9/2][9/2] |}]
+  

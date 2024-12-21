@@ -141,7 +141,10 @@ let rec analyse_type_instruction i =
     if (est_compatible te t) then
       AstType.DeclarationStatic(info, ne)
     else
+      (
+      print_string (string_of_type t);
       raise (Exceptions.TypeInattendu(te, t))
+      )
   | AstTds.Declaration (t, info , e) ->
     (* On vérifie si les types sont compatibles *)
       let (ne, te) = analyse_type_expression e in 

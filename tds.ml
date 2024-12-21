@@ -406,3 +406,9 @@ let declaration_variable estDeclaree i =
   | InfoVar _ -> ()
   | InfoStaticVar (n,t,d,b,_) -> i:= InfoStaticVar (n,t,d,b, estDeclaree)
   | _ -> failwith "Appel modifier_booleen_variable_statique pas sur un InfoStaticVar"
+
+let rec obtenir_tds_originelle tds = match tds with
+  | Courante (mere, _) -> 
+    if (mere == Nulle) then tds else 
+      obtenir_tds_originelle mere
+  | Nulle ->  Nulle

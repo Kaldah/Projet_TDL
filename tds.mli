@@ -87,3 +87,6 @@ val info_static_var : info_ast -> string * typ * int * string * bool
 
 (* Modifie la valeur du booleen d'une variable statique pour noter la déclaration *)
 val  declaration_variable : bool -> info_ast -> unit
+
+(* Renvoie la Tds originelle, elle contient notamment les variables globales *)
+val obtenir_tds_originelle : tds -> tds

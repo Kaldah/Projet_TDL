@@ -31,7 +31,7 @@ let rec analyse_gestion_id_affectable tds a en_ecriture =
         (* il a donc déjà été déclaré. L'information associée est récupérée. *)
         begin
           match info_ast_to_info ia with
-          | InfoVar _ | InfoStaticVar _ -> Affectable (AstTds.Ident ia)
+          | InfoVar _ -> Affectable (AstTds.Ident ia)
           | InfoConst (n, ent) -> 
             if en_ecriture then
               (* Modification d'une constante ou d'une fonction *)
@@ -51,17 +51,6 @@ let rec analyse_gestion_id_affectable tds a en_ecriture =
       | _ -> failwith "Erreur de déréférencement"
     end
 
-
-(* On commente pour éviter un Warning - Utile pour le débugage
-(* afficher_expression : tds -> unit *)
-(* Paramètre tds : la table des symboles à afficher *)
-(* Affiche la table des symboles *)
-let afficher_expression_ast e = 
-  print_string (PrinterAst.PrinterAstSyntax.string_of_expression e);
-  print_newline ();;
-*)
-
-
 (* analyse_tds_expression : tds -> AstSyntax.expression -> AstTds.expression *)
 (* Paramètre tds : la table des symboles courante *)
 (* Paramètre e : l'expression à analyser *)
@@ -69,24 +58,6 @@ let afficher_expression_ast e =
 en une expression de type AstTds.expression *)
 (* Erreur si mauvaise utilisation des identifiants *)
 let rec analyse_tds_expression tds e =
-  let completer_arguments tds params args =
-    let rec aux params args =
-      match (params, args) with
-      | [], [] -> [] (* Aucun paramètre restant, aucun argument manquant *)
-      | (Some (AstSyntax.Defaut(e)))::q, [] ->
-          (* Paramètre avec défaut et argument manquant : utiliser la valeur par défaut *)
-          (analyse_tds_expression tds e) :: aux q []
-      | None :: _, [] ->
-          (* Paramètre obligatoire manquant *)
-          raise (Exceptions.TypesParametresInattendus ([], []))
-      | _:: q, arg :: args_q ->
-          (* Argument fourni : on continue *)
-          arg :: aux q args_q
-      | [], _ :: _ -> raise (Exceptions.TypesParametresInattendus ([], []))
-        in
-    aux params args
-    in
-
   match e with
   | AstSyntax.AppelFonction(n, l) -> 
     begin
@@ -134,6 +105,25 @@ let rec analyse_tds_expression tds e =
     let exp1 = analyse_tds_expression tds e1 in 
     let exp2 = analyse_tds_expression tds e2 in AstTds.Binaire(op, exp1, exp2)
 
+and completer_arguments tds params args =
+  let tdsOriginelle = obtenir_tds_originelle tds in
+  let rec aux params args =
+    match (params, args) with
+    | [], [] -> [] (* Aucun paramètre restant, aucun argument manquant *)
+    | (Some (AstSyntax.Defaut(e)))::q, [] ->
+        (* Paramètre avec défaut et argument manquant : utiliser la valeur par défaut *)
+        (analyse_tds_expression tdsOriginelle e) :: aux q []
+    | None :: _, [] ->
+        (* Paramètre obligatoire manquant *)
+        raise (Exceptions.TypesParametresInattendus ([], []))
+    | _:: q, arg :: args_q ->
+        (* Argument fourni : on continue *)
+        arg :: aux q args_q
+    | [], _ :: _ -> raise (Exceptions.TypesParametresInattendus ([], []))
+      in
+  aux params args
+    
+
 (* analyse_tds_instruction : tds -> info_ast option -> AstSyntax.instruction -> AstTds.instruction *)
 (* Paramètre tds : la table des symboles courante *)
 (* Paramètre oia : None si l'instruction i est dans le bloc principal,
@@ -169,7 +159,7 @@ let rec analyse_tds_instruction tds oia i =
       end
     | AstSyntax.DeclarationStatic (n, t, e) -> 
       let ne = analyse_tds_expression tds e in
-        let info = InfoStaticVar(n, t, 0, "", false) in
+        let info = InfoVar(n, t, 0, "") in
           let ia = info_to_info_ast info in
             ajouter tds n ia;
             AstTds.DeclarationStatic (t, ia, ne)
