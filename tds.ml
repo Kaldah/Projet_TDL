@@ -368,6 +368,23 @@ let obtenir_type_info ia =
   | InfoStaticVar (_,t,_,_,_) -> t    (* Si c'est une variable statique, on renvoie son type *)
   | InfoConst (_,_) -> Int            (* Si c'est une constante, le type est Int *)
 
+  let %test _= 
+    let info= info_to_info_ast (InfoVar("x",Rat,2,"SB")) in 
+    obtenir_type_info info = Rat
+
+  let %test _= 
+    let info= info_to_info_ast (InfoFun("add",Int,[],[])) in 
+    obtenir_type_info info = Int
+
+  
+  let %test _= 
+    let info= info_to_info_ast (InfoStaticVar("stat",Int,1,"SB", true)) in 
+    obtenir_type_info info = Int
+
+  let %test _= 
+    let info= info_to_info_ast (InfoConst("x",2)) in 
+    obtenir_type_info info = Int
+
 (* obtenir_nom_info : info_ast -> string *)
 (* Paramètre ia : l'information dont on veut obtenir le type *)
 (* Renvoie le nom associé à l'information *)
@@ -378,6 +395,21 @@ let obtenir_type_info ia =
     | InfoStaticVar (n,_,_,_,_) -> n    (* Si c'est une variable statique, on renvoie son nom *)
     | InfoConst (n,_) -> n              (* Si c'est une constante, on renvoie son nom *)
 
+let %test _= 
+    let info= info_to_info_ast (InfoVar("x",Rat,2,"SB")) in 
+    obtenir_nom_info info = "x"
+
+  let %test _= 
+    let info= info_to_info_ast (InfoFun("add",Int,[],[])) in 
+    obtenir_nom_info info = "add"
+
+    let %test _= 
+    let info= info_to_info_ast (InfoStaticVar("stat",Int,1,"SB", true)) in 
+    obtenir_nom_info info = "stat"
+
+    let %test _= 
+    let info= info_to_info_ast (InfoConst("x",2)) in 
+    obtenir_nom_info info = "x"
 
 let info_const ia = match (info_ast_to_info ia) with
   | InfoConst(nom, v) -> (nom, v)
@@ -389,10 +421,79 @@ let info_fun ia = match (info_ast_to_info ia) with
   | InfoFun(nom, t, tp, lp) -> (nom, t, tp, lp)
   | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos fun"
 
+let %test _= 
+  let info= info_to_info_ast (InfoFun("add",Int,[],[])) in 
+  info_fun info = ("add",Int,[],[])
+
+let %test _= 
+  let info= info_to_info_ast (InfoFun("add",Rat,[],[])) in 
+  info_fun info = ("add",Rat,[],[])
+
+let %test _= 
+  try
+    let info = info_to_info_ast (InfoVar ("add", Rat, 2, "SB")) in
+    let _ = info_fun info in
+    false 
+  with
+  | Failure _ -> true 
+  | _ -> false 
+
+let %test _= 
+  try
+    let info = info_to_info_ast (InfoStaticVar ("add", Rat, 2, "SB",false)) in
+    let _ = info_fun info in
+    false 
+  with
+  | Failure _ -> true 
+  | _ -> false 
+
+let %test _= 
+  try
+    let info = info_to_info_ast (InfoConst ("add", 2)) in
+    let _ = info_fun info in
+    false 
+  with
+  | Failure _ -> true 
+  | _ -> false 
+
+
 (* Renvoie si une Variable static a déjà été initialisée et les autres infos *)
 let info_static_var ia = match (info_ast_to_info ia) with
 | InfoStaticVar(nom, t, d, reg, b) -> (nom, t, d, reg,b)
 | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos d'une variable statique"
+
+let %test _= 
+  let info= info_to_info_ast (InfoStaticVar("add",Int,2,"SB",true)) in 
+  info_static_var info = ("add",Int,2,"SB",true)
+
+let %test _= 
+  try
+    let info = info_to_info_ast (InfoVar ("add", Rat, 2, "SB")) in
+    let _ = info_static_var info in
+    false 
+  with
+  | Failure _ -> true 
+  | _ -> false 
+
+  let %test _= 
+  try
+    let info = info_to_info_ast (InfoFun ("add", Rat, [], [])) in
+    let _ = info_static_var info in
+    false 
+  with
+  | Failure _ -> true 
+  | _ -> false 
+
+
+let %test _= 
+  try
+    let info = info_to_info_ast (InfoConst ("add", 2)) in
+    let _ = info_static_var info in
+    false 
+  with
+  | Failure _ -> true 
+  | _ -> false 
+
 
 (* Récupère  directement le quadruplet d'information d'un InfoVar, InfoStaticVar ou InfoFun*)
 let info_var ia = match (info_ast_to_info ia) with
@@ -400,12 +501,80 @@ let info_var ia = match (info_ast_to_info ia) with
   | InfoStaticVar _ -> info_static_var ia
   | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos var"
 
+let %test _= 
+  let info= info_to_info_ast (InfoStaticVar("add",Int,2,"SB",true)) in 
+  info_var info = ("add",Int,2,"SB",true)
+
+let %test _= 
+  let info= info_to_info_ast (InfoVar("add",Int,2,"SB")) in 
+  info_var info = ("add",Int,2,"SB",false)
+
+let %test _= 
+  let info= info_to_info_ast (InfoVar("add",Int,2,"SB")) in 
+  not (info_var info = ("add",Int,2,"SB",true))
+
+let %test _= 
+  try
+    let info = info_to_info_ast (InfoConst ("add", 2)) in
+    let _ = info_var info in
+    false 
+  with
+  | Failure _ -> true 
+  | _ -> false 
+
+let %test _= 
+  try
+    let info = info_to_info_ast (InfoFun ("add", Rat, [], [])) in
+    let _ = info_var info in
+    false 
+  with
+  | Failure _ -> true 
+  | _ -> false 
+
 (* Modifie la valeur du booleen d'une variable statique pour noter la déclaration *)
 let declaration_variable estDeclaree i =
   match !i with
   | InfoVar _ -> ()
   | InfoStaticVar (n,t,d,b,_) -> i:= InfoStaticVar (n,t,d,b, estDeclaree)
   | _ -> failwith "Appel modifier_booleen_variable_statique pas sur un InfoStaticVar"
+
+  let %test _= 
+    let info= InfoStaticVar ("add", Rat, 1, "SB",true) in
+    let infoast = info_to_info_ast info in
+    declaration_variable false infoast; 
+    match info_ast_to_info infoast with
+    |InfoStaticVar ("add", Rat, 1, "SB",false)-> true
+    |_-> false
+
+  let %test _= 
+    let info= InfoStaticVar ("add", Rat, 1, "SB",true) in
+    let infoast = info_to_info_ast info in
+    declaration_variable true infoast; 
+    match info_ast_to_info infoast with
+    |InfoStaticVar ("add", Rat, 1, "SB",true)-> true
+    |_-> false
+
+    let %test _= 
+    let info= InfoVar ("add", Rat, 1, "SB") in
+    declaration_variable true (info_to_info_ast info) =()
+
+  let %test _= 
+    try
+      let info= InfoFun ("add", Rat, [], []) in
+      let _= declaration_variable true (info_to_info_ast info) 
+    in false
+  with
+  | Failure _ -> true 
+  | _ -> false 
+
+  let %test _= 
+    try
+      let info= InfoConst ("add", 2) in
+      let _= declaration_variable true (info_to_info_ast info) 
+    in false
+  with
+  | Failure _ -> true 
+  | _ -> false 
 
 let rec obtenir_tds_originelle tds = match tds with
   | Courante (mere, _) -> 
