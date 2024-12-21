@@ -1,0 +1,6 @@
+Je peux pas juste ajouter les variables globales à la TDS originelle tout simplement ? Pour implanter les static de partout
+
+Tableaux
+
+
+Les Struct
