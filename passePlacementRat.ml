@@ -91,7 +91,7 @@ let rec aux depl lst = match lst with
 
 let analyse_placement_instruction_fonction i deplLB deplSB = match i with
     | AstType.DeclarationStatic (info, e) -> 
-      let (_, t, _,_,_) = info_var info in
+      let (_, t, _,_) = info_var info in
       let taille = getTaille t in
         modifier_adresse_variable (deplSB) "SB" info;
         

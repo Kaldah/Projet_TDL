@@ -73,7 +73,7 @@ struct
     | Ast.AstPlacement.Declaration (info,_) -> 
       begin
         match Tds.info_ast_to_info info with
-        | InfoVar (n,_,d,r) | InfoStaticVar (n,_,d,r,_) -> [(n,(d,r))]
+        | InfoVar (n,_,d,r) -> [(n,(d,r))]
         | _ -> []
         end
     | Ast.AstPlacement.Conditionnelle(_,(bt,_),(be,_)) -> (List.flatten (List.map (analyser_instruction) bt))@(List.flatten (List.map (analyser_instruction) be))

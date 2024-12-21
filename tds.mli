@@ -8,8 +8,6 @@ type info =
   (* Information associée à une variable : son nom (non indispensable mais aide au test et debbugage),
   son type, et son adresse ie son déplacement (int) par rapport à un registre (string) *)
   | InfoVar of string * typ * int * string
-  (* nom, type, déplacement, registre, est_initialisée *)
-  | InfoStaticVar of string * typ * int * string * bool
   (* Information associée à une fonction : son nom (utile pour l'appel), son type de retour et la liste des types des paramètres *)
   | InfoFun of string * typ * typ list * (AstSyntax.defaut option) list
 
@@ -80,13 +78,7 @@ val info_fun : info_ast -> string * typ * typ list * defaut option list
 val info_const : info_ast -> string * int
 
 (* Récupère  directement le quadruplet d'information d'un InfoVar *)
-val info_var : info_ast -> string * typ * int * string * bool
-
-(* Récupère  directement le 5-uplet d'information d'un InfoStaticVar *)
-val info_static_var : info_ast -> string * typ * int * string * bool
-
-(* Modifie la valeur du booleen d'une variable statique pour noter la déclaration *)
-val  declaration_variable : bool -> info_ast -> unit
+val info_var : info_ast -> string * typ * int * string
 
 (* Renvoie la Tds originelle, elle contient notamment les variables globales *)
 val obtenir_tds_originelle : tds -> tds

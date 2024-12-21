@@ -19,7 +19,6 @@ let rec get_type_affectable a =
     match info_ast_to_info info with
       | InfoVar(_, t, _, _) -> t
       | InfoConst(_, _) -> Int
-      | InfoStaticVar(_, t, _, _, _) -> t
       | _ -> failwith "Erreur interne Ident"
       )
   | AstTds.Deref a -> 
@@ -107,9 +106,8 @@ let rec analyse_code_expression e =
 
   let rec analyse_code_instruction i =
     match i with
-    | AstPlacement.Declaration ( info , e) | AstPlacement.DeclarationStatic (info, e)  -> let (_, t, d, reg, _) = info_var info in
+    | AstPlacement.Declaration ( info , e) | AstPlacement.DeclarationStatic (info, e)  -> let (_, t, d, reg) = info_var info in
       let taille_type_e = (getTaille t) in 
-        declaration_variable true info;
         (push taille_type_e) ^ (analyse_code_expression e) ^ (store taille_type_e d reg)
     | AstPlacement.Affectation ( a , e) ->  
       
@@ -149,7 +147,7 @@ let rec analyse_code_expression e =
       (label nom) ^ analyse_code_bloc bloc ^ halt 
 
   let analyse_code_variables_globales (AstType.DeclarationGlobale (ia, e)) = 
-    let (_, t, d, reg, _) = info_var ia in
+    let (_, t, d, reg) = info_var ia in
     let taille_type = (getTaille t) in 
     (push taille_type) ^ (analyse_code_expression e) ^ (store taille_type d reg)
     

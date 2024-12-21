@@ -7,8 +7,6 @@ type info =
   | InfoConst of string * int
   (* nom, type, déplacement, registre *)
   | InfoVar of string * typ * int * string
-  (* nom, type, déplacement, registre, est_initialisée *)
-  | InfoStaticVar of string * typ * int * string * bool
   (* nom, type retour, liste des paramètres *)
   | InfoFun of string * typ * typ list * (AstSyntax.defaut option) list
 
@@ -290,7 +288,6 @@ let string_of_info info =
   match info with
   | InfoConst (n,value) -> "Constante "^n^" : "^(string_of_int value)
   | InfoVar (n,t,dep,base) -> "Variable "^n^" : "^(string_of_type t)^" "^(string_of_int dep)^"["^base^"]"
-  | InfoStaticVar (n,t,dep,base,init) -> "Variable statique "^n^" : "^(string_of_type t)^" "^(string_of_int dep)^"["^base^"] initialisée : "^(string_of_bool init)
   | InfoFun (n,t,tp, _) -> "Fonction "^n^" : "^(List.fold_right (fun elt tq -> if tq = "" then (string_of_type elt) else (string_of_type elt)^" * "^tq) tp "" )^
                       " -> "^(string_of_type t)
 
@@ -314,7 +311,6 @@ let afficher_globale tds =
 let modifier_type_variable t i =
     match !i with
     | InfoVar (n,_,dep,base) -> i:= InfoVar (n,t,dep,base)
-    | InfoStaticVar (n,_,dep,base, b) -> i:= InfoStaticVar (n,t,dep,base, b)
     | _ -> failwith "Appel modifier_type_variable pas sur un InfoVar"
 
 let%test _ = 
@@ -344,8 +340,7 @@ let%test _ =
  let modifier_adresse_variable d b i =
      match !i with
      |InfoVar (n,t,_,_) -> i:= InfoVar (n,t,d,b)
-     |InfoStaticVar (n,t,_,_,estDecl) -> i:= InfoStaticVar (n,t,d,b,estDecl)
-     | _ -> failwith "Appel modifier_adresse_variable pas sur un InfoVar ou InfoStaticVar"
+     | _ -> failwith "Appel modifier_adresse_variable pas sur un InfoVar"
 
 let%test _ = 
   let info = InfoVar ("x", Rat, 4 , "SB") in
@@ -365,7 +360,6 @@ let obtenir_type_info ia =
   match (info_ast_to_info ia) with
   | InfoFun (_,t,_,_) -> t            (* Si c'est une fonction, on renvoie son type *)
   | InfoVar (_,t,_,_) -> t            (* Si c'est une variable, on renvoie son type *)
-  | InfoStaticVar (_,t,_,_,_) -> t    (* Si c'est une variable statique, on renvoie son type *)
   | InfoConst (_,_) -> Int            (* Si c'est une constante, le type est Int *)
 
   let %test _= 
@@ -374,11 +368,6 @@ let obtenir_type_info ia =
 
   let %test _= 
     let info= info_to_info_ast (InfoFun("add",Int,[],[])) in 
-    obtenir_type_info info = Int
-
-  
-  let %test _= 
-    let info= info_to_info_ast (InfoStaticVar("stat",Int,1,"SB", true)) in 
     obtenir_type_info info = Int
 
   let %test _= 
@@ -392,7 +381,6 @@ let obtenir_type_info ia =
     match (info_ast_to_info ia) with
     | InfoFun (n,_,_,_) -> n              (* Si c'est une fonction, on renvoie son nom *)
     | InfoVar (n,_,_,_) -> n            (* Si c'est une variable, on renvoie son nom *)
-    | InfoStaticVar (n,_,_,_,_) -> n    (* Si c'est une variable statique, on renvoie son nom *)
     | InfoConst (n,_) -> n              (* Si c'est une constante, on renvoie son nom *)
 
 let %test _= 
@@ -402,10 +390,6 @@ let %test _=
   let %test _= 
     let info= info_to_info_ast (InfoFun("add",Int,[],[])) in 
     obtenir_nom_info info = "add"
-
-    let %test _= 
-    let info= info_to_info_ast (InfoStaticVar("stat",Int,1,"SB", true)) in 
-    obtenir_nom_info info = "stat"
 
     let %test _= 
     let info= info_to_info_ast (InfoConst("x",2)) in 
@@ -440,15 +424,6 @@ let %test _=
 
 let %test _= 
   try
-    let info = info_to_info_ast (InfoStaticVar ("add", Rat, 2, "SB",false)) in
-    let _ = info_fun info in
-    false 
-  with
-  | Failure _ -> true 
-  | _ -> false 
-
-let %test _= 
-  try
     let info = info_to_info_ast (InfoConst ("add", 2)) in
     let _ = info_fun info in
     false 
@@ -456,62 +431,14 @@ let %test _=
   | Failure _ -> true 
   | _ -> false 
 
-
-(* Renvoie si une Variable static a déjà été initialisée et les autres infos *)
-let info_static_var ia = match (info_ast_to_info ia) with
-| InfoStaticVar(nom, t, d, reg, b) -> (nom, t, d, reg,b)
-| _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos d'une variable statique"
-
-let %test _= 
-  let info= info_to_info_ast (InfoStaticVar("add",Int,2,"SB",true)) in 
-  info_static_var info = ("add",Int,2,"SB",true)
-
-let %test _= 
-  try
-    let info = info_to_info_ast (InfoVar ("add", Rat, 2, "SB")) in
-    let _ = info_static_var info in
-    false 
-  with
-  | Failure _ -> true 
-  | _ -> false 
-
-  let %test _= 
-  try
-    let info = info_to_info_ast (InfoFun ("add", Rat, [], [])) in
-    let _ = info_static_var info in
-    false 
-  with
-  | Failure _ -> true 
-  | _ -> false 
-
-
-let %test _= 
-  try
-    let info = info_to_info_ast (InfoConst ("add", 2)) in
-    let _ = info_static_var info in
-    false 
-  with
-  | Failure _ -> true 
-  | _ -> false 
-
-
-(* Récupère  directement le quadruplet d'information d'un InfoVar, InfoStaticVar ou InfoFun*)
+(* Récupère  directement le quadruplet d'information d'un InfoVar ou d'un InfoFun*)
 let info_var ia = match (info_ast_to_info ia) with
-  | InfoVar(nom, t, d, reg) -> (nom, t, d, reg, false)
-  | InfoStaticVar _ -> info_static_var ia
+  | InfoVar(nom, t, d, reg) -> (nom, t, d, reg)
   | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos var"
 
 let %test _= 
-  let info= info_to_info_ast (InfoStaticVar("add",Int,2,"SB",true)) in 
-  info_var info = ("add",Int,2,"SB",true)
-
-let %test _= 
   let info= info_to_info_ast (InfoVar("add",Int,2,"SB")) in 
-  info_var info = ("add",Int,2,"SB",false)
-
-let %test _= 
-  let info= info_to_info_ast (InfoVar("add",Int,2,"SB")) in 
-  not (info_var info = ("add",Int,2,"SB",true))
+  info_var info = ("add",Int,2,"SB")
 
 let %test _= 
   try
@@ -527,51 +454,6 @@ let %test _=
     let info = info_to_info_ast (InfoFun ("add", Rat, [], [])) in
     let _ = info_var info in
     false 
-  with
-  | Failure _ -> true 
-  | _ -> false 
-
-(* Modifie la valeur du booleen d'une variable statique pour noter la déclaration *)
-let declaration_variable estDeclaree i =
-  match !i with
-  | InfoVar _ -> ()
-  | InfoStaticVar (n,t,d,b,_) -> i:= InfoStaticVar (n,t,d,b, estDeclaree)
-  | _ -> failwith "Appel modifier_booleen_variable_statique pas sur un InfoStaticVar"
-
-  let %test _= 
-    let info= InfoStaticVar ("add", Rat, 1, "SB",true) in
-    let infoast = info_to_info_ast info in
-    declaration_variable false infoast; 
-    match info_ast_to_info infoast with
-    |InfoStaticVar ("add", Rat, 1, "SB",false)-> true
-    |_-> false
-
-  let %test _= 
-    let info= InfoStaticVar ("add", Rat, 1, "SB",true) in
-    let infoast = info_to_info_ast info in
-    declaration_variable true infoast; 
-    match info_ast_to_info infoast with
-    |InfoStaticVar ("add", Rat, 1, "SB",true)-> true
-    |_-> false
-
-    let %test _= 
-    let info= InfoVar ("add", Rat, 1, "SB") in
-    declaration_variable true (info_to_info_ast info) =()
-
-  let %test _= 
-    try
-      let info= InfoFun ("add", Rat, [], []) in
-      let _= declaration_variable true (info_to_info_ast info) 
-    in false
-  with
-  | Failure _ -> true 
-  | _ -> false 
-
-  let %test _= 
-    try
-      let info= InfoConst ("add", 2) in
-      let _= declaration_variable true (info_to_info_ast info) 
-    in false
   with
   | Failure _ -> true 
   | _ -> false 
