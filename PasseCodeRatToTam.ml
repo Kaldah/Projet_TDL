@@ -17,17 +17,16 @@ let rec get_type_affectable a =
   | AstTds.Ident info -> 
     (
     match info_ast_to_info info with
-      | InfoVar(_, t, _, _) -> t
+      | InfoVar(_, t, _, _) -> t 
       | InfoConst(_, _) -> Int
       | _ -> failwith "Erreur interne Ident"
       )
   | AstTds.Deref a -> 
-    let t = get_type_affectable a in
-    (
-    match t with
-      | Pointeur d -> d
-      | _ -> failwith "Erreur interne Deref"
-    )
+    let t= get_type_affectable a in
+    (match t with 
+    |Pointeur d-> d
+    |_-> failwith "Erreur interne Pointeur")
+    
 let rec analyse_code_affectable a en_ecriture = 
   match a with
   | AstTds.Ident info -> 
