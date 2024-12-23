@@ -362,15 +362,15 @@ let obtenir_type_info ia =
   | InfoVar (_,t,_,_) -> t            (* Si c'est une variable, on renvoie son type *)
   | InfoConst (_,_) -> Int            (* Si c'est une constante, le type est Int *)
 
-  let %test _= 
+  let%test _= 
     let info= info_to_info_ast (InfoVar("x",Rat,2,"SB")) in 
     obtenir_type_info info = Rat
 
-  let %test _= 
+  let%test _= 
     let info= info_to_info_ast (InfoFun("add",Int,[],[])) in 
     obtenir_type_info info = Int
 
-  let %test _= 
+  let%test _= 
     let info= info_to_info_ast (InfoConst("x",2)) in 
     obtenir_type_info info = Int
 
@@ -413,7 +413,7 @@ let %test _=
   let info= info_to_info_ast (InfoFun("add",Rat,[],[])) in 
   info_fun info = ("add",Rat,[],[])
 
-let %test _= 
+let%test _= 
   try
     let info = info_to_info_ast (InfoVar ("add", Rat, 2, "SB")) in
     let _ = info_fun info in
@@ -436,11 +436,11 @@ let info_var ia = match (info_ast_to_info ia) with
   | InfoVar(nom, t, d, reg) -> (nom, t, d, reg)
   | _ -> failwith "Mauvaise utilisation de la fonction pour récupérer les infos var"
 
-let %test _= 
+let%test _= 
   let info= info_to_info_ast (InfoVar("add",Int,2,"SB")) in 
   info_var info = ("add",Int,2,"SB")
 
-let %test _= 
+let%test _= 
   try
     let info = info_to_info_ast (InfoConst ("add", 2)) in
     let _ = info_var info in
@@ -463,3 +463,17 @@ let rec obtenir_tds_originelle tds = match tds with
     if (mere == Nulle) then tds else 
       obtenir_tds_originelle mere
   | Nulle ->  Nulle
+
+let %test _= 
+  let tdsMere= creerTDSMere() in 
+  let filleN1= creerTDSFille tdsMere in 
+  let filleN2= creerTDSFille filleN1 in 
+  obtenir_tds_originelle filleN2= tdsMere
+
+  let %test _= 
+  let tdsMere= creerTDSMere() in 
+  let filleN1= creerTDSFille tdsMere in 
+  obtenir_tds_originelle filleN1= tdsMere
+
+  let %test _=  
+  obtenir_tds_originelle Nulle= Nulle
