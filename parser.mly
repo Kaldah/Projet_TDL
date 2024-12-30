@@ -108,6 +108,6 @@ e :
 | PO e1=e EQUAL e2=e PF   {Binaire (Equ,e1,e2)}
 | PO e1=e INF e2=e PF     {Binaire (Inf,e1,e2)}
 | PO NEW t=typ  PF        {New t}
-| PO exp=e PF             {exp}
 | REF n=ID                {Adresse n}
 | NULL                    {Null}
+| PO exp=e PF             {exp}
