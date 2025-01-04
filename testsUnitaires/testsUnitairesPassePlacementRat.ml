@@ -5,12 +5,12 @@ open PassePlacementRat
 open Type 
 
 
-let %test _= recuperer_declaration_static [] = ([],[])
+let %test _= separer_declaration_static [] = ([],[])
 
 let %test _= 
   let li= [AstPlacement.Declaration(info_to_info_ast(InfoFun("n",Int,[],[])),Entier(5)) ; 
             AstPlacement.Declaration(info_to_info_ast(InfoVar("n",Int,0,"Sb")),Entier(5))] in 
-  recuperer_declaration_static li = ([AstPlacement.Declaration(info_to_info_ast(InfoFun("n",Int,[],[])),Entier(5)) ; 
+  separer_declaration_static li = ([AstPlacement.Declaration(info_to_info_ast(InfoFun("n",Int,[],[])),Entier(5)) ; 
   AstPlacement.Declaration(info_to_info_ast(InfoVar("n",Int,0,"Sb")),Entier(5))],[])
 
 
@@ -18,7 +18,7 @@ let %test _=
   let li= [AstPlacement.Declaration(info_to_info_ast(InfoFun("n",Int,[],[])),Entier(5)) ; 
             AstPlacement.Declaration(info_to_info_ast(InfoVar("n",Int,0,"Sb")),Entier(5));
             AstPlacement.DeclarationStatic(info_to_info_ast(InfoVar("n",Int,0,"Sb")),Entier(5))] in 
-  recuperer_declaration_static li = ([AstPlacement.Declaration(info_to_info_ast(InfoFun("n",Int,[],[])),Entier(5)) ; 
+  separer_declaration_static li = ([AstPlacement.Declaration(info_to_info_ast(InfoFun("n",Int,[],[])),Entier(5)) ; 
   AstPlacement.Declaration(info_to_info_ast(InfoVar("n",Int,0,"Sb")),Entier(5))],[AstPlacement.DeclarationStatic(info_to_info_ast(InfoVar("n",Int,0,"Sb")),Entier(5))])
 
 

@@ -7,7 +7,7 @@ type info =
   | InfoConst of string * int
   (* nom, type, déplacement, registre *)
   | InfoVar of string * typ * int * string
-  (* nom, type retour, liste des paramètres *)
+  (* nom, type retour, liste types des paramètres, liste des valeurs par défaut des paramètres *)
   | InfoFun of string * typ * typ list * (AstSyntax.defaut option) list
 
 (* Données stockées dans la tds  et dans les AST : pointeur sur une information *)

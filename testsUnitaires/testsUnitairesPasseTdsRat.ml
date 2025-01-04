@@ -13,10 +13,10 @@ exception ErreurNonDetectee
 
 (* Exemple de test pour `info_fun` *)
 
-let%test "analyse_gestion_id_affectable1" = 
+let%test "analyse_tds_affectable1" = 
   let ia = info_to_info_ast (InfoVar("a", Int, 0, "rbp")) in
   ajouter tds "a" ia;
-  let res = analyse_gestion_id_affectable tds a true in
+  let res = analyse_tds_affectable tds a true in
   match res with
   | Affectable (AstTds.Ident(n)) -> (n = ia)
   | _ -> false

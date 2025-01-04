@@ -64,7 +64,7 @@ let rec analyse_type_expression e = match e with
     (AstType.Affectable(na), ta)
   | AstTds.New t -> (AstType.New t, Pointeur t)
   | AstTds.Null -> (AstType.Null, Null)
-  | AstTds.Adresse info -> 
+  | AstTds.Adresse info ->
     (
       match info_ast_to_info info with
         | InfoVar(_, t, _, _) -> (AstType.Adresse info, Pointeur t)
@@ -134,25 +134,21 @@ let rec analyse_type_expression e = match e with
 (* Vérifie la bonne utilisation des types et tranforme l'instruction
 en une instruction de type AstType.instruction *)
 (* Erreur si mauvaise utilisation des types *)
-let rec analyse_type_instruction i = 
+let rec analyse_type_instruction i =
   match i with
-  | AstTds.DeclarationStatic (t, info, e) ->
-    let (ne, te) = analyse_type_expression e in
-    if (est_compatible te t) then
-      AstType.DeclarationStatic(info, ne)
-    else
-      (
-      print_string (string_of_type t);
-      raise (Exceptions.TypeInattendu(te, t))
-      )
-  | AstTds.Declaration (t, info , e) ->
+  | AstTds.Declaration (t, info , e) | AstTds.DeclarationStatic (t, info, e)->
     (* On vérifie si les types sont compatibles *)
-      let (ne, te) = analyse_type_expression e in 
+      let (ne, te) = analyse_type_expression e in
         if (est_compatible t te) then
-            AstType.Declaration(info, ne)
+          begin
+          match i with
+            | AstTds.Declaration _ -> AstType.Declaration(info, ne)
+            | AstTds.DeclarationStatic _ -> AstType.DeclarationStatic(info, ne)
+            | _ -> failwith "Erreur interne"
+          end
         else
           raise (Exceptions.TypeInattendu(te, t))
-  | AstTds.Affectation(a, e) -> 
+  | AstTds.Affectation(a, e) ->
     (* On vérifie si les types sont compatibles *)
     let (ne, te) = analyse_type_expression e in
     let (na, ta) = analyse_type_affectable a in

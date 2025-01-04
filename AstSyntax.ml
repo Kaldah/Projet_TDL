@@ -75,7 +75,7 @@ and instruction =
   | Retour of expression
 
 (* Structure des fonctions de Rat *)
-(* type de retour - nom - liste des paramètres (association type et nom) - corps de la fonction *)
+(* type de retour - nom - liste des paramètres (association type, nom et possiblement une valeur par défaut) - corps de la fonction *)
 type fonction = Fonction of typ * string * (typ * string * defaut option) list * bloc
 
 (* Structure d'un programme Rat *)

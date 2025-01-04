@@ -1,0 +1,239 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc} % Encodage UTF-8
+\usepackage[T1]{fontenc}    % Encodage des fontes
+\usepackage{graphicx} % Pour inclure des images
+\usepackage{hyperref} % Pour les liens hypertextes
+\usepackage{lipsum} % Texte de remplissage
+\usepackage[french]{babel}
+\usepackage{enumitem}
+\setlist[itemize]{label=$\bullet$} % Exemple avec des puces (•)
+
+
+\title{Rapport projet de programmation fonctionnelle et de traduction des langages}
+\author{Corentin Cousty \\ Wilkens Marc Johnley Joseph}
+\date{D\'ecembre 2024}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+% Section Introduction
+\section{Introduction}
+Dans ce projet, nous avons \`a \'etudier et \`a am\'eliorer le langage RAT, un langage simplifi\'e con\c{c}u à des fins p\'edagogiques. L'objectif \'etait d'ajouter de nouvelles fonctionnalit\'es au compilateur RAT pour enrichir son expressivit\'e et sa puissance tout en conservant sa simplicit\'e d'utilisation.
+
+
+\subsection{Structure du compilateur et organisation des passes}
+Le compilateur RAT est organis\'e en plusieurs passes successives. Chaque passe applique des transformations sp\'ecifiques sur le code :
+\begin{itemize}
+    \item \textbf{Analyse syntaxique :} conversion du code source en un arbre syntaxique abstrait (AST).
+    \item \textbf{Analyse des identifiants :} validation et r\'esolution des noms dans la table des symboles (TDS).
+    \item \textbf{Typage :} v\'erification des types des expressions et instructions.
+    \item \textbf{Placement m\'emoire :} calcul des adresses m\'emoires des variables.
+    \item \textbf{G\'en\'eration de code TAM :} traduction de l'AST en instructions TAM ex\'ecutables.
+\end{itemize}
+
+\subsection{Les fonctionnalit\'es ajout\'ees}
+\begin{itemize}
+    \item Les pointeurs, permettant de manipuler des adresses m\'emoires directement.
+    \item Les variables globales, accessible \`a tout endroit du programme y compris les fonctions.
+    \item Les variables statiques locales, qui conservent leur valeur entre plusieurs appels de la m\^eme fonction.
+    \item Les param\`etres par d\'efaut, permettant de simplifier les appels de fonctions en r\'eduisant le nombre d'arguments obligatoires grâce à des valeurs par défaut.
+\end{itemize}
+
+
+% Section Extensions du langage RAT
+\section{Extensions du langage RAT}
+\subsection{Les pointeurs}
+Les pointeurs permettent d'acc\'eder directement \`a des adresses m\'emoires. Ils sont utilis\'es pour manipuler des structures complexes ou partager des donn\'ees entre diff\'erentes parties d'un programme. Dans RAT, nous avons ajout\'e la possibilit\'e de d\'eclarer, d'affecter et de d\'er\'ef\'erencer des pointeurs.
+\begin{itemize}
+    \item \textbf{Grammaire :} ajout de la d\'eclaration et de l'utilisation de pointeurs.
+    \item \textbf{TDS :} gestion des identifiants pour les pointeurs.
+    \item \textbf{Code TAM :} g\'en\'eration des instructions TAM pour l'allocation et l'acc\'es m\'emoire.
+\end{itemize}
+
+\subsection{Les variables globales}
+Les variables globales permettent de partager des donn\'ees entre les diff\'erentes fonctions d'un programme. Nous avons ajout\'e leur gestion dans le langage RAT.
+\begin{itemize}
+    \item \textbf{Grammaire :} ajout des d\'eclarations globales.
+    \item \textbf{Placement m\'emoire :} allocation en segment de base (SB).
+    \item \textbf{Code TAM :} acc\`es \`a ces variables via des adresses fixes.
+\end{itemize}
+
+\subsection{Les variables statiques locales}
+Ces variables conservent leur valeur entre plusieurs appels \`a une fonction, comme en C.
+\begin{itemize}
+    \item \textbf{Grammaire :} ajout des d\'eclarations statiques.
+    \item \textbf{TDS :} marquage des variables comme statiques.
+    \item \textbf{Code TAM :} conservation des valeurs sur le segment de base (SB).
+\end{itemize}
+
+\subsection{Les param\`etres par d\'efaut}
+Les param\`etres par d\'efaut simplifient l'utilisation des fonctions en fournissant des valeurs par d\'efaut.
+\begin{itemize}
+    \item \textbf{Grammaire :} support des valeurs par d\'efaut dans les d\'eclarations de fonctions.
+    \item \textbf{Analyse syntaxique :} gestion des param\`etres optionnels.
+    \item \textbf{Code TAM :} passage automatique des valeurs par d\'efaut lors des appels.
+\end{itemize}
+
+% Section M\'ethodologie
+\section{Méthodologie}
+
+\subsection{Pointeurs}
+\paragraph{Modifications de la grammaire et analyse syntaxique}
+La grammaire a été étendue pour permettre la déclaration et l'utilisation des pointeurs, notamment leur déréférencement et leur affectation.
+\begin{itemize}
+\item Un type "Pointeur t" et un type "affectable" ont donc été ajoutés pour traiter les pointeurs et tous les identifiants de la même manière.
+
+\item Cela entraine le remplacement de l'expression Ident par Affectable qui inclue Ident et Deref.
+
+\item Il y a aussi l'ajout des expressions New of typ et Adresse of string pour déclarer un Pointeur et accéder à l'adresse du pointeur.
+
+\item Il y a aussi l'expression et type Null pour les pointeurs pour définir le pointeur Null. Nous n'avons pas utilisé Undefined car nous le considérons réservé aux cas d'erreurs, lorsqu'il n'y a pas de type et faire un Pointeur of Undefined signifie qu'il faut rendre Undefined compatible avec tous les autres types pour éviter des erreurs ce qui semble peu cohérent.
+\end{itemize}
+
+
+\paragraph{Gestion des identifiants}
+Les pointeurs ont été ajoutés dans une nouvelle expression dans les AST : Affectable.
+
+\begin{itemize}
+
+\item 
+On ajoute le type :\newline
+	type affouexpTds =
+	\newline
+      | Affectable of AstTds.affectable
+  	\newline
+      | Expression of AstTds.expression
+      
+\item Ce type permet de stocker des Affectable ou des Expressions de AstTds. Il est utile pour que analyse\_tds\_affectable puisse renvoyer des entiers donc une expression au lieu d'ajouter les Entier aux Affectable et de les garder à chaque passe alors que ce n'est pas pertinent. 
+
+\item La vérification des types et des déréférencements a été incluse. 
+
+\item Une fonction analyse\_tds\_affectable a été ajouté dans cette passe pour les traiter. 
+
+\item Le type est aussi placé dans l'InfoVar directement lors de la déclaration dans cette passe.
+\end{itemize}
+
+\paragraph{Gestion des types}
+On vérifie qu'on déréférence bien des Pointeurs en vérifiant le type.
+\paragraph{Placement mémoire}
+Il a fallu définir la taille du type Pointeur dans la fonction getTaille dans le module type. La taille d'un pointeur est 1.
+
+\paragraph{Génération de code}
+Pour générer le code il a d'abord fallu ajouter des fonctions telles que get\_type\_affectable pour obtenir le type d'une expression Affectable.
+
+\begin{itemize}
+\item La fonction analyse\_code\_affectable analyse les expressions Affectable en vérifiant si l'accès est en écriture ou non.
+
+\item Pour l'expression New, on utilise l'instruction tam MAlloc pour allouer l'espace nécessaire au pointeur.
+
+\item Pour l'expression Adresse, on utilise loada pour l'obtenir.
+
+\end{itemize}
+
+\subsection{Variables globales}
+\paragraph{Modifications de la grammaire et analyse syntaxique}
+Les variables globales sont séparées du reste du code grâce au parser. Il y a un nouveau type : $variable\_globale = DeclarationGlobale of typ * string * expression$
+Et à présent un programme est constitué tel que $programme =  Programme of variable_globale list * fonction list * bloc$
+
+\paragraph{Gestion des identifiants}
+Les variables globales sont enregistrées dans la TDS originelle avec une portée globale.
+\begin{itemize}
+\item Ajout de analyse\_tds\_variable\_globale pour les analyser en les plaçant directement dans la tds principale.
+\item Ils deviennent une liste de AstTds.Declaration après cette passe - c'est donc un bloc d'instruction.
+\end{itemize}
+
+\paragraph{Type, Placement mémoire et Génération de code}
+Les variables globales ont des adresses fixes dans le registre SB et sont placées au tout début, on les analyse donc comme des blocs dans toutes les autres passes.
+
+Précision pour la passe de placement : on récupère la place occupée par leurs déclarations puis on donne toujours en argument le décalage actuel dans SB à analyse\_placement\_fonctions et analyse\_placement\_bloc pour l'analyse du bloc principal du programme pour ne pas réécrire par dessus ces emplacements utilisés.
+
+\subsection{Variables statiques locales}
+\paragraph{Modifications de la grammaire et analyse syntaxique}
+La grammaire a été enrichie pour inclure les déclarations statiques locales, limitées à une fonction avec DeclarationStatic et le mot clé static.
+
+\paragraph{Gestion des identifiants}
+Les variables sont simplement ajoutées dans la tds avec un InfoVar.
+
+\paragraph{Gestion des types} On les traite comme les instructions Declaration mais on renvoie une instruction DeclarationStatic.
+
+\paragraph{Placement mémoire}
+On a créé une fonction analyse\_placement\_instruction\_fonction pour analyser les instructions des fonctions à part, notamment pour les variables statiques, cela permet d'être sûr qu'elles sont utilisées dans les fonctions.
+\begin{itemize}
+\item On place donc les variables statiques dans SB, selon le décalage.
+
+\item La fonction qui analyse les instructions d'une fonction renvoie la taille occupée dans LB et SB pour suivre l'occupation des registres constamment. Les autres fonctions touchant à l'analyse des fonctions sont donc adaptées en conséquence.
+
+\item On récupère aussi la liste des déclarations statiques pour les sortir du traitement des fonctions et les placer directement dans le programme grâce à separer\_declaration\_static qui récupère séparément les instructions de la fonction - utilisant le registre LB - et les DeclarationStatic.
+
+\item Après cette passe on a donc $programme = Programme of bloc * fonction list * bloc * bloc$ pour contenir le bloc des variables globales, le bloc des instructions des fonctions, le bloc des variables statique et le bloc principal.
+\end{itemize}
+
+\paragraph{Génération de code} Il suffit de récupérer le bloc de variables statiques dans le programme et d'appeler analyse\_code\_bloc dessus.
+
+\subsection{Paramètres par défaut}
+\paragraph{Modifications de la grammaire et analyse syntaxique}
+Les paramètres par défaut ont été ajoutés à la grammaire pour permettre leur définition dans les fonctions.
+\begin{itemize}
+\item On a ajouté le type $defaut = Defaut of expression$
+\item Ainsi la liste des paramètres d'une fonction contient aussi un champ de type $defaut option$ pour prendre une valeur par défaut optionnelle.
+\end{itemize}
+
+\paragraph{Gestion des identifiants}
+Dans cette passe on ajoute les paramètres par défaut à l'appel s'il en manque.
+
+\begin{itemize}
+\item On modifie InfoFun pour ajouter un champ pour contenir la liste des valeurs par défaut des paramètres sous la forme de $defaut option list$. None quand le paramètre n'a pas de valeur par défaut et Some d s'il en a une.
+
+\item On ajoute une fonction verifier\_param dont le but est de vérifier que toutes les paramètres obligatoires soient présentes avant ceux par défauts. On récupère aussi les valeurs par défaut des paramètres sous la forme de defaut option pour les placer dans l'InfoFun de la fonction.
+
+\item Ensuite la fonction completer\_arguments complète les arguments donnés lors de l'appel avec les paramètres par défaut disponibles pendant l'analyse de l'appel de fonction. Ensuite on renvoie simplement un AstTds.AppelFonction.
+
+\end{itemize}
+
+\paragraph{Type, Placement mémoire et Génération de code}
+Il n'y avait rien à changer car les paramètres par défaut sont devenus partis intégrante de l'appel.
+
+
+% Section R\'esultats et analyse
+\section{R\'esultats et analyse}
+\subsection{Pr\'esentation des cas de test et validation}
+Chaque fonctionnalit\'e a \'et\'e test\'ee avec des cas d'utilisation simples et complexes pour valider son comportement y compris les fonctions internes aux passes à l'aide de tests unitaires.
+
+\subsection{Analyse des r\'esultats obtenus}
+Les r\'esultats montrent que toutes les nouvelles fonctionnalit\'es fonctionnent correctement dans les sc\'enarios pr\'evus.
+
+% Section Discussion
+\section{Discussion}
+\subsection{Alternatives}
+\begin{itemize}
+\item Pour les variables globales nous avons hésité nous pensions au début ajouter une instruction DeclarationGlobale pour les gérer dans tout le programme comme des expressions normales. Puis nous avons trouvé une alternative beaucoup plus simple à implanter.
+
+\item A l'origine nous pensions utiliser des InfoVarStatic pour gérer les variables statiques mais ce n'était pas nécessaire.
+
+\end{itemize}
+
+\subsection{Difficult\'es rencontr\'ees et choix de conception}
+Certaines difficult\'es ont \'et\'e rencontr\'ees lors de l'impl\'ementation, notamment :
+\begin{itemize}
+    \item Gestion des TDS pour les variables statiques et la gestion des Entier parmis les Affectable qui a mené à la création de affouexpTds.
+    \item Compatibilit\'e avec les anciens tests lorsque j'ai voulu ajouter des Exceptions plus précises.
+\end{itemize}
+
+\subsection{Am\'eliorations potentielles}
+Pour aller plus loin, voici quelques pistes d'am\'elioration :
+\begin{itemize}
+    \item Permettre de déclarer des variables globales n'importe où : grâce à la fonction permettant de récupérer la tds originelle, il est possible d'utiliser la fonction analyse\_tds\_variable\_globale sur toutes les expressions DeclarationGlobale, en les ajoutant aux autres expressions normales, il ne serait donc plus nécessaire de séparer les variables globales au début du programme.
+    \item Ajouter le support des tableaux.
+    \item Inclure des structures de donn\'ees comme les structs vu en examen.
+    \item Optimiser le code TAM g\'en\'er\'e pour r\'eduire son empreinte m\'emoire.
+\end{itemize}
+
+% Section Conclusion
+\section{Conclusion}
+En conclusion, ce projet a permis d'ajouter des fonctionnalit\'es puissantes au langage RAT tout en renfor\c{c}ant la structure de son compilateur. Les pistes d'am\'elioration offrent de nombreuses opportunit\'es d'enrichissement pour ce langage.
+On remarque aussi que notre manière d'analyser et de faire les passes permet d'implanter de nouvelles fonctionnalités assez facilement, peu de modifications extérieures aux passes et au parser sont nécessaires. 
+
+\end{document}
