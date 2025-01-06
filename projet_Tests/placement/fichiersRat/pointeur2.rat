@@ -1,0 +1,30 @@
+int* max(int a, rat b) {
+    int res= num(b);
+    int x=1;
+    if(res<a){
+        int x=res;
+        res=a;
+    }else{
+        int y= res;
+    }
+
+    return (&res);
+}
+
+int min(int* a, int* b){
+    int res=2;
+    if((*a)<(*b)){
+        res=(*a);
+    }else{
+        res=(*b);
+    }
+
+    return res;
+}
+
+test{
+    int* px= (new int);
+    rat y=[3/4];
+    px= max(3,y);
+    int m= min(px,px); 
+}

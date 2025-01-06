@@ -63,7 +63,6 @@ let%test "test_x" =
 let%test "test_y" = 
   test (pathFichiersRat^"test.rat")  "main" ("y", 1)  (2,"SB")
 
-(* Bug, non reconnaissance du main*)
 
 let%test "pointeur1_a" = 
   test (pathFichiersRat^"pointeur1.rat") "main" ("a",1) (0,"SB")
@@ -82,6 +81,49 @@ let%test "pointeur1_b_f" =
 
 let%test "pointeur1_c_f" = 
   test (pathFichiersRat^"pointeur1.rat") "add" ("c",1) (-1,"LB")
+
+let%test "pointeur1_x_f" = 
+  test (pathFichiersRat^"pointeur1.rat") "add" ("x",1) (3,"LB")
+
+let%test "pointeur1_z_f" = 
+  test (pathFichiersRat^"pointeur1.rat") "add" ("z",1) (4,"LB")
+
+let%test "pointeur2_a_f" = 
+  test (pathFichiersRat^"pointeur2.rat") "max" ("a",1) (-3,"LB")
+
+let%test "pointeur2_b_f" = 
+  test (pathFichiersRat^"pointeur2.rat") "max" ("b",1) (-2,"LB")
+
+  let%test "pointeur2_res_f" = 
+  test (pathFichiersRat^"pointeur2.rat") "max" ("res",1) (3,"LB")
+
+  let%test "pointeur2_x1_f" = 
+  test (pathFichiersRat^"pointeur2.rat") "max" ("x",1) (4,"LB")
+
+  let%test "pointeur2_x_f" = 
+  test (pathFichiersRat^"pointeur2.rat") "max" ("x",2) (5,"LB")
+
+  let%test "pointeur2_y_f" = 
+  test (pathFichiersRat^"pointeur2.rat") "max" ("y",1) (5,"LB")
+
+  let%test "pointeur2_a_min" = 
+  test (pathFichiersRat^"pointeur2.rat") "min" ("a",1) (-2,"LB")
+
+  let%test "pointeur2_b_min" = 
+  test (pathFichiersRat^"pointeur2.rat") "min" ("b",1) (-1,"LB")
+
+  let%test "pointeur2_res_min" = 
+  test (pathFichiersRat^"pointeur2.rat") "min" ("res",1) (3,"LB")
+
+  let%test "pointeur2_px_main" = 
+  test (pathFichiersRat^"pointeur2.rat") "main" ("px",1) (0,"SB")
+
+  let%test "pointeur2_y_main" = 
+  test (pathFichiersRat^"pointeur2.rat") "main" ("y",1) (1,"SB")
+
+  let%test "pointeur2_m_main" = 
+  test (pathFichiersRat^"pointeur2.rat") "main" ("m",1) (3,"SB")
+
 
 (*************)
 (*  GLOBALES *)

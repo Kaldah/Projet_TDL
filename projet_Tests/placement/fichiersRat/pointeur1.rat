@@ -7,6 +7,5 @@ int add (rat* a, int b, int* c){
 main {
     rat a = [2/3];
     int c = 3;
-    int x = 1;
-    x= (add((&a), 2, (&c)));
+    int x= (add((&a), 2, (&c)));
 }
