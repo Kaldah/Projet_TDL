@@ -1,0 +1,11 @@
+int add (rat* a, int b, int* c){
+    int x= num(*a);
+    int z= (x+ (*c));
+    return z;
+}
+
+test{
+    rat a= [2/3];
+    int c= 3;
+    int x= (add((&a), 2, (&c)));
+}
