@@ -7,10 +7,10 @@ let getListeDep ratfile =
   let input = open_in ratfile in
   let filebuf = Lexing.from_channel input in
   try
-  let ast = Parser.main Lexer.token filebuf in
-  let past = CompilateurRat.calculer_placement ast in
-  let listeAdresses = VerifPlacement.analyser past in
-  listeAdresses
+    let ast = Parser.main Lexer.token filebuf in
+    let past = CompilateurRat.calculer_placement ast in
+    let listeAdresses = VerifPlacement.analyser past in
+    listeAdresses
   with
   | Lexer.Error _ as e ->
       report_error ratfile filebuf "lexical error (unexpected character).";
@@ -33,6 +33,7 @@ let test fichier fonction (var,occ) (dep,registre) =
     else 
       aux (i-1) (List.remove_assoc var lmain)
   in aux occ lmain
+
 
 (****************************************)
 (** Chemin d'accès aux fichiers de test *)
@@ -57,6 +58,52 @@ Vérifier que chaque pointeur dispose d’une adresse unique en mémoire.
 S’assurer de la gestion correcte des adresses et des valeurs pointées.
 *)
 
+<<<<<<< Updated upstream
+=======
+let%test "test_px" = 
+  test (pathFichiersRat^"test.rat") "main" ("px", 1)  (0,"SB")
+
+let%test "test_x" = 
+  test (pathFichiersRat^"test.rat") "main" ("x", 1)  (1,"SB")
+
+let%test "test_y" = 
+  test (pathFichiersRat^"test.rat") "main" ("y", 1)  (2,"SB")
+
+(* Bug, non reconnaissance du main*)
+
+let%test "pointeur1_a" = 
+  test (pathFichiersRat^"pointeur1.rat") "main" ("a",2) (0,"SB")
+
+let%test "pointeur1_x" = 
+  test (pathFichiersRat^"pointeur1.rat") "main" ("x",2) (3,"SB")
+
+let%test "pointeur1_c" = 
+  test (pathFichiersRat^"pointeur1.rat") "main" ("a",2) (2,"SB")
+
+let%test "test8_f_x_1" = 
+  test (pathFichiersRat^"pointeur1.rat")  "f" ("x",1)  (3, "LB")
+    
+let%test "test8_f_y_1" = 
+  test (pathFichiersRat^"pointeur1.rat")  "f" ("y",1)  (4, "LB")
+    
+let%test "test8_f_z_1" = 
+  test (pathFichiersRat^"pointeur1.rat")  "f" ("z",1)  (6, "LB")
+  
+let%test "test8_f_x_2" = 
+  test (pathFichiersRat^"pointeur1.rat")  "f" ("x",2)  (7, "LB")
+
+let%test "pointeur1_a_f" = 
+  test (pathFichiersRat^"pointeur1.rat") "add" ("a",1) (-3,"LB")
+
+let%test "pointeur1_b_f" = 
+  test (pathFichiersRat^"pointeur1.rat") "add" ("b",1) (-2,"LB")
+
+let%test "pointeur1_c_f" = 
+  test (pathFichiersRat^"pointeur1.rat") "add" ("c",1) (-1,"LB")
+
+
+
+>>>>>>> Stashed changes
 (*************)
 (*  GLOBALES *)
 (*************)
