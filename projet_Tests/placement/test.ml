@@ -66,23 +66,22 @@ let%test "test_y" =
 (* Bug, non reconnaissance du main*)
 
 let%test "pointeur1_a" = 
-  test (pathFichiersRat^"pointeur1.rat") "main" ("a",2) (0,"SB")
+  test (pathFichiersRat^"pointeur1.rat") "main" ("a",1) (0,"SB")
 
-let%test "pointeur1_x" = 
-  test (pathFichiersRat^"pointeur1.rat") "main" ("x",2) (3,"SB")
+let%test "pointeur1_c" = 
+  test (pathFichiersRat^"pointeur1.rat") "main" ("c",1) (2,"SB")
 
-  let%test "pointeur1_c" = 
-  test (pathFichiersRat^"pointeur1.rat") "main" ("a",2) (2,"SB")
+  let%test "pointeur1_x" = 
+  test (pathFichiersRat^"pointeur1.rat") "main" ("x",1) (3,"SB")
 
 let%test "pointeur1_a_f" = 
   test (pathFichiersRat^"pointeur1.rat") "add" ("a",1) (-3,"LB")
 
-  let%test "pointeur1_b_f" = 
+let%test "pointeur1_b_f" = 
   test (pathFichiersRat^"pointeur1.rat") "add" ("b",1) (-2,"LB")
 
-  let%test "pointeur1_c_f" = 
+let%test "pointeur1_c_f" = 
   test (pathFichiersRat^"pointeur1.rat") "add" ("c",1) (-1,"LB")
-
 
 (*************)
 (*  GLOBALES *)

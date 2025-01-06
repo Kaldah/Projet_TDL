@@ -4,8 +4,9 @@ int add (rat* a, int b, int* c){
     return z;
 }
 
-test{
-    rat a= [2/3];
-    int c= 3;
-    int x= (add((&a), 2, (&c)));
+main {
+    rat a = [2/3];
+    int c = 3;
+    int x = 1;
+    x= (add((&a), 2, (&c)));
 }

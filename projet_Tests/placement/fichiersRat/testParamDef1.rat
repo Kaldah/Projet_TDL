@@ -3,7 +3,7 @@ int add (int a, int b=1){
 }
 
 
-test{
+main {
     int x=3;
     print add (x,2);
     print add (x);
