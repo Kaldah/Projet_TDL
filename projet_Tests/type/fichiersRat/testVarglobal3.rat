@@ -1,0 +1,17 @@
+static bool b= true;
+
+int fct(rat* a){
+    b=false;
+    if (b){
+        int b=5;
+    }else{
+        int b=6;
+    }
+
+    return 1;
+}
+
+test{
+    bool* pb= (&b);
+    int a=fct(null);
+}

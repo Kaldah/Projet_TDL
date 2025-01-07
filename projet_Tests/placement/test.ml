@@ -124,10 +124,12 @@ let%test "pointeur2_b_f" =
   let%test "pointeur2_m_main" = 
   test (pathFichiersRat^"pointeur2.rat") "main" ("m",1) (3,"SB")
 
-
 (*************)
 (*  GLOBALES *)
 (*************)
+let%test "testVarglobal1_a_main" = 
+  test (pathFichiersRat^"testVarglobal1.rat") "main" ("a",1) (0,"SB")
+
 
 (*
 Tester le placement en mémoire, avec des adresses distinctes pour chaque variable.

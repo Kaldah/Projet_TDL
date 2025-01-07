@@ -1,0 +1,10 @@
+static int* px= null;
+
+int add(int a){
+    return ((*px) + a);
+}
+
+test{
+    int a= 2;
+    a= add(a);
+}

@@ -1,0 +1,4 @@
+static rat* a= 3;
+
+test{
+}

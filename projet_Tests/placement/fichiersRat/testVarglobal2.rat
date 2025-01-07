@@ -1,0 +1,27 @@
+static rat a= [3/4];
+static rat* b= (&a);
+static bool c= true;
+
+int add (int x) {
+    int a= denom(a); 
+    int b= num((*b));
+    return ((a+b)+c);
+}
+
+int infe(int* c){
+    if(((num(a))< (*c))){
+        return (*c);
+    }else{
+        return (num(a));
+    }
+}
+
+test{
+    int *px= (new int);
+    if(c){
+        *px= add(2);
+    }else{
+        *px= infe(1);
+    }
+    
+}
