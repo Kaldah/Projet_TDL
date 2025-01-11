@@ -1,12 +1,12 @@
-static rat a=[3/5];
-static rat b=1;
+static rat a= [3/5];
+static rat b = [1/5];
 
 int addstat(){
     return ((num(a))+(denom(b)));
 }
 
 test{
-    rat c= a;
-    a=b;
-    b=c;
+    rat c=  a;
+    a= b;
+    b= c;
 }

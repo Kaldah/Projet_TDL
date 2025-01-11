@@ -105,8 +105,10 @@ with
 let%test_unit "testVarglobal1" = 
   let _ = compiler (pathFichiersRat^"testVarglobal1.rat") in ()
 
+
 let%test_unit "testVarglobal2" = 
   let _ = compiler (pathFichiersRat^"testVarglobal2.rat") in ()
+
 
 (*************)
 (*  LOCALES  *)

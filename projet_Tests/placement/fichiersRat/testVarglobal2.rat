@@ -5,10 +5,10 @@ static bool c= true;
 int add (int x) {
     int a= denom(a); 
     int b= num((*b));
-    return ((a+b)+c);
+    return ((a+b)+2);
 }
 
-int infe(int* c){
+int infe(int * c){
     if(((num(a))< (*c))){
         return (*c);
     }else{
@@ -18,10 +18,11 @@ int infe(int* c){
 
 test{
     int *px= (new int);
+    int b = 1;
     if(c){
         *px= add(2);
     }else{
-        *px= infe(1);
+        *px= infe(&b);
     }
     
 }

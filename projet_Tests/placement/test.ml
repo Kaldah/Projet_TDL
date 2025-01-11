@@ -30,7 +30,7 @@ let test fichier fonction (var,occ) (dep,registre) =
     then
       let (d,r) = List.assoc var lmain in
       (d=dep && r=registre)
-    else 
+    else
       aux (i-1) (List.remove_assoc var lmain)
   in aux occ lmain
 
@@ -127,9 +127,15 @@ let%test "pointeur2_b_f" =
 (*************)
 (*  GLOBALES *)
 (*************)
-let%test "testVarglobal1_a_main" = 
-  test (pathFichiersRat^"testVarglobal1.rat") "main" ("a",1) (0,"SB")
 
+let%test "testVarglobal1_a_main" = 
+  test (pathFichiersRat^"testVarglobal1.rat") "main" ("c",1) (1,"SB")
+
+let%test "testVarglobal2_px_test" = 
+  test (pathFichiersRat^"testVarglobal2.rat") "main" ("px",1) (4,"SB")
+
+let%test "testVarglobal2_a_add" = 
+  test (pathFichiersRat^"testVarglobal2.rat") "add" ("a",1) (3,"LB")
 
 (*
 Tester le placement en mémoire, avec des adresses distinctes pour chaque variable.
