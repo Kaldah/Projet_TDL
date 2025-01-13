@@ -220,9 +220,19 @@ let analyse_type_fonction (AstTds.Fonction(_,info,lp,li))  =
   let nli = analyse_type_bloc li in
   AstType.Fonction(info, nlip , nli )
 
-  let analyse_type_fonctions lf =
-    List.map analyse_type_fonction lf
+(* analyse_type_fonctions : AstTds.fonction list -> AstType.fonction list *)
+(* Paramètre lf : liste de fonctions à analyser *)
+(* Vérifie la bonne utilisation des types et tranforme les fonctions
+en fonctions de type AstType.fonction *)
+(* Erreur si mauvaise utilisation des types *)
+let analyse_type_fonctions lf =
+  List.map analyse_type_fonction lf
 
+(* analyse_type_variable_globale : AstTds.declarationGlobale -> AstType.declarationGlobale *)
+(* Paramètre : la variable globale à analyser *)
+(* Vérifie la bonne utilisation des types et tranforme la variable globale
+en une variable globale de type AstType.declarationGlobale *)
+(* Erreur si mauvaise utilisation des types *)
 let analyse_type_variable_globale (AstTds.DeclarationGlobale(info, e)) =
   let (ne, te) = analyse_type_expression e in
   let t = obtenir_type_info info in
