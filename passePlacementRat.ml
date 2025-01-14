@@ -147,8 +147,18 @@ let rec traiter_parametres_fonction tailleActuelleParam lst =
 (* Renvoie la liste des instructions de type AstPlacement.DeclarationStatic et les autres *)
 (* pour les traiter séparément dans la passe suivante, la passe de codage *)
 
-let rec separer_declaration_static li =
-  match li with
+let separer_declaration_static li = 
+  let listeStatique = List.filter (fun x -> match x with
+  | AstPlacement.DeclarationStatic _ -> true
+  | _ -> false) li
+in 
+  let listeAutres = List.filter (fun x -> match x with
+  | AstPlacement.DeclarationStatic _ -> false
+  | _ -> true) li
+in
+  (listeAutres, listeStatique)
+
+  (* match li with
   | h::q ->
     let (lstFun, lstStatic) = separer_declaration_static q in
     begin
@@ -156,7 +166,7 @@ let rec separer_declaration_static li =
         | AstPlacement.DeclarationStatic _ -> (lstFun, h::lstStatic)
         | _ -> (h::lstFun, lstStatic)
     end
-  | [] -> ([],[])
+  | [] -> ([],[]) *)
 
 (* analyse_placement_fonction : AstType.fonction -> int -> AstPlacement.fonction * (AstPlacement.instruction list * int) *)
 (* Paramètre info : l'info_ast de la fonction analysée *)
