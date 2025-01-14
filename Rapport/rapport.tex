@@ -196,6 +196,117 @@ Dans cette passe on ajoute les paramètres par défaut à l'appel s'il en manque
 \paragraph{Type, Placement mémoire et Génération de code}
 Il n'y avait rien à changer car les paramètres par défaut sont devenus partis intégrante de l'appel.
 
+\section{Jugement de typage}
+\subsection{Pointeur}
+
+\begin{itemize}
+    \item $\[
+I \to A = E
+\\
+\vspace{}
+\frac{\sigma \vdash \, A \, : \, \text{Pointeur }(\tau) \hspace{1.5 cm} \sigma \vdash \, E \, : \, \text{Pointeur }(\tau) 
+}{\sigma \vdash \text{A = E} \, \; : \; \text{Pointeur}(\tau)}
+\]$
+
+\vphantom{}
+\item $\[
+E \to new (TYPE)
+\\
+\vspace{}
+\frac{\sigma \vdash \, T \, : \, \text{Pointeur }
+}{\sigma \vdash \text{New} \,\text{T} \; : \; \text{Pointeur}(\tau)}
+\]$
+
+
+\vphantom{}
+
+\item $\[
+A \to *A
+\\
+\vspace{}
+\vphantom{}
+\frac{\sigma \vdash \, A : \text{Pointeur}(\tau)}{\sigma \vdash \, *A  \, : \, \tau}
+\]$
+
+\vphantom{}
+\item $\[
+E \to null
+\\
+\vspace{}
+\vphantom{}
+\sigma \; : \; \text{Null} \; : \; \text{Pointeur}(\text{Undefined})
+\]$
+
+\vphantom{}
+\item $\[
+E \to \&id
+\\
+\frac{\sigma \vdash \, \text{id} : \, \tau}{\sigma \vdash \, \text{\&id} : \, \text{Pointeur}(\tau)}
+\]$
+
+\vphantom{}
+\item $\[
+TYPE \to TYPE *
+\\
+\vspace{}
+\frac{\sigma \vdash \, TYPE \, : \, \text(\tau)
+}{\sigma \vdash \text{TYPE *} \; : \; \text{Pointeur}(\tau)}
+\]$
+
+\vphantom{}
+\item $\[
+E \to A
+\\
+\vspace{}
+\vphantom{}
+\sigma \; : \; \text{A} \; : \; \text{Pointeur}(\tau)}
+\]$
+
+\vphantom{}
+\item $\[
+A \to id
+\\
+\vspace{}
+\vphantom{}
+\sigma \; : \; \text{id} \; : \; \text{Pointeur}(\tau)}
+\]$
+
+\end{itemize}
+\subsection{Variables globales et Varaiables statiques locales}
+
+\begin{itemize}
+    \item$\[ \text{VAR} \to \text{static} \; \text{TYPE} \; \text{id} = \text{E}
+    \\
+    \vspace{}
+    \vphantom{}
+    \frac{\sigma \vdash \text{TYPE} : \tau \hspace{1.5 cm} \sigma \vdash \text{E} : \tau}{\sigma{\text{\tau_r}} \vdash \text{static} \; \text{TYPE} \; \text{id} = \text{E} : \text{void}, \; [\text{id}, \; \tau]}
+    \]$
+
+\vphantom{}
+    \item$\[ \text{PROG} \to \text{VAR *} \; \text{FUN*} \; \text{id BLOC} 
+    \\
+    \vspace{}
+    \vphantom{}
+    \frac{\sigma \vdash \text{VAR} : \text{void}, \sigma''' \quad \sigma \vdash \text{FUN} : \text{void}, \sigma' \quad \sigma' @ \sigma @ \sigma ''' \vdash \text{PROG} : \text{void}, \sigma''}{\sigma \vdash \text{VAR} \, \text{FUN} \, \text{PROG} : \text{void}, \sigma'' \, @ \, \sigma' @ \, \sigma'''}
+    \]$
+    
+\end{itemize}
+\subsection{Paramètres par défaut}
+\begin{itemize}
+    \item$\[ \text{DP} \to \text{TYPE} \, \text{id=} \langle D \rangle ? \langle, \, \text{TYPE} \, \text{id} \langle D \rangle ? \rangle^*
+    \\
+    \vspace{}
+    \vphantom{}
+    \frac{ \text{A}  \hspace{1.5 cm} \text{B}}{\sigma \vdash \text{TYPE_1} \, \text{id_1}, \ldots, \text{TYPE_8=} \, \text{id_8}, \ldots, \text{TYPE_n=} \, \text{id_n} : \tau_1 \times  \cdots \times \tau_8 \cdots \times \tau_n , \, [(id_1 , \tau_1 ); \cdots ; (id_8 , \tau_8 ); \cdots ; (id_n , \tau_n )]}
+    \]$    
+    \\
+    \vspace{}
+    \vphantom
+    \item \[$A: \sigma \vdash \text{TYPE_1}:\tau_1 \cdots \sigma \vdash \text{TYPE_8}:\tau_8 \cdots \sigma \vdash \text{TYPE_n}:\tau_n$\]
+    \\
+    \vphantom{}
+    \item $B : \sigma \vdash \text{E_8}:\tau_8 \cdots \sigma \vdash \text{E_n}:\tau_n$
+\end{itemize}
 
 % Section R\'esultats et analyse
 \section{R\'esultats et analyse}
