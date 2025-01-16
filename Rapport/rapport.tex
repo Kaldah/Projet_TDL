@@ -14,8 +14,8 @@
 \date{D\'ecembre 2024}
 
 \begin{document}
-
 \maketitle
+\href{https://github.com/Kaldah/Projet_TDL}{\textbf{Lien vers le Projet Github}}
 \tableofcontents
 \newpage
 
@@ -332,6 +332,7 @@ Certaines difficult\'es ont \'et\'e rencontr\'ees lors de l'impl\'ementation, no
 \begin{itemize}
     \item Gestion des TDS pour les variables statiques et la gestion des Entier parmis les Affectable qui a mené à la création de affouexpTds.
     \item Compatibilit\'e avec les anciens tests lorsque j'ai voulu ajouter des Exceptions plus précises.
+    \item Problème de double import de module avec l'ajout de Defaut option dans les InfoFun de la TDS donc nous avons dû placer le module AstSyntax à l'extérieur pour éviter ce bug car il n'y avait pas de double dépendance entre les modules strictement, uniquement les autres Ast.
 \end{itemize}
 
 \subsection{Am\'eliorations potentielles}
